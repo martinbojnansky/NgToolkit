@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'lib-ng-toolkit-lib',
+  selector: 'atl-ng-toolkit-lib',
   template: `
     <p>
       ng-toolkit-lib works!
     </p>
   `,
-  styles: [
-  ]
+  styles: [],
 })
 export class NgToolkitLibComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
