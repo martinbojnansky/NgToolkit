@@ -13,6 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ng-toolkit
 
     strategy:
       matrix:
@@ -25,8 +28,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-      working-directory: ng-toolkit
     - run: npm run test-lib:prod
-      working-directory: ng-toolkit
     - run: npm run test:prod
-      working-directory: ng-toolkit
