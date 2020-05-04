@@ -26,7 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
       working-directory: ng-toolkit
-    - run: npm test-lib:prod
+    - run: npm run test-lib:prod
       working-directory: ng-toolkit
-    - run: npm test:prod
+    - run: npm run test:prod
       working-directory: ng-toolkit
