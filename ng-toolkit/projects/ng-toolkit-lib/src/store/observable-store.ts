@@ -96,12 +96,20 @@ export abstract class ObservableStore<TState, TAction> {
   // tslint:disable-next-line: variable-name
   private _state$: BehaviorSubject<Readonly<TState>>;
 
-  // @logStateChange()
   private changeState(
     stateChange: ObservableStateChange<TState, TAction>,
     patch: Partial<TState>,
     nextState: TState
   ): void {
+    // TODO: Log only in debug
+    console.log({
+      action: stateChange.action,
+      patch,
+      nextState,
+      prevState: this.state,
+      propChanges: stateChange.propChanges,
+    });
+
     if (patch) {
       this._state$.next(nextState);
     }
@@ -110,32 +118,3 @@ export abstract class ObservableStore<TState, TAction> {
     this._stateChange$.next(stateChange);
   }
 }
-
-// function logStateChange(): (
-//   target: ObservableStore<any, any>,
-//   prop: string | symbol,
-//   descriptor: PropertyDescriptor
-// ) => PropertyDescriptor {
-//   return (
-//     target: ObservableStore<any, any>,
-//     propertyKey: string | symbol,
-//     descriptor: PropertyDescriptor
-//   ): PropertyDescriptor => {
-//     if (!environment.production) {
-//       const originalMethod = descriptor.value;
-//       descriptor.value = (): void => {
-//         console.log({
-//           action: arguments[0].action,
-//           patch: arguments[1],
-//           nextState: arguments[2],
-//           prevState: this.state,
-//           propChanges: arguments[0].propChanges,
-//         });
-
-//         originalMethod.apply(this, arguments);
-//       };
-//     }
-
-//     return descriptor;
-//   };
-// }

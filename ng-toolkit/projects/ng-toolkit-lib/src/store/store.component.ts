@@ -18,8 +18,10 @@ export abstract class StoreComponent<TState, TAction>
       .subscribe(this.onStateChange.bind(this));
   }
 
-  // @logChangeDetectionMark()
   markForChangeDetection() {
+    console.log(
+      `${this.constructor.name} has been marked for change detection.`
+    );
     this.changeDetectorRef.markForCheck();
   }
 
@@ -27,23 +29,3 @@ export abstract class StoreComponent<TState, TAction>
     this.markForChangeDetection();
   }
 }
-
-// export function logChangeDetectionMark(): (
-//   target: StoreComponent<any, any>,
-//   prop: string | symbol,
-//   descriptor: PropertyDescriptor
-// ) => PropertyDescriptor {
-//   return (target, propertyKey, descriptor) => {
-//     // if (!environment.production) {
-//     const originalMethod = descriptor.value;
-//     descriptor.value = (): void => {
-//       console.log(
-//         `${this.constructor.name} has been marked for change detection.`
-//       );
-//       originalMethod.apply(this, arguments);
-//     };
-//     // }
-
-//     return descriptor;
-//   };
-// }
