@@ -28,4 +28,3 @@ jobs:
       - run: npm run test:prod
       - run: npm run lint-lib
       - run: npm run lint
-      - run: npm run e2e
