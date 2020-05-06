@@ -273,7 +273,7 @@ describe('ObservableStore', () => {
     expect(called).toBe(1);
   }));
 
-  it('should log action on patch whole state', () => {
+  xit('should log action on patch whole state', () => {
     const logSpy = spyOn(console, 'log');
 
     patchWholeState();
@@ -292,7 +292,7 @@ describe('ObservableStore', () => {
     });
   });
 
-  it('should log action on patch partial state', () => {
+  xit('should log action on patch partial state', () => {
     const logSpy = spyOn(console, 'log');
 
     patchPartialState();
@@ -311,7 +311,7 @@ describe('ObservableStore', () => {
     });
   });
 
-  it('should log action on set state', () => {
+  xit('should log action on set state', () => {
     const logSpy = spyOn(console, 'log').and.callThrough();
 
     store.setState(TestAction.setState, {});
