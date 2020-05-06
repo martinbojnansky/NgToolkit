@@ -29,6 +29,7 @@
       "kebab-case"
     ],
     "eofline": true,
+    "ordered-imports": true,
     "import-blacklist": [
       true,
       "rxjs/Rx"
@@ -48,10 +49,21 @@
       true,
       {
         "order": [
-          "static-field",
-          "instance-field",
-          "static-method",
-          "instance-method"
+          "public-static-field",
+          "public-instance-field",
+          "public-constructor",
+          "public-static-method",
+          "public-instance-method",
+          "protected-static-field",
+          "protected-instance-field",
+          "protected-constructor",
+          "protected-static-method",
+          "protected-instance-method",
+          "private-static-field",
+          "private-instance-field",
+          "private-constructor",
+          "private-static-method",
+          "private-instance-method"
         ]
       }
     ],
