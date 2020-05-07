@@ -3,3 +3,4 @@
  */
 
 export * from './store';
+export * from './focus';
