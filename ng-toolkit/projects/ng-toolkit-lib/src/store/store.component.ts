@@ -13,9 +13,11 @@ export abstract class StoreComponent<TState, TAction>
   }
 
   ngOnInit() {
-    this.store.stateChange$
-      .pipe(this.untilDestroyed())
-      .subscribe(this.onStateChange.bind(this));
+    this.subscribeSafe(
+      'stateChange',
+      this.store.stateChange$,
+      this.onStateChange.bind(this)
+    );
   }
 
   markForChangeDetection() {
