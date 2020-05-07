@@ -2,7 +2,7 @@ import { async } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 import { SubscribableComponent } from './subscribable.component';
 
-const delay = 100;
+const delay = 50;
 
 class SubscribableTestComponent extends SubscribableComponent {
   completedCount = 0;
