@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { createAutofocusEvent } from '../autofocus/autofocus.directive';
+import { createAutofocusEvent } from './autofocus.directive';
 import { FocusWithinDirective } from './focus-within.directive';
 
 @Component({
