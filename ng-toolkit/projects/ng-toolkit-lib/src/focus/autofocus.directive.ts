@@ -9,21 +9,21 @@ export const createAutofocusEvent = (element: any): CustomEvent => {
 })
 export class AutofocusDirective implements AfterViewInit {
   @Input()
-  public atlAutofocus: string;
+  atlAutofocus: string;
 
   constructor(protected elementRef: ElementRef) {}
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit() {
     this.focus();
   }
 
-  protected get selector(): string {
+  protected get selector() {
     return this.atlAutofocus
       ? this.atlAutofocus
       : 'button, [href], input, select, textarea, *[tabindex]:not([tabindex="-1"])';
   }
 
-  protected focus(): void {
+  protected focus() {
     const element = this.elementRef.nativeElement.querySelector(this.selector);
     element?.focus();
     document?.dispatchEvent(createAutofocusEvent(element));
