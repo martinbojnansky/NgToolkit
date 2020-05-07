@@ -12,42 +12,42 @@ import {
 })
 export class FocusWithinDirective {
   @Output()
-  public focusIn = new EventEmitter();
+  focusIn = new EventEmitter();
 
   @Output()
-  public focusOut = new EventEmitter();
+  focusOut = new EventEmitter();
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(protected elementRef: ElementRef) {}
 
   @HostBinding('class.atl-state_focused')
   protected hasFocus: boolean;
 
   @HostListener('document:click', ['$event'])
-  protected onClick(e: Event): void {
+  protected onClick(e: Event) {
     this.onDocumentEvent(e);
   }
 
   @HostListener('document:keyup', ['$event'])
-  protected onKeyup(e: Event): void {
+  protected onKeyup(e: Event) {
     this.onDocumentEvent(e);
   }
 
   @HostListener('window:focus', ['$event'])
-  protected onWindowFocus(e: Event): void {
+  protected onWindowFocus(e: Event) {
     this.onDocumentEvent(e);
   }
 
   @HostListener('window:blur', ['$event'])
-  protected onWindowBlur(e: Event): void {
+  protected onWindowBlur(e: Event) {
     this.onDocumentEvent(e);
   }
 
   @HostListener('document:autofocus', ['$event'])
-  protected onAutofocus(e: CustomEvent): void {
+  protected onAutofocus(e: CustomEvent) {
     this.onDocumentEvent({ target: e.detail } as Event);
   }
 
-  protected onDocumentEvent(e: Event): void {
+  protected onDocumentEvent(e: Event) {
     let target: Node | Element;
     if (e.target instanceof Node) {
       target = e.target;

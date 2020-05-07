@@ -13,25 +13,23 @@ export type ObservableStatePropChanges<TState> = {
 };
 
 export abstract class ObservableStore<TState, TAction> {
-  public get state(): Readonly<TState> {
+  get state(): Readonly<TState> {
     return this._state$.getValue();
   }
 
-  public get state$(): Observable<Readonly<TState>> {
+  get state$(): Observable<Readonly<TState>> {
     return this._state$.asObservable();
   }
 
-  public get stateChange(): ObservableStateChange<TState, TAction> {
+  get stateChange(): ObservableStateChange<TState, TAction> {
     return this._stateChange;
   }
 
-  public get stateChange$(): Observable<
-    ObservableStateChange<TState, TAction>
-  > {
+  get stateChange$(): Observable<ObservableStateChange<TState, TAction>> {
     return this._stateChange$.asObservable();
   }
 
-  public patchState(action: TAction, patch: Partial<TState>): void {
+  patchState(action: TAction, patch: Partial<TState>): void {
     const nextState: TState = {
       ...this.state,
       ...patch,
@@ -41,7 +39,7 @@ export abstract class ObservableStore<TState, TAction> {
     this.changeState(stateChange, patch, nextState);
   }
 
-  public setState(action: TAction, state: Partial<TState>): void {
+  setState(action: TAction, state: Partial<TState>): void {
     const nextState: TState = state as TState;
     const patch = {};
     const stateChange = this.buildStateChange(action, patch, nextState);
@@ -89,12 +87,11 @@ export abstract class ObservableStore<TState, TAction> {
     };
   }
 
-  // tslint:disable-next-line: variable-name
+  // tslint:disable: variable-name
   private _stateChange: ObservableStateChange<TState, TAction>;
-  // tslint:disable-next-line: variable-name
   private _stateChange$: Subject<ObservableStateChange<TState, TAction>>;
-  // tslint:disable-next-line: variable-name
   private _state$: BehaviorSubject<Readonly<TState>>;
+  // tslint:enable: variable-name
 
   private changeState(
     stateChange: ObservableStateChange<TState, TAction>,

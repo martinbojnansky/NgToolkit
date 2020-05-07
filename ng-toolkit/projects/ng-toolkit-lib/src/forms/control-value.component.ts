@@ -35,10 +35,10 @@ export abstract class ControlValueComponent<T> implements ControlValueAccessor {
     this.changeDetectorRef.markForCheck();
   }
 
-  // tslint:disable-next-line: variable-name
+  // tslint:disable: variable-name
   protected _value: T;
-  // tslint:disable-next-line: variable-name
   protected _disabled: boolean;
+  // tslint:enable: variable-name
 
   protected constructor(protected changeDetectorRef: ChangeDetectorRef) {}
 

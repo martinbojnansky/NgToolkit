@@ -14,17 +14,17 @@ import { nameof } from '../helpers';
 })
 export class FormDirective implements OnInit, OnChanges {
   @Input()
-  public formGroup: FormGroup;
+  formGroup: FormGroup;
 
   @Input()
-  public formState: any;
+  formState: any;
 
   @Input()
-  public isEditEnabled: boolean;
+  isEditEnabled: boolean;
 
   constructor() {}
 
-  public ngOnInit(): void {
+  ngOnInit() {
     if (this.formState) {
       this.ngOnChanges({
         [nameof<FormDirective>('formState')]: new SimpleChange(
@@ -36,7 +36,7 @@ export class FormDirective implements OnInit, OnChanges {
     }
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges) {
     const formStateChange = changes[nameof<FormDirective>('formState')];
     if (!formStateChange && changes[nameof<FormDirective>('isEditEnabled')]) {
       this.updateFormEnabled();
@@ -51,11 +51,11 @@ export class FormDirective implements OnInit, OnChanges {
     }
   }
 
-  public discardChanges(): void {
+  discardChanges() {
     this.applyFormState({ ...this.formState });
   }
 
-  protected applyFormState(state: any): void {
+  applyFormState(state: any) {
     this.formGroup.reset(); // TODO: Allow reset with initial state
     this.formGroup.patchValue(state);
     this.formGroup.markAsPristine();
@@ -66,7 +66,7 @@ export class FormDirective implements OnInit, OnChanges {
   protected updateFormEnabled(options?: {
     emitEvent?: boolean;
     onlySelf?: boolean;
-  }): void {
+  }) {
     const opts = { emitEvent: false, ...options };
     this.isEditEnabled
       ? this.formGroup.enable(opts)
