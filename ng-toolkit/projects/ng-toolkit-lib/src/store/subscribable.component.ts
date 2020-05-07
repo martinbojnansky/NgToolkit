@@ -1,21 +1,27 @@
 import { OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, PartialObserver, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 export abstract class SubscribableComponent implements OnDestroy {
   ngOnDestroy() {
-    this._ngOnDestroy$.next();
-    this._ngOnDestroy$.complete();
+    this.ngOnDestroy$.next();
+    this.ngOnDestroy$.complete();
   }
 
-  // tslint:disable-next-line: variable-name
-  protected _ngOnDestroy$ = new Subject();
+  protected subscribeSafe<T>(
+    key: string,
+    observable: Observable<T>,
+    observer: PartialObserver<T>
+  ) {
+    if (this.subscribtions[key]) {
+      this.subscribtions[key].unsubscribe();
+    }
 
-  protected untilDestroyed<T>() {
-    return takeUntil<T>(this._ngOnDestroy$);
+    this.subscribtions[key] = observable
+      .pipe(takeUntil(this.ngOnDestroy$))
+      .subscribe(observer);
   }
 
-  protected get ngOnDestroy$() {
-    return this._ngOnDestroy$.asObservable();
-  }
+  private ngOnDestroy$ = new Subject();
+  private subscribtions: { [key: string]: Subscription } = {};
 }

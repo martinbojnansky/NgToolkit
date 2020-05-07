@@ -1,31 +1,29 @@
 import { async } from '@angular/core/testing';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SubscribableComponent } from './subscribable.component';
 
-const initialValue = '123';
-const newValue = '456';
+const delay = 100;
 
 class SubscribableTestComponent extends SubscribableComponent {
-  observable$ = new BehaviorSubject(initialValue);
-  subscription: Subscription;
+  completedCount = 0;
+  completedValue = '';
 
   updateValue(value: string) {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscribeSafe('key', this.apiCall(value), {
+      next: () => {
+        this.completedCount++;
+        this.completedValue = value;
+      },
+    });
+  }
 
-    this.subscription = new Observable((observer) => {
+  private apiCall(value: string): Observable<string> {
+    return new Observable((observer) => {
       setTimeout(() => {
         observer.next(value);
         observer.complete();
-      }, 300);
-    })
-      .pipe(this.untilDestroyed())
-      .subscribe({
-        next: (v: string) => {
-          this.observable$.next(v);
-        },
-      });
+      }, delay);
+    });
   }
 }
 
@@ -35,29 +33,51 @@ describe('SubscribableComponent', () => {
   beforeEach(() => {
     component = new SubscribableTestComponent();
   });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should listen to an observable', async(() => {
-    expect(component.observable$.value).toBe(initialValue);
-    component.updateValue(newValue);
-    component.observable$.subscribe({
-      complete: () => {
-        expect(component.observable$.value).toBe(newValue);
-      },
-    });
+  it('should finish in a time', async(() => {
+    expect(component.completedCount).toBe(0);
+    expect(component.completedValue).toBe('');
+    component.updateValue('xxx');
+    setTimeout(() => {
+      expect(component.completedCount).toBe(1);
+      expect(component.completedValue).toBe('xxx');
+    }, delay);
   }));
 
-  it('should stop listening to an observable on destroy', async(() => {
-    expect(component.observable$.value).toBe(initialValue);
-    component.updateValue(newValue);
+  it('should not finish soon', async(() => {
+    expect(component.completedCount).toBe(0);
+    expect(component.completedValue).toBe('');
+    component.updateValue('xxx');
+    setTimeout(() => {
+      expect(component.completedCount).toBe(0);
+      expect(component.completedValue).toBe('');
+    }, delay - 1);
+  }));
+
+  it('should finish only last', async(() => {
+    expect(component.completedCount).toBe(0);
+    expect(component.completedValue).toBe('');
+    component.updateValue('xxx');
+    component.updateValue('yyy');
+    component.updateValue('zzz');
+    setTimeout(() => {
+      expect(component.completedCount).toBe(1);
+      expect(component.completedValue).toBe('zzz');
+    }, delay);
+  }));
+
+  it('should not finish on component destory', async(() => {
+    expect(component.completedCount).toBe(0);
+    expect(component.completedValue).toBe('');
+    component.updateValue('xxx');
     component.ngOnDestroy();
-    component.observable$.subscribe({
-      complete: () => {
-        fail('should not complete');
-      },
-    });
-    expect(component.observable$.value).toBe(initialValue);
+    setTimeout(() => {
+      expect(component.completedCount).toBe(0);
+      expect(component.completedValue).toBe('');
+    }, delay);
   }));
 });
