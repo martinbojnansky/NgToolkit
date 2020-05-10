@@ -7,12 +7,11 @@ export interface TestState {
   lastName: string;
 }
 
-export enum TestAction {
-  patchWholeState = 'patchWholeState',
-  patchPartialState = 'patchPartialState',
-  setState = 'setState',
-  null = 'null',
-}
+export type TestAction =
+  | 'patchWholeState'
+  | 'patchPartialState'
+  | 'setState'
+  | 'null';
 
 export const initialState: TestState = {
   firstName: 'John',
@@ -43,14 +42,14 @@ describe('ObservableStore', () => {
   });
 
   function patchWholeState(): void {
-    store.patchState(TestAction.patchWholeState, {
+    store.patchState('patchWholeState', {
       ...store.state,
       lastName: newState.lastName,
     });
   }
 
   function patchPartialState(): void {
-    store.patchState(TestAction.patchPartialState, {
+    store.patchState('patchPartialState', {
       lastName: newState.lastName,
     });
   }
@@ -66,7 +65,7 @@ describe('ObservableStore', () => {
   it('should patch whole state', async(() => {
     store.stateChange$.subscribe((change) => {
       const expectedChange = {
-        action: TestAction.patchWholeState,
+        action: 'patchWholeState',
         propChanges: {
           lastName: {
             prevValue: initialState.lastName,
@@ -86,7 +85,7 @@ describe('ObservableStore', () => {
   it('should patch partial state', async(() => {
     store.stateChange$.subscribe((change) => {
       const expectedChange = {
-        action: TestAction.patchPartialState,
+        action: 'patchPartialState',
         propChanges: {
           lastName: {
             prevValue: initialState.lastName,
@@ -110,7 +109,7 @@ describe('ObservableStore', () => {
     store.stateChange$.subscribe((change) => {
       actionCalled++;
       const expectedChange = {
-        action: TestAction.null,
+        action: 'null',
         propChanges: {},
       } as TestStateChange;
       expect(change).toEqual(expectedChange);
@@ -121,7 +120,7 @@ describe('ObservableStore', () => {
       expect(store.state).toBe(state);
     });
 
-    store.patchState(TestAction.null, null);
+    store.patchState('null', null);
 
     expect(actionCalled).toBe(1);
     expect(stateCalled).toBe(0);
@@ -130,7 +129,7 @@ describe('ObservableStore', () => {
   it('should set empty state', async(() => {
     store.stateChange$.subscribe((change) => {
       const expectedChange = {
-        action: TestAction.setState,
+        action: 'setState',
         propChanges: {
           firstName: {
             prevValue: initialState.firstName,
@@ -144,7 +143,7 @@ describe('ObservableStore', () => {
     });
 
     expect(store.state).toBe(initialState);
-    store.setState(TestAction.setState, {});
+    store.setState('setState', {});
     expect(store.state.firstName).toBeUndefined();
     expect(store.state.lastName).toBeUndefined();
   }));
@@ -152,7 +151,7 @@ describe('ObservableStore', () => {
   it('should set partial state', async(() => {
     store.stateChange$.subscribe((change) => {
       const expectedChange = {
-        action: TestAction.setState,
+        action: 'setState',
         propChanges: {
           firstName: {
             prevValue: initialState.firstName,
@@ -169,18 +168,18 @@ describe('ObservableStore', () => {
     });
 
     expect(store.state).toBe(initialState);
-    store.setState(TestAction.setState, { lastName: newState.lastName });
+    store.setState('setState', { lastName: newState.lastName });
     expect(store.state.firstName).toBeUndefined();
     expect(store.state.lastName).toBe(newState.lastName);
   }));
 
   it('should set partial state', async(() => {
-    store.setState(TestAction.setState, {});
+    store.setState('setState', {});
     expect(store.state).toEqual({} as any);
 
     store.stateChange$.subscribe((change) => {
       const expectedChange = {
-        action: TestAction.setState,
+        action: 'setState',
         propChanges: {
           firstName: { prevValue: undefined, nextValue: newState.firstName },
           lastName: { prevValue: undefined, nextValue: newState.lastName },
@@ -190,7 +189,7 @@ describe('ObservableStore', () => {
       expect(store.stateChange).toEqual(expectedChange);
     });
 
-    store.setState(TestAction.setState, newState);
+    store.setState('setState', newState);
     expect(store.state.firstName).toBe(newState.firstName);
     expect(store.state.lastName).toBe(newState.lastName);
   }));
@@ -200,7 +199,7 @@ describe('ObservableStore', () => {
     store.stateChange$.subscribe((change) => {
       called++;
       const expectedChange = {
-        action: TestAction.patchPartialState,
+        action: 'patchPartialState',
         propChanges: {
           lastName: {
             prevValue: initialState.lastName,
@@ -279,7 +278,7 @@ describe('ObservableStore', () => {
     patchWholeState();
 
     expect(logSpy).toHaveBeenCalledWith({
-      action: `patchWholeState`,
+      action: 'patchWholeState',
       patch: newState,
       nextState: newState,
       prevState: initialState,
@@ -298,7 +297,7 @@ describe('ObservableStore', () => {
     patchPartialState();
 
     expect(logSpy).toHaveBeenCalledWith({
-      action: `patchPartialState`,
+      action: 'patchPartialState',
       patch: { lastName: newState.lastName },
       nextState: newState,
       prevState: initialState,
@@ -314,10 +313,10 @@ describe('ObservableStore', () => {
   it('should log action on set state', () => {
     const logSpy = spyOn(console, 'log').and.callThrough();
 
-    store.setState(TestAction.setState, {});
+    store.setState('setState', {});
 
     expect(logSpy).toHaveBeenCalledWith({
-      action: `setState`,
+      action: 'setState',
       patch: {},
       nextState: {},
       prevState: initialState,
@@ -333,5 +332,58 @@ describe('ObservableStore', () => {
       expect(store.state).toEqual(newState);
     });
     patchPartialState();
+  }));
+});
+
+export enum TestActionEnum {
+  patchWholeState = 'patchWholeState',
+  patchPartialState = 'patchPartialState',
+  setState = 'setState',
+  null = 'null',
+}
+
+export interface TestStateChangeEnummed
+  extends ObservableStateChange<TestState, TestActionEnum> {}
+
+@Injectable()
+export class TestStoreEnummed extends ObservableStore<
+  TestState,
+  TestActionEnum
+> {
+  constructor() {
+    super(initialState);
+  }
+}
+
+describe('ObservableStoreEnummed', () => {
+  let store: TestStoreEnummed;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [TestStoreEnummed] });
+    store = TestBed.inject(TestStoreEnummed);
+  });
+
+  it('should be created', () => {
+    expect(store).toBeTruthy();
+  });
+
+  it('should be able to use enum action', async(() => {
+    store.stateChange$.subscribe((change) => {
+      const expectedChange = {
+        action: TestActionEnum.patchPartialState,
+        propChanges: {
+          lastName: {
+            prevValue: initialState.lastName,
+            nextValue: newState.lastName,
+          },
+        },
+      } as TestStateChangeEnummed;
+
+      store.patchState(TestActionEnum.patchPartialState, {
+        lastName: newState.lastName,
+      });
+      expect(change).toEqual(expectedChange);
+      expect(store.stateChange).toEqual(expectedChange);
+    });
   }));
 });
