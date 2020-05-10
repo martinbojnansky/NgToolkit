@@ -87,11 +87,9 @@ export abstract class ObservableStore<TState, TAction> {
     };
   }
 
-  // tslint:disable: variable-name
   private _stateChange: ObservableStateChange<TState, TAction>;
   private _stateChange$: Subject<ObservableStateChange<TState, TAction>>;
   private _state$: BehaviorSubject<Readonly<TState>>;
-  // tslint:enable: variable-name
 
   private changeState(
     stateChange: ObservableStateChange<TState, TAction>,
