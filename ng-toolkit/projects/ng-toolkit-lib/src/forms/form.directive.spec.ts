@@ -23,7 +23,7 @@ import { FormDirective } from './form.directive';
         <input type="text" formControlName="firstName" />
       </label>
       <label>
-        <span>Password:</span>
+        <span>Last name:</span>
         <input type="text" formControlName="lastName" />
       </label>
     </form>
