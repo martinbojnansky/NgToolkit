@@ -3,6 +3,7 @@
  */
 
 export * from './helpers';
+export * from './rxjs';
 export * from './store';
 export * from './forms';
 export * from './focus';
