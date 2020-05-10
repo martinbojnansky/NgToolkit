@@ -1,6 +1,11 @@
 import { ChangeDetectorRef, Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestAction, TestState, TestStore } from './observable-store.spec';
+import {
+  TestAction,
+  TestState,
+  TestStateChange,
+  TestStore,
+} from './observable-store.spec';
 import { StoreComponent } from './store.component';
 
 @Component({
@@ -13,12 +18,21 @@ class StoreTestComponent extends StoreComponent<TestState, TestAction> {
   ) {
     super(store, changeDetectorRef);
   }
+
+  protected onStateChange(change: TestStateChange) {
+    if (change.action === 'null') {
+      return;
+    }
+
+    super.onStateChange(change);
+  }
 }
 
 describe('StoreComponent', () => {
   let component: StoreTestComponent;
   let fixture: ComponentFixture<StoreTestComponent>;
   let compiled: DebugElement;
+
   let changeDetectorRefSpy: jasmine.Spy;
 
   beforeEach(async(() => {
@@ -33,6 +47,7 @@ describe('StoreComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     compiled = fixture.debugElement;
+
     changeDetectorRefSpy = spyOn(component.changeDetectorRef, 'markForCheck');
   });
 
@@ -46,7 +61,7 @@ describe('StoreComponent', () => {
   });
 
   it('should listen for state change', () => {
-    component.store.patchState(TestAction.patchPartialState, {
+    component.store.patchState('patchPartialState', {
       firstName: 'xxx',
     });
     expect(changeDetectorRefSpy).toHaveBeenCalledTimes(1);
@@ -54,9 +69,14 @@ describe('StoreComponent', () => {
 
   it('should not listen for state change after destroy', () => {
     component.ngOnDestroy();
-    component.store.patchState(TestAction.patchPartialState, {
+    component.store.patchState('patchPartialState', {
       firstName: 'xxx',
     });
     expect(changeDetectorRefSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not run change detection on explicitly ignored action', () => {
+    component.store.patchState('null', null);
+    expect(changeDetectorRefSpy).toHaveBeenCalledTimes(0);
   });
 });
