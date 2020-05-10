@@ -6,7 +6,7 @@ export abstract class IFormDraftService {
 
 @Injectable()
 export class FormDraftService implements IFormDraftService {
-  get hasAnyDraft(): boolean {
+  get hasAnyDraft() {
     return !!document.querySelector('form.ng-dirty');
   }
 }
