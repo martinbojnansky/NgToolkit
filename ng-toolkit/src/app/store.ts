@@ -3,6 +3,7 @@ import {
   ObservableStateChange,
   ObservableStore,
 } from 'dist/ng-toolkit-lib/store';
+import { environment } from 'src/environments/environment';
 
 export interface State {
   testValue: string;
@@ -17,6 +18,6 @@ export interface StateChange extends ObservableStateChange<State, Action> {}
 @Injectable()
 export class Store extends ObservableStore<State, Action> {
   constructor() {
-    super();
+    super({}, { log: !environment.production });
   }
 }

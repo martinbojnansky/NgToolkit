@@ -272,7 +272,21 @@ describe('ObservableStore', () => {
     expect(called).toBe(1);
   }));
 
+  it('should not log action by default', () => {
+    const logSpy = spyOn(console, 'log');
+    patchWholeState();
+    expect(logSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not log action when disabled', () => {
+    spyOnProperty(store, 'config').and.returnValue({ log: false });
+    const logSpy = spyOn(console, 'log');
+    patchWholeState();
+    expect(logSpy).not.toHaveBeenCalled();
+  });
+
   it('should log action on patch whole state', () => {
+    spyOnProperty(store, 'config').and.returnValue({ log: true });
     const logSpy = spyOn(console, 'log');
 
     patchWholeState();
@@ -292,6 +306,7 @@ describe('ObservableStore', () => {
   });
 
   it('should log action on patch partial state', () => {
+    spyOnProperty(store, 'config').and.returnValue({ log: true });
     const logSpy = spyOn(console, 'log');
 
     patchPartialState();
@@ -311,6 +326,7 @@ describe('ObservableStore', () => {
   });
 
   it('should log action on set state', () => {
+    spyOnProperty(store, 'config').and.returnValue({ log: true });
     const logSpy = spyOn(console, 'log').and.callThrough();
 
     store.setState('setState', {});

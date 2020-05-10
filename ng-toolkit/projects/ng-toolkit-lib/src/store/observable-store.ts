@@ -1,5 +1,9 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
+export interface ObservableStoreConfig {
+  log?: boolean;
+}
+
 export interface ObservableStateChange<TState, TAction> {
   action: TAction;
   propChanges: ObservableStatePropChanges<TState>;
@@ -29,6 +33,10 @@ export abstract class ObservableStore<TState, TAction> {
     return this._stateChange$.asObservable();
   }
 
+  get config(): ObservableStoreConfig {
+    return this._config;
+  }
+
   patchState(action: TAction, patch: Partial<TState>): void {
     const nextState: TState = {
       ...this.state,
@@ -46,7 +54,10 @@ export abstract class ObservableStore<TState, TAction> {
     this.changeState(stateChange, patch, nextState);
   }
 
-  protected constructor(protected initialState: Partial<TState> = {}) {
+  protected constructor(
+    protected initialState: Partial<TState> = {},
+    private _config: ObservableStoreConfig = {}
+  ) {
     this._stateChange$ = new Subject();
     this._state$ = new BehaviorSubject(initialState as TState);
   }
@@ -87,25 +98,24 @@ export abstract class ObservableStore<TState, TAction> {
     };
   }
 
-  // tslint:disable: variable-name
   private _stateChange: ObservableStateChange<TState, TAction>;
   private _stateChange$: Subject<ObservableStateChange<TState, TAction>>;
   private _state$: BehaviorSubject<Readonly<TState>>;
-  // tslint:enable: variable-name
 
   private changeState(
     stateChange: ObservableStateChange<TState, TAction>,
     patch: Partial<TState>,
     nextState: TState
   ): void {
-    // TODO: Log only in debug
-    console.log({
-      action: stateChange.action,
-      patch,
-      nextState,
-      prevState: this.state,
-      propChanges: stateChange.propChanges,
-    });
+    if (this.config.log) {
+      console.log({
+        action: stateChange.action,
+        patch,
+        nextState,
+        prevState: this.state,
+        propChanges: stateChange.propChanges,
+      });
+    }
 
     if (patch) {
       this._state$.next(nextState);

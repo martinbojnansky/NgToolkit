@@ -21,9 +21,12 @@ export abstract class StoreComponent<TState, TAction>
   }
 
   markForChangeDetection() {
-    console.log(
-      `${this.constructor.name} has been marked for change detection.`
-    );
+    if (this.store.config.log) {
+      console.log(
+        `${this.constructor.name} has been marked for change detection.`
+      );
+    }
+
     this.changeDetectorRef.markForCheck();
   }
 
