@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ControlValueComponent } from './control-value.component';
+import { ControlValueComponentBase } from './control-value.component';
 
 @Component({
   template: `
@@ -26,7 +26,9 @@ import { ControlValueComponent } from './control-value.component';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ControlValueTestComponent extends ControlValueComponent<string> {
+export class ControlValueTestComponent extends ControlValueComponentBase<
+  string
+> {
   constructor(protected changeDetectorRef: ChangeDetectorRef) {
     super(changeDetectorRef);
   }

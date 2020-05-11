@@ -1,7 +1,8 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
-export abstract class ControlValueComponent<T> implements ControlValueAccessor {
+export abstract class ControlValueComponentBase<T>
+  implements ControlValueAccessor {
   get value(): T {
     return this._value;
   }

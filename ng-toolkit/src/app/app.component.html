@@ -1,1 +1,5 @@
-<h1>NG Toolkit Demo</h1>
+<ng-container *ngIf="!(localizationService.isLocaleChanging$ | async)">
+  <h1>{{ localizationService.values?.welcomeMessage }}</h1>
+  <button (click)="localizationService.changeLocale('en')">en</button>
+  <button (click)="localizationService.changeLocale('de')">de</button>
+</ng-container>

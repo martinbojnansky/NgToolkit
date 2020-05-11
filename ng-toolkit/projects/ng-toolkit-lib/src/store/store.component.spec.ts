@@ -6,12 +6,12 @@ import {
   TestStateChange,
   TestStore,
 } from './observable-store.spec';
-import { StoreComponent } from './store.component';
+import { StoreComponentBase } from './store.component';
 
 @Component({
   template: ` <p>{{ store.state.testValue }}</p> `,
 })
-class StoreTestComponent extends StoreComponent<TestState, TestAction> {
+class StoreTestComponent extends StoreComponentBase<TestState, TestAction> {
   constructor(
     public store: TestStore,
     public changeDetectorRef: ChangeDetectorRef

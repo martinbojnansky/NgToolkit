@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ObservableStateChange,
-  ObservableStore,
-} from 'dist/ng-toolkit-lib/store';
+import { ObservableStateChange, ObservableStore } from 'ng-toolkit-lib';
 import { environment } from 'src/environments/environment';
 
 export interface State {
