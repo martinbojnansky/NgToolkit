@@ -1,8 +1,11 @@
-import { OnDestroy } from '@angular/core';
+import { OnDestroy, Component } from '@angular/core';
 import { Observable, PartialObserver, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-export abstract class SubscribableComponent implements OnDestroy {
+@Component({
+  template: '',
+})
+export class SubscribableComponent implements OnDestroy {
   ngOnDestroy() {
     this.ngOnDestroy$.next();
     this.ngOnDestroy$.complete();

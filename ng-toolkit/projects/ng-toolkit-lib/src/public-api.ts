@@ -2,8 +2,9 @@
  * Public API Surface of ng-toolkit-lib
  */
 
-export * from './helpers';
-export * from './rxjs';
-export * from './store';
-export * from './forms';
-export * from './focus';
+export * from './lib/ng-toolkit-lib.module';
+export * from './lib/helpers';
+export * from './lib/rxjs';
+export * from './lib/store';
+export * from './lib/forms';
+export * from './lib/focus';

@@ -16,7 +16,7 @@ export type ObservableStatePropChanges<TState> = {
   };
 };
 
-export abstract class ObservableStore<TState, TAction> {
+export class ObservableStore<TState, TAction> {
   get state(): Readonly<TState> {
     return this._state$.getValue();
   }
