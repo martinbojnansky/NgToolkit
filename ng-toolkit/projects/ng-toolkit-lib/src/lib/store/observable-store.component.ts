@@ -1,8 +1,12 @@
-import { ChangeDetectorRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SubscribableComponent } from '../rxjs';
 import { ObservableStateChange, ObservableStore } from './observable-store';
 
-export class StoreComponent<TState, TAction> extends SubscribableComponent
+@Component({
+  selector: 'observable-store-component',
+  template: ''
+})
+export class ObservableStoreComponent<TState, TAction> extends SubscribableComponent
   implements OnInit {
   constructor(
     protected store: ObservableStore<TState, TAction>,

@@ -6,12 +6,12 @@ import {
   TestStateChange,
   TestStore,
 } from './observable-store.spec';
-import { StoreComponent } from './store.component';
+import { ObservableStoreComponent } from './observable-store.component';
 
 @Component({
   template: ` <p>{{ store.state.testValue }}</p> `,
 })
-class StoreTestComponent extends StoreComponent<TestState, TestAction> {
+class ObservableStoreTestComponent extends ObservableStoreComponent<TestState, TestAction> {
   constructor(
     public store: TestStore,
     public changeDetectorRef: ChangeDetectorRef
@@ -28,22 +28,22 @@ class StoreTestComponent extends StoreComponent<TestState, TestAction> {
   }
 }
 
-describe('StoreComponent', () => {
-  let component: StoreTestComponent;
-  let fixture: ComponentFixture<StoreTestComponent>;
+describe('ObservableStoreComponent', () => {
+  let component: ObservableStoreTestComponent;
+  let fixture: ComponentFixture<ObservableStoreTestComponent>;
   let compiled: DebugElement;
 
   let changeDetectorRefSpy: jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [StoreTestComponent],
+      declarations: [ObservableStoreTestComponent],
       providers: [TestStore],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StoreTestComponent);
+    fixture = TestBed.createComponent(ObservableStoreTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     compiled = fixture.debugElement;

@@ -1,0 +1,7 @@
+header > a {
+    margin-right: 1rem;
+
+    &.active {
+        font-weight: bold;
+    }
+}

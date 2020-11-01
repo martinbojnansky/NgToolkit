@@ -1,0 +1,6 @@
+{{ todo?.item?.title || '-'}}
+{{ todo?.item?.createdAt | date }}
+
+<app-loading-overlay *ngIf="todo?.isBusy"></app-loading-overlay>
+
+<a routerLink="..">Close</a>

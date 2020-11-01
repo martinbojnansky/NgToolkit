@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormDirective } from './forms';
 import { AutofocusDirective, FocusWithinDirective } from './focus';
 import { SubscribableComponent } from './rxjs';
-import { StoreComponent } from './store/store.component';
+import { ObservableStoreComponent } from './store/observable-store.component';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,7 @@ import { StoreComponent } from './store/store.component';
     FocusWithinDirective,
     AutofocusDirective,
     SubscribableComponent,
-    StoreComponent,
+    ObservableStoreComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -19,7 +19,7 @@ import { StoreComponent } from './store/store.component';
     FocusWithinDirective,
     AutofocusDirective,
     SubscribableComponent,
-    StoreComponent,
+    ObservableStoreComponent,
   ],
 })
 export class NgToolkitLibModule {}

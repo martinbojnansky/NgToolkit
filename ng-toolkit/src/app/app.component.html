@@ -1,1 +1,7 @@
-<h1>NG Toolkit Demo</h1>
+<header>
+    <h1>Observable Store</h1>
+    <a *ngFor="let sample of samples" [routerLink]="sample.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ sample.label }}</a>
+</header>
+<main>
+    <router-outlet></router-outlet>
+</main>

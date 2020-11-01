@@ -1,0 +1,14 @@
+<div>
+  <input #in type="text"/>
+  <button (click)="add(in.value)">Add</button>
+
+  <ul>
+    <li *ngFor="let todo of todos?.items">
+      <a [routerLink]="todo?.id">{{ todo?.title }}</a>
+    </li>
+  </ul>
+  
+  <app-loading-overlay *ngIf="todos?.isBusy"></app-loading-overlay>
+</div>
+
+<router-outlet></router-outlet>

@@ -3,6 +3,7 @@ import { Observable, PartialObserver, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
+  selector: 'subscribable-component',
   template: '',
 })
 export class SubscribableComponent implements OnDestroy {

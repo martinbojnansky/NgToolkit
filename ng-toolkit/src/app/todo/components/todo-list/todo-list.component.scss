@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+
+  > *:first-child {
+    flex: 1 1 auto;
+  }  
+
+  > *:last-child {
+    flex: 0 0 auto;
+    width: 20rem;
+  }
+}

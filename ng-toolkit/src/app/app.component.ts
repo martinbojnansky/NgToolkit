@@ -7,5 +7,14 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  title = 'ng-toolkit';
+  readonly samples = [
+    {
+      link: '',
+      label: 'Home'
+    },
+    {
+      link: 'todo',
+      label: 'Todo List'
+    }
+  ]
 }
