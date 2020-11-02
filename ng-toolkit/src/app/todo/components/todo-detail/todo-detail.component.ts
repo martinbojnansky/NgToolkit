@@ -18,10 +18,10 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
     return this.store.state.todo
   }
 
-  readonly formGroup = this.formBuilder.group({
-    [nameof<TodoDetail>('title')]: ['',  [Validators.required, Validators.minLength(2)]],
-    [nameof<TodoDetail>('description')]: [''],
-    [nameof<TodoDetail>('completed')]: [false]
+  readonly formGroup = this.formBuilder.group(<{[key in keyof TodoDetail]: any}>{
+    'title': ['',  [Validators.required, Validators.minLength(2)]],
+    'description': [''],
+    'completed': [false]
   })
   
   constructor(protected store: Store, protected changeDetectorRef: ChangeDetectorRef, protected todoService: TodoService, protected activatedRoute: ActivatedRoute,
@@ -33,7 +33,7 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
     super.ngOnInit();
     
     this.subscribeSafe('paramsChanged', this.activatedRoute.params, { next: params => {
-      this.reset();
+      this.formGroup.reset();
       this.subscribeSafe('updateDetail', this.todoService.readItem(params[nameof<TodoDetail>('id')]), null);
     }});
 
@@ -47,10 +47,6 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
 
   save() {
     this.subscribeSafe('save', this.todoService.updateItem({ ...this.todo.item, ...this.formGroup.value}), null);
-  }
-
-  reset() {
-    this.formGroup.reset();
   }
 
   delete() {
