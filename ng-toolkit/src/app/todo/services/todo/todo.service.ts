@@ -10,6 +10,7 @@ export abstract class TodoService {
   abstract readItems(): Observable<void>;
   abstract readItem(id: string): Observable<void>;
   abstract updateItem(item: TodoDetail): Observable<void>;
+  abstract deleteItem(id: string): Observable<void>;
 }
 
 @Injectable()
@@ -128,6 +129,34 @@ export class TodoServiceImpl {
         }
       }),
       error => this.store.patchState(Action.updateTodoFailed, {
+        todo: {
+          ...this.store.state.todo,
+          isBusy: false,
+          error: error
+        }
+      })
+    ));
+  }
+
+  deleteItem(id: string) {
+    this.store.patchState(Action.deleteTodoStarted, {
+      todo: {
+        ...this.store.state.todo,
+        isBusy: true,
+        item: null
+      }
+    });
+    
+    return db.deleteItem('todo', id).pipe(effect(
+      () => this.store.patchState(Action.deleteTodoCompleted, {
+        todo: {
+          ...this.store.state.todo,
+          isBusy: false,
+          error: null,
+          item: null
+        }
+      }),
+      error => this.store.patchState(Action.deleteTodoFailed, {
         todo: {
           ...this.store.state.todo,
           isBusy: false,

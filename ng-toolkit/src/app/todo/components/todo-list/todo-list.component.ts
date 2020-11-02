@@ -15,8 +15,6 @@ export class TodoListComponent extends StoreComponent implements OnInit {
     return this.store.state.todos
   }
 
-  // TODO: Update list on display only if no items in state
-  
   constructor(protected store: Store, protected changeDetectorRef: ChangeDetectorRef, protected todoService: TodoService) {
     super(store, changeDetectorRef);
   }
@@ -35,7 +33,7 @@ export class TodoListComponent extends StoreComponent implements OnInit {
   }
 
   protected onStateChange(change: StateChange): void {
-    if(change.action === Action.updateTodoCompleted) {
+    if([Action.updateTodoCompleted, Action.deleteTodoCompleted].includes(change.action)) {
       this.update();
     }
     

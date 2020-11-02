@@ -27,7 +27,7 @@ export function uuid() {
 }
 
 export class DB  {
-    protected readonly delay = 1500;
+    protected readonly delay = 500;
     
     protected getTable<T>(entityName: string): {[key: string]: T} {
         return JSON.parse(localStorage.getItem(entityName)) as { [key: string]: T } || {};
@@ -47,6 +47,13 @@ export class DB  {
         table[value[nameof<UuidObject>('id')]] = value;
         localStorage.setItem(entityName, JSON.stringify(table));
         return of(value).pipe(delay(this.delay));
+    }
+
+    deleteItem(entityName: string, id: string) {
+        const table = this.getTable(entityName);
+        delete table[id];
+        localStorage.setItem(entityName, JSON.stringify(table));
+        return of({}).pipe(delay(this.delay));
     }
 };
 
