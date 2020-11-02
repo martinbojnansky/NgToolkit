@@ -6,7 +6,13 @@
   <app-loading-overlay *ngIf="todos?.isBusy" class="mt-3"></app-loading-overlay>
 
   <div class="list-group mt-3">
-      <a *ngFor="let todo of todos?.items" class="list-group-item list-group-item-action" [routerLink]="todo?.id">{{ todo?.title }}</a>
+      <a 
+        *ngFor="let todo of todos?.items" 
+        class="list-group-item list-group-item-action" 
+        [class.completed]="todo?.completed" 
+        [routerLink]="todo?.id">
+          {{ todo?.title }}
+      </a>
   </div>
   
 </div>

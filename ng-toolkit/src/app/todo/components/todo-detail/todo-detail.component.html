@@ -8,7 +8,7 @@
   </span>
 </div>
 
-<form atlForm [formGroup]="formGroup">
+<form atlForm [formGroup]="formGroup" [formState]="todo?.item" [isEditEnabled]="true">
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <div class="input-group-text">

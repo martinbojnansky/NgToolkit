@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormDraftService, IFormDraftService } from './form-draft.service';
+import { FormDraftService, FormDraftServiceImpl } from './form-draft.service';
 
 @Component({
   template: `
@@ -23,7 +23,7 @@ describe('IFormDraftService', () => {
   let component: FormDraftServiceTestComponent;
   let fixture: ComponentFixture<FormDraftServiceTestComponent>;
   let compiled: any;
-  let service: IFormDraftService;
+  let service: FormDraftService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,8 +32,8 @@ describe('IFormDraftService', () => {
       providers: [
         FormBuilder,
         {
-          provide: IFormDraftService,
-          useClass: FormDraftService,
+          provide: FormDraftService,
+          useClass: FormDraftServiceImpl,
         },
       ],
     });
@@ -48,7 +48,7 @@ describe('IFormDraftService', () => {
     });
     fixture.detectChanges();
     compiled = fixture.debugElement.nativeElement;
-    service = TestBed.inject(IFormDraftService);
+    service = TestBed.inject(FormDraftService);
   });
 
   it('should be created', () => {

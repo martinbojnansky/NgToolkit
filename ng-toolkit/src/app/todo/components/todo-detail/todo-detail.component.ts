@@ -33,11 +33,15 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
     super.ngOnInit();
     
     this.subscribeSafe('paramsChanged', this.activatedRoute.params, { next: params => {
+      this.reset();
       this.subscribeSafe('updateDetail', this.todoService.readItem(params[nameof<TodoDetail>('id')]), null);
     }});
 
     this.subscribeSafe('formValueChanged', this.formGroup.valueChanges.pipe(debounceTime(2000)), {
-      next: () => this.save()
+      next: () => {
+        if(this.formGroup.dirty)
+          this.save();
+        }
     });
   }
 

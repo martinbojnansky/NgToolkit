@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormDirective } from './forms';
+import { FormDirective, FormDraftGuard, FormDraftService, FormDraftServiceImpl } from './forms';
 import { AutofocusDirective, FocusWithinDirective } from './focus';
 import { SubscribableComponent } from './rxjs';
 import { ObservableStoreComponent } from './store/observable-store.component';
@@ -21,5 +21,12 @@ import { ObservableStoreComponent } from './store/observable-store.component';
     SubscribableComponent,
     ObservableStoreComponent,
   ],
+  providers: [
+    {
+      provide: FormDraftService,
+      useClass: FormDraftServiceImpl
+    },
+    FormDraftGuard
+  ]
 })
 export class NgToolkitLibModule {}

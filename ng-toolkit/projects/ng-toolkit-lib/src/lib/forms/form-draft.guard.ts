@@ -4,11 +4,11 @@ import {
   CanDeactivate,
   RouterStateSnapshot,
 } from '@angular/router';
-import { IFormDraftService } from './form-draft.service';
+import { FormDraftService } from './form-draft.service';
 
 @Injectable()
 export class FormDraftGuard implements CanDeactivate<any> {
-  constructor(protected formDraftService: IFormDraftService) {}
+  constructor(protected formDraftService: FormDraftService) {}
 
   public canDeactivate(
     component: any,

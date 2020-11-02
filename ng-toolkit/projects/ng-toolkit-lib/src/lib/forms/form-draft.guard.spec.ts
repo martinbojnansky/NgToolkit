@@ -1,23 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { FormDraftGuard } from './form-draft.guard';
-import { FormDraftService, IFormDraftService } from './form-draft.service';
+import { FormDraftService, FormDraftServiceImpl } from './form-draft.service';
 
 describe('FormDraftGuard', () => {
   let guard: FormDraftGuard;
-  let formDraftService: IFormDraftService;
+  let formDraftService: FormDraftService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         FormDraftGuard,
         {
-          provide: IFormDraftService,
-          useClass: FormDraftService,
+          provide: FormDraftService,
+          useClass: FormDraftServiceImpl,
         },
       ],
     });
     guard = TestBed.inject(FormDraftGuard);
-    formDraftService = TestBed.inject(IFormDraftService);
+    formDraftService = TestBed.inject(FormDraftService);
   });
 
   it('should inject guard', () => {
