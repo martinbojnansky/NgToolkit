@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { nameof } from 'ng-toolkit-lib';
-import { State, StateChange, Store, StoreComponent } from 'src/app/store';
+import { debounceTime } from 'rxjs/operators';
+import { Action, State, StateChange, Store, StoreComponent } from 'src/app/store';
 import { TodoService } from '../../services';
 
 @Component({
@@ -9,7 +10,7 @@ import { TodoService } from '../../services';
   styleUrls: ['./todo-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TodoListComponent extends StoreComponent {  
+export class TodoListComponent extends StoreComponent implements OnInit {  
   get todos() {
     return this.store.state.todos
   }
@@ -20,11 +21,24 @@ export class TodoListComponent extends StoreComponent {
     super(store, changeDetectorRef);
   }
 
-  add(title: string): void {
+  ngOnInit() {
+    super.ngOnInit();
+    this.update();
+  }
+
+  add(title: string) {
     this.subscribeSafe('add', this.todoService.createItem(title), null);
   }
 
+  update() {
+    this.subscribeSafe('update', this.todoService.readItems().pipe(debounceTime(1000)), null);
+  }
+
   protected onStateChange(change: StateChange): void {
+    if(change.action === Action.updateTodoCompleted) {
+      this.update();
+    }
+    
     if(change.propChanges[nameof<State>('todos')]) {
       this.markForChangeDetection();
     }

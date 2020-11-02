@@ -1,6 +1,26 @@
-{{ todo?.item?.title || '-'}}
-{{ todo?.item?.createdAt | date }}
+<div class="mb-3 d-flex flex-row justify-content-between">
+  <span>
+    <app-loading-overlay *ngIf="todo?.isBusy"></app-loading-overlay>
+  </span>
+  <span>
+    <a class="btn btn-light" title="Hide" routerLink="..">></a>
+    <button type="button" class="btn btn-danger ml-2" title="Delete" (click)="delete()">x</button>
+  </span>
+</div>
 
-<app-loading-overlay *ngIf="todo?.isBusy"></app-loading-overlay>
+<form atlForm [formGroup]="formGroup">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <div class="input-group-text">
+        <input type="checkbox" formControlName="completed" aria-label="Completed">
+      </div>
+    </div>
+    <input type="text" class="form-control" formControlName="title" placeholder="Title" aria-label="Title">
+  </div>
+  
+  <div class="form-group">
+    <textarea class="form-control" formControlName="description" placeholder="Description" rows="3"></textarea>
+  </div>
 
-<a routerLink="..">Close</a>
+  <small class="form-text text-muted">Created at: {{ todo?.item?.createdAt | date }}</small>
+</form>

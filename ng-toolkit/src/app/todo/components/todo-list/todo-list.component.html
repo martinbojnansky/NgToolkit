@@ -1,14 +1,14 @@
-<div>
-  <input #in type="text"/>
-  <button (click)="add(in.value)">Add</button>
+<div class="d-flex flex-column pr-3">
+  <div class="form">
+    <input #in type="text" placeholder="Add Todo" (keydown.enter)="add(in.value)">
+  </div>
 
-  <ul>
-    <li *ngFor="let todo of todos?.items">
-      <a [routerLink]="todo?.id">{{ todo?.title }}</a>
-    </li>
-  </ul>
+  <app-loading-overlay *ngIf="todos?.isBusy" class="mt-3"></app-loading-overlay>
+
+  <div class="list-group mt-3">
+      <a *ngFor="let todo of todos?.items" class="list-group-item list-group-item-action" [routerLink]="todo?.id">{{ todo?.title }}</a>
+  </div>
   
-  <app-loading-overlay *ngIf="todos?.isBusy"></app-loading-overlay>
 </div>
 
 <router-outlet></router-outlet>

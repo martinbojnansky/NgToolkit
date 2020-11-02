@@ -7,7 +7,9 @@ import { TodoDetail, TodoSummary } from '../../models';
 
 export abstract class TodoService {
   abstract createItem(title: string): Observable<void>;
+  abstract readItems(): Observable<void>;
   abstract readItem(id: string): Observable<void>;
+  abstract updateItem(item: TodoDetail): Observable<void>;
 }
 
 @Injectable()
@@ -23,7 +25,7 @@ export class TodoServiceImpl {
       }
     });
     
-    return db.setItem(<TodoDetail>{
+    return db.setItem('todo', <TodoDetail>{
       id: uuid(),
       title: title,
       description: null,
@@ -52,6 +54,34 @@ export class TodoServiceImpl {
     ));
   }
 
+  readItems() {
+    this.store.patchState(Action.readTodosStarted, {
+      todos: {
+        ...this.store.state.todos,
+        isBusy: true,
+        error: null
+      }
+    });
+    
+    return db.getItems<TodoSummary>('todo').pipe(effect(
+      data => this.store.patchState(Action.readTodosCompleted, {
+        todos: {
+          ...this.store.state.todos,
+          isBusy: false,
+          error: null,
+          items: data
+        }
+      }),
+      error => this.store.patchState(Action.readTodosFailed, {
+        todos: {
+          ...this.store.state.todos,
+          isBusy: false,
+          error: error
+        }
+      })
+    ));
+  }
+
   readItem(id: string) {
     this.store.patchState(Action.readTodoStarted, {
       todo: {
@@ -61,7 +91,7 @@ export class TodoServiceImpl {
       }
     });
     
-    return db.getItem<TodoDetail>(id).pipe(effect(
+    return db.getItem<TodoDetail>('todo', id).pipe(effect(
       data => this.store.patchState(Action.readTodoCompleted, {
         todo: {
           ...this.store.state.todo,
@@ -71,6 +101,33 @@ export class TodoServiceImpl {
         }
       }),
       error => this.store.patchState(Action.readTodoFailed, {
+        todo: {
+          ...this.store.state.todo,
+          isBusy: false,
+          error: error
+        }
+      })
+    ));
+  }
+
+  updateItem(item: TodoDetail) {
+    this.store.patchState(Action.updateTodoStarted, {
+      todo: {
+        ...this.store.state.todo,
+        isBusy: true
+      }
+    });
+    
+    return db.setItem('todo', item).pipe(effect(
+      data => this.store.patchState(Action.updateTodoCompleted, {
+        todo: {
+          ...this.store.state.todo,
+          isBusy: false,
+          error: null,
+          item: data
+        }
+      }),
+      error => this.store.patchState(Action.updateTodoFailed, {
         todo: {
           ...this.store.state.todo,
           isBusy: false,

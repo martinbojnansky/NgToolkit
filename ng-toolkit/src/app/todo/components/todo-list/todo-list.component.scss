@@ -5,8 +5,8 @@
     flex: 1 1 auto;
   }  
 
-  > *:last-child {
+  > *:last-child:not(router-outlet) {
     flex: 0 0 auto;
-    width: 20rem;
+    width: 30rem;
   }
 }
