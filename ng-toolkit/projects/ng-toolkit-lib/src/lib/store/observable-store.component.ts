@@ -4,9 +4,10 @@ import { ObservableStateChange, ObservableStore } from './observable-store';
 
 @Component({
   selector: 'observable-store-component',
-  template: ''
+  template: '',
 })
-export class ObservableStoreComponent<TState, TAction> extends SubscribableComponent
+export class ObservableStoreComponent<TState, TAction>
+  extends SubscribableComponent
   implements OnInit {
   constructor(
     protected store: ObservableStore<TState, TAction>,
@@ -16,7 +17,7 @@ export class ObservableStoreComponent<TState, TAction> extends SubscribableCompo
   }
 
   ngOnInit() {
-    this.subscribeSafe(
+    this.subscribeSingle(
       'stateChange',
       this.store.stateChange$,
       this.onStateChange.bind(this)

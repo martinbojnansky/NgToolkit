@@ -1,4 +1,7 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { finalize, switchMap, tap } from 'rxjs/operators';
+import { trySafe } from '../helpers';
+import { effect } from './effect';
 
 export interface ObservableStoreConfig {
   log?: boolean;
@@ -13,6 +16,29 @@ export type ObservableStatePropChanges<TState> = {
   [TProp in keyof TState]: {
     prevValue: TState[TProp];
     nextValue: TState[TProp];
+  };
+};
+
+export interface ObservableStateEffects<TState, TPayload> {
+  started?: () => Partial<TState>;
+  completed?: (v: TPayload) => Partial<TState>;
+  failed?: (e: Error) => Partial<TState>;
+  cancelled?: () => Partial<TState>;
+}
+
+export enum AsyncActionSuffix {
+  started = 'Started',
+  completed = 'Completed',
+  failed = 'Failed',
+  cancelled = 'Cancelled',
+}
+
+export const asyncAction = <TAction>(action: TAction) => {
+  return {
+    started: `${action}${AsyncActionSuffix.started}`,
+    completed: `${action}${AsyncActionSuffix.completed}`,
+    failed: `${action}${AsyncActionSuffix.failed}`,
+    cancelled: `${action}${AsyncActionSuffix.cancelled}`,
   };
 };
 
@@ -37,6 +63,13 @@ export class ObservableStore<TState, TAction> {
     return this._config;
   }
 
+  setState(action: TAction, state: Partial<TState>): void {
+    const nextState: TState = state as TState;
+    const patch = {};
+    const stateChange = this.buildStateChange(action, patch, nextState);
+    this.changeState(stateChange, patch, nextState);
+  }
+
   patchState(action: TAction, patch: Partial<TState>): void {
     const nextState: TState = {
       ...this.state,
@@ -47,11 +80,46 @@ export class ObservableStore<TState, TAction> {
     this.changeState(stateChange, patch, nextState);
   }
 
-  setState(action: TAction, state: Partial<TState>): void {
-    const nextState: TState = state as TState;
-    const patch = {};
-    const stateChange = this.buildStateChange(action, patch, nextState);
-    this.changeState(stateChange, patch, nextState);
+  patchStateAsync<T>(
+    action: TAction,
+    observable: Observable<T>,
+    effects: ObservableStateEffects<TState, T>
+  ): Observable<void> {
+    let isCompleted: boolean;
+    const actions = asyncAction(action);
+
+    return of(1).pipe(
+      tap(() => {
+        this.patchState(
+          actions.started as any,
+          trySafe(() => effects.started())
+        );
+        isCompleted = false;
+      }),
+      switchMap(() => observable),
+      effect(
+        (v) => {
+          this.patchState(
+            actions.completed as any,
+            trySafe(() => effects.completed(v))
+          );
+          isCompleted = true;
+        },
+        (e) =>
+          this.patchState(
+            actions.failed as any,
+            trySafe(() => effects.failed(e))
+          )
+      ),
+      finalize(() => {
+        if (!isCompleted) {
+          this.patchState(
+            actions.cancelled as any,
+            trySafe(() => effects.cancelled())
+          );
+        }
+      })
+    );
   }
 
   protected constructor(

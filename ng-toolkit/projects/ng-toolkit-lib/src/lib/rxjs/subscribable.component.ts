@@ -7,25 +7,39 @@ import { takeUntil } from 'rxjs/operators';
   template: '',
 })
 export class SubscribableComponent implements OnDestroy {
-  ngOnDestroy() {
-    this.ngOnDestroy$.next();
-    this.ngOnDestroy$.complete();
+  protected get subscriptions() {
+    return this._subscribtions;
   }
 
-  protected subscribeSafe<T>(
+  ngOnDestroy() {
+    this._ngOnDestroy$.next();
+    this._ngOnDestroy$.complete();
+  }
+
+  protected subscribeSingle<T>(
     key: string,
     observable: Observable<T>,
     observer: PartialObserver<T>
   ) {
-    if (this.subscribtions[key]) {
-      this.subscribtions[key].unsubscribe();
+    if (this._subscribtions[key]) {
+      this._subscribtions[key].unsubscribe();
     }
 
-    this.subscribtions[key] = observable
-      .pipe(takeUntil(this.ngOnDestroy$))
+    this._subscribtions[key] = observable
+      .pipe(takeUntil(this._ngOnDestroy$))
       .subscribe(observer);
   }
 
-  private ngOnDestroy$ = new Subject();
-  private subscribtions: { [key: string]: Subscription } = {};
+  protected subscribeEach<T>(
+    key: string,
+    observable: Observable<T>,
+    observer: PartialObserver<T>
+  ) {
+    this._subscribtions[key] = observable
+      .pipe(takeUntil(this._ngOnDestroy$))
+      .subscribe(observer);
+  }
+
+  private _ngOnDestroy$ = new Subject();
+  private _subscribtions: { [key: string]: Subscription } = {};
 }

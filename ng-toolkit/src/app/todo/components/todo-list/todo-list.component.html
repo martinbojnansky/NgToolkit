@@ -1,7 +1,5 @@
 <div class="d-flex flex-column pr-3">
-  <div class="form">
-    <input #in type="text" placeholder="Add Todo" (keydown.enter)="add(in.value)">
-  </div>
+  <app-todo-create (onCreate)="create($event)" [isBusy]="isCreating"></app-todo-create>
 
   <app-loading-overlay *ngIf="todos?.isBusy" class="mt-3"></app-loading-overlay>
 

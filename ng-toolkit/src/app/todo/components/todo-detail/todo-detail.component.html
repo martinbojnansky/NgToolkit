@@ -11,7 +11,7 @@
   </span>
 </div>
 
-<form atlForm [formGroup]="formGroup" [formState]="todo?.item" [isEditEnabled]="true">
+<form atlForm [formGroup]="formGroup" [formState]="todo?.item" [isEditEnabled]="isEditEnabled">
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <div class="input-group-text">
@@ -19,6 +19,9 @@
       </div>
     </div>
     <input type="text" class="form-control form-control-lg" formControlName="title" placeholder="Title" aria-label="Title">
+    <div class="invalid-feedback">
+      Please enter a message in the textarea.
+    </div>
   </div>
   
   <div class="form-group">

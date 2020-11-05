@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { effect } from 'ng-toolkit-lib';
 import { Observable } from 'rxjs';
 import { db, uuid } from 'src/app/helpers';
 import { Action, Store } from 'src/app/store';
@@ -15,154 +14,186 @@ export abstract class TodoService {
 
 @Injectable()
 export class TodoServiceImpl {
-  constructor(protected store: Store) { }
+  constructor(protected store: Store) {}
 
   createItem(title: string) {
-    this.store.patchState(Action.createTodoStarted, {
-      todos: {
-        ...this.store.state.todos,
-        isBusy: true,
-        error: null
-      }
-    });
-    
-    return db.setItem('todo', <TodoDetail>{
-      id: uuid(),
-      title: title,
-      description: null,
-      createdAt: new Date(),
-      completed: false,
-    }).pipe(effect(
-      data => this.store.patchState(Action.createTodoCompleted, {
-        todos: {
-          ...this.store.state.todos,
-          isBusy: false,
-          error: null,
-          items: [<TodoSummary>{
-            id: data.id,
-            title: data.title,
-            completed: false
-          }, ...this.store.state.todos?.items || []]
-        }
+    return this.store.patchStateAsync(
+      Action.createTodo,
+      db.setItem('todo', <TodoDetail>{
+        id: uuid(),
+        title: title,
+        description: null,
+        createdAt: new Date(),
+        completed: false,
       }),
-      error => this.store.patchState(Action.createTodoFailed, {
-        todos: {
-          ...this.store.state.todos,
-          isBusy: false,
-          error: error
-        }
-      })
-    ));
+      {
+        started: () => ({
+          todos: {
+            ...this.store.state.todos,
+            isBusy: true,
+            error: null,
+          },
+        }),
+        completed: (v) => ({
+          todos: {
+            ...this.store.state.todos,
+            isBusy: false,
+            error: null,
+            items: [
+              <TodoSummary>{
+                id: v.id,
+                title: v.title,
+                completed: false,
+              },
+              ...(this.store.state.todos?.items || []),
+            ],
+          },
+        }),
+        failed: (e) => ({
+          todos: {
+            ...this.store.state.todos,
+            isBusy: false,
+            error: e,
+          },
+        }),
+      }
+    );
   }
 
   readItems() {
-    this.store.patchState(Action.readTodosStarted, {
-      todos: {
-        ...this.store.state.todos,
-        isBusy: true,
-        error: null
+    return this.store.patchStateAsync(
+      Action.readTodos,
+      db.getItems<TodoSummary>('todo'),
+      {
+        started: () => ({
+          todos: {
+            ...this.store.state.todos,
+            isBusy: true,
+            error: null,
+          },
+        }),
+        completed: (v) => ({
+          todos: {
+            ...this.store.state.todos,
+            isBusy: false,
+            error: null,
+            items: v,
+          },
+        }),
+        failed: (e) => ({
+          todos: {
+            ...this.store.state.todos,
+            isBusy: false,
+            error: e,
+          },
+        }),
       }
-    });
-    
-    return db.getItems<TodoSummary>('todo').pipe(effect(
-      data => this.store.patchState(Action.readTodosCompleted, {
-        todos: {
-          ...this.store.state.todos,
-          isBusy: false,
-          error: null,
-          items: data
-        }
-      }),
-      error => this.store.patchState(Action.readTodosFailed, {
-        todos: {
-          ...this.store.state.todos,
-          isBusy: false,
-          error: error
-        }
-      })
-    ));
+    );
   }
 
   readItem(id: string) {
-    this.store.patchState(Action.readTodoStarted, {
-      todo: {
-        ...this.store.state.todo,
-        isBusy: true,
-        item: null
+    return this.store.patchStateAsync(
+      Action.readTodo,
+      db.getItem<TodoDetail>('todo', id),
+      {
+        started: () => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: true,
+            item: null,
+          },
+        }),
+        completed: (v) => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: false,
+            error: null,
+            item: v,
+          },
+        }),
+        failed: (e) => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: false,
+            error: e,
+          },
+        }),
+        cancelled: () => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: false,
+            error: null,
+          },
+        }),
       }
-    });
-    
-    return db.getItem<TodoDetail>('todo', id).pipe(effect(
-      data => this.store.patchState(Action.readTodoCompleted, {
-        todo: {
-          ...this.store.state.todo,
-          isBusy: false,
-          error: null,
-          item: data
-        }
-      }),
-      error => this.store.patchState(Action.readTodoFailed, {
-        todo: {
-          ...this.store.state.todo,
-          isBusy: false,
-          error: error
-        }
-      })
-    ));
+    );
   }
 
   updateItem(item: TodoDetail) {
-    this.store.patchState(Action.updateTodoStarted, {
-      todo: {
-        ...this.store.state.todo,
-        isBusy: true
+    return this.store.patchStateAsync(
+      Action.updateTodo,
+      db.setItem('todo', item),
+      {
+        started: () => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: true,
+          },
+        }),
+        completed: (v) => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: false,
+            error: null,
+            item: v,
+          },
+        }),
+        failed: (e) => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: false,
+            error: e,
+          },
+        }),
+        cancelled: () => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: false,
+            error: null,
+          },
+        }),
       }
-    });
-    
-    return db.setItem('todo', item).pipe(effect(
-      data => this.store.patchState(Action.updateTodoCompleted, {
-        todo: {
-          ...this.store.state.todo,
-          isBusy: false,
-          error: null,
-          item: data
-        }
-      }),
-      error => this.store.patchState(Action.updateTodoFailed, {
-        todo: {
-          ...this.store.state.todo,
-          isBusy: false,
-          error: error
-        }
-      })
-    ));
+    );
   }
 
   deleteItem(id: string) {
-    this.store.patchState(Action.deleteTodoStarted, {
-      todo: {
-        ...this.store.state.todo,
-        isBusy: true,
-        item: null
+    return this.store.patchStateAsync(
+      Action.deleteTodo,
+      db.deleteItem('todo', id),
+      {
+        started: () => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: true,
+            item: null,
+          },
+        }),
+        completed: (v) => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: false,
+            error: null,
+            item: null,
+          },
+        }),
+        failed: (e) => ({
+          todo: {
+            ...this.store.state.todo,
+            isBusy: false,
+            error: e,
+          },
+        }),
       }
-    });
-    
-    return db.deleteItem('todo', id).pipe(effect(
-      () => this.store.patchState(Action.deleteTodoCompleted, {
-        todo: {
-          ...this.store.state.todo,
-          isBusy: false,
-          error: null,
-          item: null
-        }
-      }),
-      error => this.store.patchState(Action.deleteTodoFailed, {
-        todo: {
-          ...this.store.state.todo,
-          isBusy: false,
-          error: error
-        }
-      })
-    ));
+    );
   }
 }

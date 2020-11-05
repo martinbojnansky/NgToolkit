@@ -1,21 +1,41 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
-import { nameof } from 'ng-toolkit-lib';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnInit,
+} from '@angular/core';
+import { asyncAction, nameof } from 'ng-toolkit-lib';
 import { debounceTime } from 'rxjs/operators';
-import { Action, State, StateChange, Store, StoreComponent } from 'src/app/store';
+import {
+  Action,
+  State,
+  StateChange,
+  Store,
+  StoreComponent,
+} from 'src/app/store';
 import { TodoService } from '../../services';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoListComponent extends StoreComponent implements OnInit {  
+export class TodoListComponent extends StoreComponent implements OnInit {
   get todos() {
-    return this.store.state.todos
+    return this.store.state.todos;
   }
 
-  constructor(protected store: Store, protected changeDetectorRef: ChangeDetectorRef, protected todoService: TodoService) {
+  get isCreating() {
+    const createSubscription = this.subscriptions['create'];
+    return createSubscription && !createSubscription.closed;
+  }
+
+  constructor(
+    protected store: Store,
+    protected changeDetectorRef: ChangeDetectorRef,
+    protected todoService: TodoService
+  ) {
     super(store, changeDetectorRef);
   }
 
@@ -24,20 +44,29 @@ export class TodoListComponent extends StoreComponent implements OnInit {
     this.update();
   }
 
-  add(title: string) {
-    this.subscribeSafe('add', this.todoService.createItem(title), null);
+  create(title: string) {
+    this.subscribeSingle('create', this.todoService.createItem(title), null);
   }
 
   update() {
-    this.subscribeSafe('update', this.todoService.readItems().pipe(debounceTime(1000)), null);
+    this.subscribeSingle(
+      'update',
+      this.todoService.readItems().pipe(debounceTime(500)),
+      null
+    );
   }
 
   protected onStateChange(change: StateChange): void {
-    if([Action.updateTodoCompleted, Action.deleteTodoCompleted].includes(change.action)) {
+    if (
+      [
+        asyncAction(Action.updateTodo).completed,
+        asyncAction(Action.deleteTodo).completed,
+      ].includes(change.action)
+    ) {
       this.update();
     }
-    
-    if(change.propChanges[nameof<State>('todos')]) {
+
+    if (change.propChanges[nameof<State>('todos')]) {
       this.markForChangeDetection();
     }
   }

@@ -1,0 +1,5 @@
+<form atlForm [formGroup]="formGroup" [isEditEnabled]="!isBusy">
+  <div class="form-group">
+    <input type="text" class="form-control form-control-lg" formControlName="title" placeholder="Add Todo" aria-label="Add Todo" (keydown.enter)="create()">
+  </div>
+</form>
