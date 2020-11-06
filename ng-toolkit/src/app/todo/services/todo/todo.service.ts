@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { db, uuid } from 'src/app/helpers';
-import { Action, Store } from 'src/app/store';
+import { Store } from 'src/app/store';
 import { TodoDetail, TodoSummary } from '../../models';
 
 export abstract class TodoService {
@@ -18,7 +18,7 @@ export class TodoServiceImpl {
 
   createItem(title: string) {
     return this.store.patchStateAsync(
-      Action.createTodo,
+      'createTodoStarted',
       db.setItem('todo', <TodoDetail>{
         id: uuid(),
         title: title,
@@ -62,7 +62,7 @@ export class TodoServiceImpl {
 
   readItems() {
     return this.store.patchStateAsync(
-      Action.readTodos,
+      'readTodosStarted',
       db.getItems<TodoSummary>('todo'),
       {
         started: () => ({
@@ -93,7 +93,7 @@ export class TodoServiceImpl {
 
   readItem(id: string) {
     return this.store.patchStateAsync(
-      Action.readTodo,
+      'readTodoStarted',
       db.getItem<TodoDetail>('todo', id),
       {
         started: () => ({
@@ -131,7 +131,7 @@ export class TodoServiceImpl {
 
   updateItem(item: TodoDetail) {
     return this.store.patchStateAsync(
-      Action.updateTodo,
+      'updateTodoStarted',
       db.setItem('todo', item),
       {
         started: () => ({
@@ -168,7 +168,7 @@ export class TodoServiceImpl {
 
   deleteItem(id: string) {
     return this.store.patchStateAsync(
-      Action.deleteTodo,
+      'deleteTodoStarted',
       db.deleteItem('todo', id),
       {
         started: () => ({

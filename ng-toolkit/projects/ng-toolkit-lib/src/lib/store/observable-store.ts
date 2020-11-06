@@ -26,22 +26,6 @@ export interface ObservableStateEffects<TState, TPayload> {
   cancelled?: () => Partial<TState>;
 }
 
-export enum AsyncActionSuffix {
-  started = 'Started',
-  completed = 'Completed',
-  failed = 'Failed',
-  cancelled = 'Cancelled',
-}
-
-export const asyncAction = <TAction>(action: TAction) => {
-  return {
-    started: `${action}${AsyncActionSuffix.started}`,
-    completed: `${action}${AsyncActionSuffix.completed}`,
-    failed: `${action}${AsyncActionSuffix.failed}`,
-    cancelled: `${action}${AsyncActionSuffix.cancelled}`,
-  };
-};
-
 export class ObservableStore<TState, TAction> {
   get state(): Readonly<TState> {
     return this._state$.getValue();
@@ -85,13 +69,22 @@ export class ObservableStore<TState, TAction> {
     observable: Observable<T>,
     effects: ObservableStateEffects<TState, T>
   ): Observable<void> {
+    const actionBaseName = action
+      .toString()
+      .replace(/(Started|Completed|Failed|Cancelled)$/, '');
+    const actionNames = ([
+      `${actionBaseName}Started`,
+      `${actionBaseName}Completed`,
+      `${actionBaseName}Failed`,
+      `${actionBaseName}Cancelled`,
+    ] as any) as TAction[];
+
     let isCompleted: boolean;
-    const actions = asyncAction(action);
 
     return of(1).pipe(
       tap(() => {
         this.patchState(
-          actions.started as any,
+          actionNames[0],
           trySafe(() => effects.started())
         );
         isCompleted = false;
@@ -100,21 +93,21 @@ export class ObservableStore<TState, TAction> {
       effect(
         (v) => {
           this.patchState(
-            actions.completed as any,
+            actionNames[1],
             trySafe(() => effects.completed(v))
           );
           isCompleted = true;
         },
         (e) =>
           this.patchState(
-            actions.failed as any,
+            actionNames[2],
             trySafe(() => effects.failed(e))
           )
       ),
       finalize(() => {
         if (!isCompleted) {
           this.patchState(
-            actions.cancelled as any,
+            actionNames[3],
             trySafe(() => effects.cancelled())
           );
         }

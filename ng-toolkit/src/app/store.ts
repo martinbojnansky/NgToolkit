@@ -13,15 +13,27 @@ export interface State {
   todo: Detail<TodoDetail>;
 }
 
-export enum Action {
-  createTodo = 'createTodo',
-  readTodos = 'readTodos',
-  readTodo = 'readTodo',
-  updateTodo = 'updateTodo',
-  deleteTodo = 'deleteTodo',
-
-  todoVisibilitySettingsChanged = 'todoVisibilitySettingsChanged',
-}
+export type Action =
+  | 'createTodoStarted'
+  | 'createTodoCompleted'
+  | 'createTodoFailed'
+  | 'createTodoCancelled'
+  | 'readTodosStarted'
+  | 'readTodosCompleted'
+  | 'readTodosFailed'
+  | 'readTodosCancelled'
+  | 'readTodoStarted'
+  | 'readTodoCompleted'
+  | 'readTodoFailed'
+  | 'readTodoCancelled'
+  | 'updateTodoStarted'
+  | 'updateTodoCompleted'
+  | 'updateTodoFailed'
+  | 'updateTodoCancelled'
+  | 'deleteTodoStarted'
+  | 'deleteTodoCompleted'
+  | 'deleteTodoFailed'
+  | 'deleteTodoCancelled';
 
 @Injectable()
 export class Store extends ObservableStore<State, Action> {
@@ -32,7 +44,10 @@ export class Store extends ObservableStore<State, Action> {
 
 export interface StateChange extends ObservableStateChange<State, Action> {}
 
-export class StoreComponent extends ObservableStoreComponent<State, Action> {
+export abstract class StoreComponent extends ObservableStoreComponent<
+  State,
+  Action
+> {
   constructor(
     protected store: Store,
     protected changeDetectorRef: ChangeDetectorRef

@@ -1,13 +1,13 @@
-:host {
+:host ::ng-deep {
   display: flex;
 
   > *:first-child {
     flex: 1 1 auto;
-  }  
+  }
 
   > *:last-child:not(router-outlet) {
-    flex: 0 0 auto;
-    width: 30rem;
+    flex: 1 1 auto;
+    padding-left: 1rem;
   }
 }
 

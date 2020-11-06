@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   OnInit,
 } from '@angular/core';
-import { asyncAction, nameof } from 'ng-toolkit-lib';
+import { nameof } from 'ng-toolkit-lib';
 import { debounceTime } from 'rxjs/operators';
 import {
   Action,
@@ -58,10 +58,9 @@ export class TodoListComponent extends StoreComponent implements OnInit {
 
   protected onStateChange(change: StateChange): void {
     if (
-      [
-        asyncAction(Action.updateTodo).completed,
-        asyncAction(Action.deleteTodo).completed,
-      ].includes(change.action)
+      (<Action[]>['createTodoCompleted', 'deleteTodoCompleted']).includes(
+        change.action
+      )
     ) {
       this.update();
     }
