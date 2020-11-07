@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { Store } from 'src/app/store';
 import { TodoDetail, TodoSummary } from '../../models';
+import { TodoStore } from '../../todo-store';
 
 export abstract class TodoService {
   abstract createItem(title: string): Observable<void>;
@@ -14,10 +14,13 @@ export abstract class TodoService {
 
 @Injectable()
 export class TodoServiceImpl {
-  constructor(protected store: Store, protected apiService: ApiService) {}
+  constructor(
+    protected todoStore: TodoStore,
+    protected apiService: ApiService
+  ) {}
 
   createItem(title: string) {
-    return this.store.patchStateAsync(
+    return this.todoStore.patchStateAsync(
       'createTodoStarted',
       this.apiService.setItem('todo', <TodoDetail>{
         id: this.apiService.getUuid(),
@@ -29,14 +32,14 @@ export class TodoServiceImpl {
       {
         started: () => ({
           todos: {
-            ...this.store.state.todos,
+            ...this.todoStore.state.todos,
             isBusy: true,
             error: null,
           },
         }),
         completed: (v) => ({
           todos: {
-            ...this.store.state.todos,
+            ...this.todoStore.state.todos,
             isBusy: false,
             error: null,
             items: [
@@ -45,13 +48,13 @@ export class TodoServiceImpl {
                 title: v.title,
                 completed: false,
               },
-              ...(this.store.state.todos?.items || []),
+              ...(this.todoStore.state.todos?.items || []),
             ],
           },
         }),
         failed: (e) => ({
           todos: {
-            ...this.store.state.todos,
+            ...this.todoStore.state.todos,
             isBusy: false,
             error: e,
           },
@@ -61,20 +64,20 @@ export class TodoServiceImpl {
   }
 
   readItems() {
-    return this.store.patchStateAsync(
+    return this.todoStore.patchStateAsync(
       'readTodosStarted',
       this.apiService.getItems<TodoSummary>('todo'),
       {
         started: () => ({
           todos: {
-            ...this.store.state.todos,
+            ...this.todoStore.state.todos,
             isBusy: true,
             error: null,
           },
         }),
         completed: (v) => ({
           todos: {
-            ...this.store.state.todos,
+            ...this.todoStore.state.todos,
             isBusy: false,
             error: null,
             items: v,
@@ -82,7 +85,7 @@ export class TodoServiceImpl {
         }),
         failed: (e) => ({
           todos: {
-            ...this.store.state.todos,
+            ...this.todoStore.state.todos,
             isBusy: false,
             error: e,
           },
@@ -92,20 +95,20 @@ export class TodoServiceImpl {
   }
 
   readItem(id: string) {
-    return this.store.patchStateAsync(
+    return this.todoStore.patchStateAsync(
       'readTodoStarted',
       this.apiService.getItem<TodoDetail>('todo', id),
       {
         started: () => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: true,
             item: null,
           },
         }),
         completed: (v) => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: false,
             error: null,
             item: v,
@@ -113,14 +116,14 @@ export class TodoServiceImpl {
         }),
         failed: (e) => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: false,
             error: e,
           },
         }),
         cancelled: () => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: false,
             error: null,
           },
@@ -130,19 +133,19 @@ export class TodoServiceImpl {
   }
 
   updateItem(item: TodoDetail) {
-    return this.store.patchStateAsync(
+    return this.todoStore.patchStateAsync(
       'updateTodoStarted',
       this.apiService.setItem('todo', item),
       {
         started: () => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: true,
           },
         }),
         completed: (v) => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: false,
             error: null,
             item: v,
@@ -150,14 +153,14 @@ export class TodoServiceImpl {
         }),
         failed: (e) => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: false,
             error: e,
           },
         }),
         cancelled: () => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: false,
             error: null,
           },
@@ -167,20 +170,20 @@ export class TodoServiceImpl {
   }
 
   deleteItem(id: string) {
-    return this.store.patchStateAsync(
+    return this.todoStore.patchStateAsync(
       'deleteTodoStarted',
       this.apiService.deleteItem('todo', id),
       {
         started: () => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: true,
             item: null,
           },
         }),
         completed: (v) => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: false,
             error: null,
             item: null,
@@ -188,7 +191,7 @@ export class TodoServiceImpl {
         }),
         failed: (e) => ({
           todo: {
-            ...this.store.state.todo,
+            ...this.todoStore.state.todo,
             isBusy: false,
             error: e,
           },

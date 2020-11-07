@@ -6,8 +6,12 @@ import {
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ObservableStateChange,
+  ObservableStoreComponent,
+} from 'ng-toolkit-lib';
 import { debounceTime, tap } from 'rxjs/operators';
-import { StateChange, Store, StoreComponent } from 'src/app/store';
+import { TodoAction, TodoState, TodoStore } from 'src/app/todo/todo-store';
 import { TodoDetail } from '../../models';
 import { TodoService } from '../../services/todo/todo.service';
 @Component({
@@ -16,9 +20,11 @@ import { TodoService } from '../../services/todo/todo.service';
   styleUrls: ['./todo-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoDetailComponent extends StoreComponent implements OnInit {
+export class TodoDetailComponent
+  extends ObservableStoreComponent<TodoState, TodoAction>
+  implements OnInit {
   get todo() {
-    return this.store.state.todo;
+    return this.todoStore.state.todo;
   }
 
   get isEditEnabled() {
@@ -34,14 +40,14 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
   });
 
   constructor(
-    protected store: Store,
+    protected todoStore: TodoStore,
     protected changeDetectorRef: ChangeDetectorRef,
     protected todoService: TodoService,
     protected activatedRoute: ActivatedRoute,
     protected formBuilder: FormBuilder,
     protected router: Router
   ) {
-    super(store, changeDetectorRef);
+    super(todoStore, changeDetectorRef);
   }
 
   ngOnInit() {
@@ -112,7 +118,9 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
     }
   }
 
-  protected onStateChange(change: StateChange): void {
+  protected onStateChange(
+    change: ObservableStateChange<TodoState, TodoAction>
+  ): void {
     if (change.propChanges.todo) {
       this.markForChangeDetection();
     }

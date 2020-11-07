@@ -4,9 +4,11 @@ import {
   ChangeDetectorRef,
   OnInit,
 } from '@angular/core';
+import { ObservableStoreComponent } from 'ng-toolkit-lib';
+import { ObservableStateChange } from 'projects/ng-toolkit-lib/src/lib/store';
 import { debounceTime } from 'rxjs/operators';
-import { StateChange, Store, StoreComponent } from 'src/app/store';
 import { TodoService } from '../../services/todo/todo.service';
+import { TodoAction, TodoState, TodoStore } from '../../todo-store';
 
 @Component({
   selector: 'app-todo-list',
@@ -14,9 +16,11 @@ import { TodoService } from '../../services/todo/todo.service';
   styleUrls: ['./todo-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoListComponent extends StoreComponent implements OnInit {
+export class TodoListComponent
+  extends ObservableStoreComponent<TodoState, TodoAction>
+  implements OnInit {
   get todos() {
-    return this.store.state.todos;
+    return this.todoStore.state.todos;
   }
 
   get isCreating() {
@@ -25,11 +29,11 @@ export class TodoListComponent extends StoreComponent implements OnInit {
   }
 
   constructor(
-    protected store: Store,
+    protected todoStore: TodoStore,
     protected changeDetectorRef: ChangeDetectorRef,
     protected todoService: TodoService
   ) {
-    super(store, changeDetectorRef);
+    super(todoStore, changeDetectorRef);
   }
 
   ngOnInit() {
@@ -49,7 +53,9 @@ export class TodoListComponent extends StoreComponent implements OnInit {
     );
   }
 
-  protected onStateChange(change: StateChange): void {
+  protected onStateChange(
+    change: ObservableStateChange<TodoState, TodoAction>
+  ): void {
     switch (change.action) {
       case 'updateTodoCompleted':
       case 'createTodoCompleted':
