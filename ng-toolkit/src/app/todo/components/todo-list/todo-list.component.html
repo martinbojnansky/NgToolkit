@@ -3,7 +3,7 @@
 
   <app-loading-overlay *ngIf="todos?.isBusy" class="mt-3"></app-loading-overlay>
 
-  <div class="list-group mt-3">
+  <div *ngIf="todos?.items?.length; else emptyTemplate" class="list-group mt-3">
       <a 
         *ngFor="let todo of todos?.items" 
         class="list-group-item list-group-item-action" 
@@ -12,6 +12,11 @@
           {{ todo?.title }}
       </a>
   </div>
+  <ng-template #emptyTemplate>
+    <div class="alert alert-light" role="alert">
+      No todos yet!
+    </div>
+  </ng-template>
   
 </div>
 

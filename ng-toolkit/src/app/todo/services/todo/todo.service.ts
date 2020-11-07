@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { db, uuid } from 'src/app/helpers';
+import { ApiService } from 'src/app/core/services/api.service';
 import { Store } from 'src/app/store';
 import { TodoDetail, TodoSummary } from '../../models';
 
@@ -14,13 +14,13 @@ export abstract class TodoService {
 
 @Injectable()
 export class TodoServiceImpl {
-  constructor(protected store: Store) {}
+  constructor(protected store: Store, protected apiService: ApiService) {}
 
   createItem(title: string) {
     return this.store.patchStateAsync(
       'createTodoStarted',
-      db.setItem('todo', <TodoDetail>{
-        id: uuid(),
+      this.apiService.setItem('todo', <TodoDetail>{
+        id: this.apiService.getUuid(),
         title: title,
         description: null,
         createdAt: new Date(),
@@ -63,7 +63,7 @@ export class TodoServiceImpl {
   readItems() {
     return this.store.patchStateAsync(
       'readTodosStarted',
-      db.getItems<TodoSummary>('todo'),
+      this.apiService.getItems<TodoSummary>('todo'),
       {
         started: () => ({
           todos: {
@@ -94,7 +94,7 @@ export class TodoServiceImpl {
   readItem(id: string) {
     return this.store.patchStateAsync(
       'readTodoStarted',
-      db.getItem<TodoDetail>('todo', id),
+      this.apiService.getItem<TodoDetail>('todo', id),
       {
         started: () => ({
           todo: {
@@ -132,7 +132,7 @@ export class TodoServiceImpl {
   updateItem(item: TodoDetail) {
     return this.store.patchStateAsync(
       'updateTodoStarted',
-      db.setItem('todo', item),
+      this.apiService.setItem('todo', item),
       {
         started: () => ({
           todo: {
@@ -169,7 +169,7 @@ export class TodoServiceImpl {
   deleteItem(id: string) {
     return this.store.patchStateAsync(
       'deleteTodoStarted',
-      db.deleteItem('todo', id),
+      this.apiService.deleteItem('todo', id),
       {
         started: () => ({
           todo: {

@@ -6,12 +6,10 @@ import {
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { nameof } from 'ng-toolkit-lib';
 import { debounceTime, tap } from 'rxjs/operators';
-import { State, StateChange, Store, StoreComponent } from 'src/app/store';
+import { StateChange, Store, StoreComponent } from 'src/app/store';
 import { TodoDetail } from '../../models';
-import { TodoService } from '../../services';
-
+import { TodoService } from '../../services/todo/todo.service';
 @Component({
   selector: 'app-todo-detail',
   templateUrl: './todo-detail.component.html',
@@ -24,7 +22,7 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
   }
 
   get isEditEnabled() {
-    return this.todo?.item !== null;
+    return this.todo?.item?.id;
   }
 
   readonly formGroup = this.formBuilder.group(<
@@ -48,18 +46,24 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
+    this.setupParamsObserver();
+    this.setupAutoSave();
+  }
 
+  setupParamsObserver(): void {
     this.subscribeSingle('paramsChanged', this.activatedRoute.params, {
       next: (params) => {
         this.formGroup.reset();
         this.subscribeSingle(
           'updateDetail',
-          this.todoService.readItem(params[nameof<TodoDetail>('id')]),
-          { complete: () => {} }
+          this.todoService.readItem(params['id']),
+          null
         );
       },
     });
+  }
 
+  setupAutoSave(): void {
     this.subscribeSingle(
       'autoSave',
       this.formGroup.valueChanges.pipe(
@@ -109,7 +113,7 @@ export class TodoDetailComponent extends StoreComponent implements OnInit {
   }
 
   protected onStateChange(change: StateChange): void {
-    if (change.propChanges[nameof<State>('todo')]) {
+    if (change.propChanges.todo) {
       this.markForChangeDetection();
     }
   }

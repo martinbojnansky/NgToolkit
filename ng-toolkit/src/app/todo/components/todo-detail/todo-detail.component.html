@@ -11,6 +11,10 @@
   </span>
 </div>
 
+<div *ngIf="todo?.error" class="alert alert-danger" role="alert">
+  {{ todo.error?.message}}
+</div>
+
 <form atlForm [formGroup]="formGroup" [formState]="todo?.item" [isEditEnabled]="isEditEnabled">
   <div class="input-group mb-3">
     <div class="input-group-prepend">

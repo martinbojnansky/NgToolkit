@@ -98,11 +98,13 @@ export class ObservableStore<TState, TAction> {
           );
           isCompleted = true;
         },
-        (e) =>
+        (e) => {
           this.patchState(
             actionNames[2],
             trySafe(() => effects.failed(e))
-          )
+          );
+          isCompleted = true;
+        }
       ),
       finalize(() => {
         if (!isCompleted) {

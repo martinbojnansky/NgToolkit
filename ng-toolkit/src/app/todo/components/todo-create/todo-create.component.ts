@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   ChangeDetectionStrategy,
   Output,
   EventEmitter,
@@ -10,7 +9,6 @@ import {
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { nameof } from 'ng-toolkit-lib';
-import { TodoDetail } from '../../models/todo';
 
 @Component({
   selector: 'app-todo-create',
@@ -25,9 +23,7 @@ export class TodoCreateComponent implements OnChanges {
   @Output()
   onCreate: EventEmitter<string> = new EventEmitter();
 
-  readonly formGroup = this.formBuilder.group(<
-    { [key in keyof TodoDetail]: any }
-  >{
+  readonly formGroup = this.formBuilder.group({
     title: ['', [Validators.required, Validators.minLength(2)]],
   });
 
@@ -42,7 +38,7 @@ export class TodoCreateComponent implements OnChanges {
 
   create() {
     if (this.formGroup.valid) {
-      this.onCreate.emit(this.formGroup.value[nameof<TodoDetail>('title')]);
+      this.onCreate.emit(this.formGroup.value.title);
     } else {
       this.formGroup.markAllAsTouched();
     }

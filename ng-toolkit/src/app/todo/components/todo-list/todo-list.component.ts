@@ -4,16 +4,9 @@ import {
   ChangeDetectorRef,
   OnInit,
 } from '@angular/core';
-import { nameof } from 'ng-toolkit-lib';
 import { debounceTime } from 'rxjs/operators';
-import {
-  Action,
-  State,
-  StateChange,
-  Store,
-  StoreComponent,
-} from 'src/app/store';
-import { TodoService } from '../../services';
+import { StateChange, Store, StoreComponent } from 'src/app/store';
+import { TodoService } from '../../services/todo/todo.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -57,15 +50,15 @@ export class TodoListComponent extends StoreComponent implements OnInit {
   }
 
   protected onStateChange(change: StateChange): void {
-    if (
-      (<Action[]>['createTodoCompleted', 'deleteTodoCompleted']).includes(
-        change.action
-      )
-    ) {
-      this.update();
+    switch (change.action) {
+      case 'updateTodoCompleted':
+      case 'createTodoCompleted':
+      case 'deleteTodoCompleted':
+        this.update();
+        break;
     }
 
-    if (change.propChanges[nameof<State>('todos')]) {
+    if (change.propChanges.todos) {
       this.markForChangeDetection();
     }
   }

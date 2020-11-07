@@ -5,8 +5,8 @@ import {
   ObservableStore,
   ObservableStoreComponent,
 } from 'ng-toolkit-lib';
-import { Dataset, Detail } from './helpers';
-import { TodoDetail, TodoSummary } from './todo';
+import { Dataset, Detail } from './core/models';
+import { TodoDetail, TodoSummary } from './todo/models';
 
 export interface State {
   todos: Dataset<TodoSummary>;
