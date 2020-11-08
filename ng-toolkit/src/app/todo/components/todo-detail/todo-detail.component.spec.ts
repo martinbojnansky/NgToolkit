@@ -1,4 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import {
+  ApiService,
+  ApiServiceFakeImpl,
+} from 'src/app/core/services/api.service';
+import { TodoService, TodoServiceImpl } from '../../services/todo/todo.service';
+import { TodoStore } from '../../todo-store';
 
 import { TodoDetailComponent } from './todo-detail.component';
 
@@ -8,9 +16,21 @@ describe('TodoDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TodoDetailComponent ]
-    })
-    .compileComponents();
+      imports: [RouterTestingModule],
+      declarations: [TodoDetailComponent],
+      providers: [
+        TodoStore,
+        {
+          provide: TodoService,
+          useClass: TodoServiceImpl,
+        },
+        {
+          provide: ApiService,
+          useClass: ApiServiceFakeImpl,
+        },
+        FormBuilder,
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
