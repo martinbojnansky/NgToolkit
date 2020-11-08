@@ -102,7 +102,7 @@ export class ApiServiceFakeImpl extends ApiService {
   fakeApiOperator<T>(): OperatorFunction<T, T> {
     return (observable$) =>
       observable$.pipe(
-        delay(3000),
+        delay(300),
         tap(() => {
           if (!window.navigator.onLine) {
             throw new Error('No internet connection is available.');

@@ -28,7 +28,7 @@ export class TodoDetailComponent
   }
 
   get isEditEnabled() {
-    return !this.todo?.isBusy || this.formGroup.dirty;
+    return (this.todo?.item && !this.todo?.isBusy) || this.formGroup.dirty;
   }
 
   readonly formGroup = this.formBuilder.group(<
