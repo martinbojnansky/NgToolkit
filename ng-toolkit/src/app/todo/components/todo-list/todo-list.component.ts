@@ -23,11 +23,6 @@ export class TodoListComponent
     return this.todoStore.state.todos;
   }
 
-  get isCreating() {
-    const createSubscription = this.subscriptions['create'];
-    return createSubscription && !createSubscription.closed;
-  }
-
   constructor(
     protected todoStore: TodoStore,
     protected changeDetectorRef: ChangeDetectorRef,
@@ -41,10 +36,6 @@ export class TodoListComponent
     this.update();
   }
 
-  create(title: string) {
-    this.subscribeSafe('create', this.todoService.createItem(title), null);
-  }
-
   update() {
     this.subscribeSafe(
       'update',
@@ -56,14 +47,6 @@ export class TodoListComponent
   protected onStateChange(
     change: ObservableStateChange<TodoState, TodoAction>
   ): void {
-    switch (change.action) {
-      case 'updateTodoCompleted':
-      case 'createTodoCompleted':
-      case 'deleteTodoCompleted':
-        this.update();
-        break;
-    }
-
     if (change.propChanges.todos) {
       this.markForChangeDetection();
     }

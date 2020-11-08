@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { nameof } from 'ng-toolkit-lib';
-import { Observable, of } from 'rxjs';
+import { Observable, of, OperatorFunction } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
-import { UuidObject } from '../models';
+import { DatasetQuery, UuidObject } from '../models';
 
 export abstract class ApiService {
   abstract getUuid(): string;
-  abstract getItems<T extends UuidObject>(entity: string): Observable<T[]>;
+  abstract getItems<T extends UuidObject>(
+    entity: string,
+    query?: DatasetQuery
+  ): Observable<T[]>;
   abstract getItem<T extends UuidObject>(
     entity: string,
     id: string
@@ -20,8 +23,6 @@ export abstract class ApiService {
 
 @Injectable()
 export class ApiServiceFakeImpl extends ApiService {
-  protected readonly delay = 800;
-
   constructor() {
     super();
   }
@@ -36,7 +37,7 @@ export class ApiServiceFakeImpl extends ApiService {
 
   getItem<T extends UuidObject>(entity: string, id: string) {
     return of(this.getTable<T>(entity)[id] as T).pipe(
-      delay(this.delay),
+      this.fakeApiOperator(),
       tap((v) => {
         if (!v)
           throw new Error(
@@ -46,18 +47,20 @@ export class ApiServiceFakeImpl extends ApiService {
     );
   }
 
-  getItems<T extends UuidObject>(entity: string) {
+  getItems<T extends UuidObject>(entity: string, query?: DatasetQuery) {
     const table = this.getTable<T>(entity);
-    return of(Object.keys(table).map((k) => table[k]) as T[]).pipe(
-      delay(this.delay)
-    );
+
+    let items = Object.keys(table).map((k) => table[k]) as T[];
+    items = this.sortItems(items, query);
+
+    return of(items).pipe(this.fakeApiOperator());
   }
 
   setItem<T extends UuidObject>(entity: string, value: T) {
     const table = this.getTable<T>(entity);
     table[value[nameof<UuidObject>('id')]] = value;
     this.setTable(entity, table);
-    return of(value).pipe(delay(this.delay));
+    return of(value).pipe(this.fakeApiOperator());
   }
 
   deleteItem<T extends UuidObject>(entity: string, id: string) {
@@ -65,7 +68,7 @@ export class ApiServiceFakeImpl extends ApiService {
     delete table[id];
     this.setTable(entity, table);
     return of().pipe(
-      delay(this.delay),
+      this.fakeApiOperator(),
       map(() => {})
     );
   }
@@ -78,5 +81,33 @@ export class ApiServiceFakeImpl extends ApiService {
 
   protected setTable<T>(entity: string, value: { [key: string]: T }) {
     localStorage.setItem(entity, JSON.stringify(value));
+  }
+
+  protected sortItems<T>(items: T[], query: DatasetQuery): T[] {
+    let sortedItems = [...items];
+    query?.sorts?.forEach((s) => {
+      sortedItems = sortedItems.sort((a, b) => {
+        if (a[s.prop] < b[s.prop]) {
+          return s.order === 'asc' ? -1 : 1;
+        } else if (a[s.prop] > b[s.prop]) {
+          return s.order === 'asc' ? 1 : -1;
+        } else {
+          return 0;
+        }
+      });
+    });
+    return sortedItems;
+  }
+
+  fakeApiOperator<T>(): OperatorFunction<T, T> {
+    return (observable$) =>
+      observable$.pipe(
+        delay(400),
+        tap(() => {
+          if (!window.navigator.onLine) {
+            throw new Error('No internet connection is available.');
+          }
+        })
+      );
   }
 }

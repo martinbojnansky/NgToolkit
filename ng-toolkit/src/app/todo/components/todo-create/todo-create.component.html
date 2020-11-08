@@ -1,5 +1,10 @@
+
 <form atlForm [formGroup]="formGroup" [isEditEnabled]="!isBusy">
   <div class="form-group">
     <input type="text" class="form-control form-control-lg" formControlName="title" placeholder="Add Todo" aria-label="Add Todo" (keydown.enter)="create()">
   </div>
+  <app-loading-overlay *ngIf="isBusy"></app-loading-overlay>
 </form>
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{ errorMessage }}
+</div>

@@ -1,14 +1,13 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  Output,
-  EventEmitter,
-  Input,
-  OnChanges,
-  SimpleChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { nameof } from 'ng-toolkit-lib';
+import { FormBuilder } from '@angular/forms';
+import { ObservableStoreComponent } from 'ng-toolkit-lib';
+import { ObservableStateChange } from 'projects/ng-toolkit-lib/src/lib/store';
+import { TodoService } from '../../services/todo/todo.service';
+import { TodoAction, TodoState, TodoStore } from '../../todo-store';
 
 @Component({
   selector: 'app-todo-create',
@@ -16,31 +15,55 @@ import { nameof } from 'ng-toolkit-lib';
   styleUrls: ['./todo-create.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoCreateComponent implements OnChanges {
-  @Input()
-  isBusy: boolean;
+export class TodoCreateComponent extends ObservableStoreComponent<
+  TodoState,
+  TodoAction
+> {
+  get isBusy(): boolean {
+    return this.isSubscriptionInProgress('create');
+  }
 
-  @Output()
-  onCreate: EventEmitter<string> = new EventEmitter();
+  errorMessage: string;
 
   readonly formGroup = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.minLength(2)]],
+    title: ['', []],
   });
 
-  constructor(protected formBuilder: FormBuilder) {}
-
-  ngOnChanges(changes: SimpleChanges) {
-    const isBusyChange = changes[nameof<TodoCreateComponent>('isBusy')];
-    if (isBusyChange.previousValue && !isBusyChange.currentValue) {
-      this.formGroup.reset();
-    }
+  constructor(
+    protected todoStore: TodoStore,
+    protected changeDetectorRef: ChangeDetectorRef,
+    protected formBuilder: FormBuilder,
+    protected todoService: TodoService
+  ) {
+    super(todoStore, changeDetectorRef);
   }
 
   create() {
-    if (this.formGroup.valid) {
-      this.onCreate.emit(this.formGroup.value.title);
-    } else {
-      this.formGroup.markAllAsTouched();
+    this.errorMessage = null;
+    if (!this.formGroup.value.title?.length) return;
+
+    this.subscribeSafe(
+      'create',
+      this.todoService.createItem(this.formGroup.value.title),
+      {
+        error: (e: Error) => {
+          this.errorMessage = `Todo could not be created. ${e.message}`;
+        },
+        complete: () => {
+          this.formGroup.reset();
+        },
+      }
+    );
+  }
+
+  protected onStateChange(
+    change: ObservableStateChange<TodoState, TodoAction>
+  ) {
+    switch (change.action) {
+      case 'createTodoStarted':
+      case 'createTodoCompleted':
+      case 'createTodoFailed':
+        this.markForChangeDetection();
     }
   }
 }

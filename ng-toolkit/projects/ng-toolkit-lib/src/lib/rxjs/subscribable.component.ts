@@ -16,6 +16,11 @@ export class SubscribableComponent implements OnDestroy {
     this._ngOnDestroy$.complete();
   }
 
+  isSubscriptionInProgress(key: string): boolean {
+    const subscription = this.subscriptions[key];
+    return subscription && !subscription.closed;
+  }
+
   protected subscribeSafe<T>(
     key: string,
     observable: Observable<T>,

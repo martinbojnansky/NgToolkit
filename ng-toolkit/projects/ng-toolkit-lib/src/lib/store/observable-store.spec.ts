@@ -349,6 +349,8 @@ describe('ObservableStore', () => {
     });
     patchPartialState();
   }));
+
+  // TODO: Test asyncAction.
 });
 
 export enum TestActionEnum {
@@ -402,4 +404,6 @@ describe('ObservableStoreEnummed', () => {
       expect(store.stateChange).toEqual(expectedChange);
     });
   }));
+
+  // TODO: Test asyncAction.
 });

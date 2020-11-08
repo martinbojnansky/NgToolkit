@@ -32,18 +32,9 @@ export class TodoServiceImpl {
         completed: false,
       }),
       {
-        started: () => ({
-          todos: {
-            ...this.todoStore.state.todos,
-            isBusy: true,
-            error: null,
-          },
-        }),
         completed: (v) => ({
           todos: {
             ...this.todoStore.state.todos,
-            isBusy: false,
-            error: null,
             items: [
               {
                 id: v.id,
@@ -52,13 +43,6 @@ export class TodoServiceImpl {
               },
               ...(this.todoStore.state.todos?.items || []),
             ],
-          },
-        }),
-        failed: (e) => ({
-          todos: {
-            ...this.todoStore.state.todos,
-            isBusy: false,
-            error: e,
           },
         }),
       }
@@ -189,7 +173,6 @@ export class TodoServiceImpl {
           todo: {
             ...this.todoStore.state.todo,
             isBusy: true,
-            item: null,
           },
         }),
         completed: (v) => ({
@@ -198,6 +181,12 @@ export class TodoServiceImpl {
             isBusy: false,
             error: null,
             item: null,
+          },
+          todos: {
+            ...this.todoStore.state.todos,
+            items:
+              this.todoStore.state.todos?.items?.filter((t) => t.id !== id) ||
+              [],
           },
         }),
         failed: (e) => ({

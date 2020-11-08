@@ -34,7 +34,7 @@ export class TodoDetailComponent
   readonly formGroup = this.formBuilder.group(<
     { [key in keyof TodoDetail]: any }
   >{
-    title: ['', [Validators.required, Validators.minLength(2)]],
+    title: ['', [Validators.required]],
     description: [''],
     completed: [false],
   });
@@ -83,7 +83,7 @@ export class TodoDetailComponent
       ),
       {
         next: () => {
-          if (this.formGroup.dirty) {
+          if (this.formGroup.dirty && this.formGroup.valid) {
             this.save();
           }
         },

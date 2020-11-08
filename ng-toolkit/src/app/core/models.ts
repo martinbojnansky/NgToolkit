@@ -16,7 +16,7 @@ export interface DatasetQuery {
   sorts: DatasetQuerySort[];
 }
 
-export interface Dataset<T> extends AsyncStateObject, DatasetQuerySort {
+export interface Dataset<T> extends AsyncStateObject, DatasetQuery {
   items: T[];
 }
 
