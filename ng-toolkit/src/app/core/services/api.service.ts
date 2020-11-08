@@ -67,7 +67,7 @@ export class ApiServiceFakeImpl extends ApiService {
     const table = this.getTable<T>(entity);
     delete table[id];
     this.setTable(entity, table);
-    return of().pipe(
+    return of(1).pipe(
       this.fakeApiOperator(),
       map(() => {})
     );
