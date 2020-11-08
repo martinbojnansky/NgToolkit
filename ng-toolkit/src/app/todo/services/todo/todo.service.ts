@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { nameof } from 'projects/ng-toolkit-lib/src/public-api';
 import { Observable } from 'rxjs';
+import { DatasetQuery } from 'src/app/core/models';
 import { ApiService } from 'src/app/core/services/api.service';
 import { TodoDetail, TodoSummary } from '../../models';
 import { TodoStore } from '../../todo-store';
@@ -64,9 +66,16 @@ export class TodoServiceImpl {
   }
 
   readItems() {
+    const query: DatasetQuery = {
+      sorts: [
+        { prop: nameof<TodoDetail>('createdAt'), order: 'desc' },
+        { prop: nameof<TodoDetail>('completed'), order: 'asc' },
+      ],
+    };
+
     return this.todoStore.patchStateAsync(
       'readTodosStarted',
-      this.apiService.getItems<TodoSummary>('todo'),
+      this.apiService.getItems<TodoSummary>('todo', query),
       {
         started: () => ({
           todos: {

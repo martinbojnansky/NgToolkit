@@ -7,7 +7,16 @@ export interface AsyncStateObject {
   error: Error;
 }
 
-export interface Dataset<T> extends AsyncStateObject {
+export interface DatasetQuerySort {
+  prop: string;
+  order: 'asc' | 'desc';
+}
+
+export interface DatasetQuery {
+  sorts: DatasetQuerySort[];
+}
+
+export interface Dataset<T> extends AsyncStateObject, DatasetQuerySort {
   items: T[];
 }
 
