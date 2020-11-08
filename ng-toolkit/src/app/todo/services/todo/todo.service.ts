@@ -80,7 +80,7 @@ export class TodoServiceImpl {
           todos: {
             ...this.todoStore.state.todos,
             isBusy: false,
-            error: e,
+            error: { ...e, message: `Todos could not be loaded. ${e.message}` },
           },
         }),
       }
@@ -113,7 +113,7 @@ export class TodoServiceImpl {
           todo: {
             ...this.todoStore.state.todo,
             isBusy: false,
-            error: e,
+            error: { ...e, message: `Todo could not be loaded. ${e.message}` },
           },
         }),
         cancelled: () => ({
@@ -150,7 +150,7 @@ export class TodoServiceImpl {
           todo: {
             ...this.todoStore.state.todo,
             isBusy: false,
-            error: e,
+            error: { ...e, message: `Todo could not be saved. ${e.message}` },
           },
         }),
         cancelled: () => ({
@@ -193,7 +193,7 @@ export class TodoServiceImpl {
           todo: {
             ...this.todoStore.state.todo,
             isBusy: false,
-            error: e,
+            error: { ...e, message: `Todo could not be deleted. ${e.message}` },
           },
         }),
       }

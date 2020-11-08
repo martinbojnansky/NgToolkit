@@ -47,6 +47,12 @@ export class TodoListComponent
   protected onStateChange(
     change: ObservableStateChange<TodoState, TodoAction>
   ): void {
+    switch (change.action) {
+      case 'updateTodoCompleted':
+        this.update();
+        break;
+    }
+
     if (change.propChanges.todos) {
       this.markForChangeDetection();
     }

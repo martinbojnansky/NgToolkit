@@ -3,6 +3,10 @@
 
   <app-loading-overlay *ngIf="todos?.isBusy" class="mt-3"></app-loading-overlay>
 
+  <div *ngIf="todos?.error" class="alert alert-danger" role="alert">
+    {{ todos?.error?.message }}
+  </div>
+  
   <div *ngIf="todos?.items?.length; else emptyTemplate" class="list-group mt-3">
       <a 
         *ngFor="let todo of todos?.items" 
