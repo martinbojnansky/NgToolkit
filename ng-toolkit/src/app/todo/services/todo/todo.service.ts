@@ -22,7 +22,7 @@ export class TodoServiceImpl {
   createItem(title: string) {
     return this.todoStore.patchStateAsync(
       'createTodoStarted',
-      this.apiService.setItem('todo', <TodoDetail>{
+      this.apiService.setItem<TodoDetail>('todo', {
         id: this.apiService.getUuid(),
         title: title,
         description: null,
@@ -43,7 +43,7 @@ export class TodoServiceImpl {
             isBusy: false,
             error: null,
             items: [
-              <TodoSummary>{
+              {
                 id: v.id,
                 title: v.title,
                 completed: false,
@@ -103,7 +103,9 @@ export class TodoServiceImpl {
           todo: {
             ...this.todoStore.state.todo,
             isBusy: true,
-            item: null,
+            item: this.todoStore.state.todos?.items?.find(
+              (t) => t.id === id
+            ) as TodoDetail,
           },
         }),
         completed: (v) => ({

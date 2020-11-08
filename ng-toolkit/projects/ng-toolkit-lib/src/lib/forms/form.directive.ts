@@ -38,16 +38,11 @@ export class FormDirective implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const formStateChange = changes[nameof<FormDirective>('formState')];
-    if (!formStateChange && changes[nameof<FormDirective>('isEditEnabled')]) {
-      this.updateFormEnabled();
-    }
 
-    if (!formStateChange) {
-      return;
-    }
-
-    if (formStateChange.currentValue) {
+    if (formStateChange) {
       this.applyFormState(formStateChange.currentValue);
+    } else if (changes[nameof<FormDirective>('isEditEnabled')]) {
+      this.updateFormEnabled();
     }
   }
 
@@ -56,8 +51,8 @@ export class FormDirective implements OnInit, OnChanges {
   }
 
   applyFormState(state: any) {
-    this.formGroup.reset(); // TODO: Allow reset with initial state
-    this.formGroup.patchValue(state);
+    this.formGroup.reset();
+    this.formGroup.patchValue(state || {});
     this.formGroup.markAsPristine();
     this.formGroup.markAsUntouched();
     this.updateFormEnabled();

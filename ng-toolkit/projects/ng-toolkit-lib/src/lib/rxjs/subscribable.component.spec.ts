@@ -9,7 +9,7 @@ class SubscribableTestComponent extends SubscribableComponent {
   completedValue = '';
 
   updateValue(value: string) {
-    this.subscribeSingle('updateValue', this.apiCall(value), {
+    this.subscribeSafe('updateValue', this.apiCall(value), {
       next: () => {
         this.completedCount++;
         this.completedValue = value;

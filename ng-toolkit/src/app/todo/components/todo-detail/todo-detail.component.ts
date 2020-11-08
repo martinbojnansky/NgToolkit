@@ -28,7 +28,7 @@ export class TodoDetailComponent
   }
 
   get isEditEnabled() {
-    return this.todo?.item?.id;
+    return !this.todo?.isBusy || this.formGroup.dirty;
   }
 
   readonly formGroup = this.formBuilder.group(<
@@ -57,10 +57,10 @@ export class TodoDetailComponent
   }
 
   setupParamsObserver(): void {
-    this.subscribeSingle('paramsChanged', this.activatedRoute.params, {
+    this.subscribeSafe('paramsChanged', this.activatedRoute.params, {
       next: (params) => {
         this.formGroup.reset();
-        this.subscribeSingle(
+        this.subscribeSafe(
           'updateDetail',
           this.todoService.readItem(params['id']),
           null
@@ -70,7 +70,7 @@ export class TodoDetailComponent
   }
 
   setupAutoSave(): void {
-    this.subscribeSingle(
+    this.subscribeSafe(
       'autoSave',
       this.formGroup.valueChanges.pipe(
         tap(() => {
@@ -92,7 +92,7 @@ export class TodoDetailComponent
   }
 
   save() {
-    this.subscribeSingle(
+    this.subscribeSafe(
       'save',
       this.todoService.updateItem({
         ...this.todo.item,
@@ -106,7 +106,7 @@ export class TodoDetailComponent
     if (
       confirm(`Are you sure you want to delete todo: ${this.todo?.item?.title}`)
     ) {
-      this.subscribeSingle(
+      this.subscribeSafe(
         'delete',
         this.todoService.deleteItem(this.todo?.item?.id),
         {

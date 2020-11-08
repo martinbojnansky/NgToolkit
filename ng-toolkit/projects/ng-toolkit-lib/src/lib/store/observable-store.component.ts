@@ -17,7 +17,7 @@ export class ObservableStoreComponent<TState, TAction>
   }
 
   ngOnInit() {
-    this.subscribeSingle(
+    this.subscribeSafe(
       'stateChange',
       this.store.stateChange$,
       this.onStateChange.bind(this)

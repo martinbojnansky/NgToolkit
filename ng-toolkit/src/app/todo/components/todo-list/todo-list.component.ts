@@ -42,11 +42,11 @@ export class TodoListComponent
   }
 
   create(title: string) {
-    this.subscribeSingle('create', this.todoService.createItem(title), null);
+    this.subscribeSafe('create', this.todoService.createItem(title), null);
   }
 
   update() {
-    this.subscribeSingle(
+    this.subscribeSafe(
       'update',
       this.todoService.readItems().pipe(debounceTime(500)),
       null

@@ -166,6 +166,4 @@ describe('FormDirective', () => {
     fixture.detectChanges();
     expect(disableSpy).toHaveBeenCalledWith({ emitEvent: false });
   });
-
-  // TODO: Test discard changes
 });

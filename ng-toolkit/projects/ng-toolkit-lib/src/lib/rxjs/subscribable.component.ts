@@ -16,7 +16,7 @@ export class SubscribableComponent implements OnDestroy {
     this._ngOnDestroy$.complete();
   }
 
-  protected subscribeSingle<T>(
+  protected subscribeSafe<T>(
     key: string,
     observable: Observable<T>,
     observer: PartialObserver<T>
@@ -25,16 +25,6 @@ export class SubscribableComponent implements OnDestroy {
       this._subscribtions[key].unsubscribe();
     }
 
-    this._subscribtions[key] = observable
-      .pipe(takeUntil(this._ngOnDestroy$))
-      .subscribe(observer);
-  }
-
-  protected subscribeEach<T>(
-    key: string,
-    observable: Observable<T>,
-    observer: PartialObserver<T>
-  ) {
     this._subscribtions[key] = observable
       .pipe(takeUntil(this._ngOnDestroy$))
       .subscribe(observer);
