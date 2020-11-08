@@ -1,7 +1,7 @@
 import {
-  Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
   OnInit,
 } from '@angular/core';
 import { ObservableStoreComponent } from 'ng-toolkit-lib';

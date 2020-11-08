@@ -1,7 +1,7 @@
 import {
-  Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ObservableStoreComponent } from 'ng-toolkit-lib';
@@ -40,7 +40,7 @@ export class TodoCreateComponent extends ObservableStoreComponent<
 
   create() {
     this.errorMessage = null;
-    if (!this.formGroup.value.title?.length) return;
+    if (!this.formGroup.value.title?.length) { return; }
 
     this.subscribeSafe(
       'create',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { ObservableStore } from 'ng-toolkit-lib';
+import { environment } from 'src/environments/environment';
 import { Dataset, Detail } from '../core/models';
 import { TodoDetail, TodoSummary } from './models';
 

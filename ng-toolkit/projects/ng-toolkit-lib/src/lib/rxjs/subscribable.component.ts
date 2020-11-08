@@ -1,9 +1,9 @@
-import { OnDestroy, Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Observable, PartialObserver, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'subscribable-component',
+  selector: 'atl-subscribable-component',
   template: '',
 })
 export class SubscribableComponent implements OnDestroy {

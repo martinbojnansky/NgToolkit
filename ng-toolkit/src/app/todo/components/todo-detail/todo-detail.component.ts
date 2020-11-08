@@ -1,7 +1,7 @@
 import {
-  Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -31,13 +31,11 @@ export class TodoDetailComponent
     return (this.todo?.item && !this.todo?.isBusy) || this.formGroup.dirty;
   }
 
-  readonly formGroup = this.formBuilder.group(<
-    { [key in keyof TodoDetail]: any }
-  >{
-    title: ['', [Validators.required]],
-    description: [''],
-    completed: [false],
-  });
+  readonly formGroup = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      description: [''],
+      completed: [false],
+    } as { [key in keyof TodoDetail]: any });
 
   constructor(
     protected todoStore: TodoStore,
@@ -62,7 +60,7 @@ export class TodoDetailComponent
         this.formGroup.reset();
         this.subscribeSafe(
           'updateDetail',
-          this.todoService.readItem(params['id']),
+          this.todoService.readItem(params.id),
           null
         );
       },
@@ -74,7 +72,7 @@ export class TodoDetailComponent
       'autoSave',
       this.formGroup.valueChanges.pipe(
         tap(() => {
-          const saveSubscription = this.subscriptions['save'];
+          const saveSubscription = this.subscriptions.save;
           if (this.formGroup.dirty && saveSubscription) {
             saveSubscription.unsubscribe();
           }

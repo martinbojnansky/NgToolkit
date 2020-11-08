@@ -19,14 +19,14 @@ export class TodoServiceImpl {
   constructor(
     protected todoStore: TodoStore,
     protected apiService: ApiService
-  ) {}
+  ) { }
 
   createItem(title: string) {
     return this.todoStore.patchStateAsync(
       'createTodoStarted',
       this.apiService.setItem<TodoDetail>('todo', {
         id: this.apiService.getUuid(),
-        title: title,
+        title,
         description: null,
         createdAt: new Date(),
         completed: false,

@@ -27,22 +27,25 @@ export class ApiServiceFakeImpl extends ApiService {
     super();
   }
 
+  /* tslint:disable */
   getUuid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      var r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      const r = (Math.random() * 16) | 0;
+      const v = c == 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   }
+  /* tslint:enable */
 
   getItem<T extends UuidObject>(entity: string, id: string) {
     return of(this.getTable<T>(entity)[id] as T).pipe(
       this.fakeApiOperator(),
       tap((v) => {
-        if (!v)
+        if (!v) {
           throw new Error(
             `Item of ${entity} entity with id ${id} does not exist.`
           );
+        }
       })
     );
   }
@@ -69,8 +72,20 @@ export class ApiServiceFakeImpl extends ApiService {
     this.setTable(entity, table);
     return of(1).pipe(
       this.fakeApiOperator(),
-      map(() => {})
+      map(() => { })
     );
+  }
+
+  fakeApiOperator<T>(): OperatorFunction<T, T> {
+    return (observable$) =>
+      observable$.pipe(
+        delay(300),
+        tap(() => {
+          if (!window.navigator.onLine) {
+            throw new Error('No internet connection is available.');
+          }
+        })
+      );
   }
 
   protected getTable<T>(entity: string): { [key: string]: T } {
@@ -97,17 +112,5 @@ export class ApiServiceFakeImpl extends ApiService {
       });
     });
     return sortedItems;
-  }
-
-  fakeApiOperator<T>(): OperatorFunction<T, T> {
-    return (observable$) =>
-      observable$.pipe(
-        delay(300),
-        tap(() => {
-          if (!window.navigator.onLine) {
-            throw new Error('No internet connection is available.');
-          }
-        })
-      );
   }
 }

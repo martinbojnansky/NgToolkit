@@ -3,7 +3,7 @@ import { SubscribableComponent } from '../rxjs';
 import { ObservableStateChange, ObservableStore } from './observable-store';
 
 @Component({
-  selector: 'observable-store-component',
+  selector: 'atl-observable-store-component',
   template: '',
 })
 export class ObservableStoreComponent<TState, TAction>

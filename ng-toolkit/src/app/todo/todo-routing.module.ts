@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { FormDraftGuard, nameof } from 'ng-toolkit-lib';
 import { TodoDetailComponent } from './components/todo-detail/todo-detail.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';

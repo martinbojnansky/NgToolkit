@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ObservableStoreComponent } from './observable-store.component';
 import {
   TestAction,
   TestState,
   TestStateChange,
   TestStore,
 } from './observable-store.spec';
-import { ObservableStoreComponent } from './observable-store.component';
 
 @Component({
   template: ` <p>{{ store.state.testValue }}</p> `,

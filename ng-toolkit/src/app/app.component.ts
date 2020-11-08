@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -16,5 +16,5 @@ export class AppComponent {
       link: 'todo',
       label: 'Todo List'
     }
-  ]
+  ];
 }

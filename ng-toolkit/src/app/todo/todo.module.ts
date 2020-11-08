@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoRoutingModule } from './todo-routing.module';
+import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { TodoListComponent } from './components/todo-list/todo-list.component';
-import { TodoDetailComponent } from './components/todo-detail/todo-detail.component';
 import { TodoCreateComponent } from './components/todo-create/todo-create.component';
+import { TodoDetailComponent } from './components/todo-detail/todo-detail.component';
+import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { TodoService, TodoServiceImpl } from './services/todo/todo.service';
+import { TodoRoutingModule } from './todo-routing.module';
 import { TodoStore } from './todo-store';
 
 @NgModule({
