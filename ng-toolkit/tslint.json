@@ -29,7 +29,7 @@
       "kebab-case"
     ],
     "eofline": true,
-    "ordered-imports": true,
+    "ordered-imports": false,
     "import-blacklist": [
       true,
       "rxjs/Rx"

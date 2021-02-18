@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   AutofocusDirective,
   createAutofocusEvent,
@@ -24,11 +24,13 @@ describe('AutofocusDirective', () => {
   let compiled: any;
   let dispatchEventSpy: jasmine.Spy;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AutofocusTestComponent, AutofocusDirective],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AutofocusTestComponent, AutofocusDirective],
+      }).compileComponents();
+    })
+  );
 
   function createTestElement(selector?: string): void {
     dispatchEventSpy = spyOn(document, 'dispatchEvent').and.callThrough();

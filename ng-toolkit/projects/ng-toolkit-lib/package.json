@@ -1,9 +1,11 @@
 {
   "name": "ng-toolkit-lib",
   "version": "0.0.5",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@angular/common": "^9.1.4",
-    "@angular/core": "^9.1.4",
-    "tslib": "^1.10.0"
+    "@angular/core": "^9.1.4"
   }
 }

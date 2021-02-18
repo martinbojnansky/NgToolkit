@@ -1,4 +1,4 @@
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 import { SubscribableComponent } from './subscribable.component';
 
@@ -38,46 +38,58 @@ describe('SubscribableComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should finish in a time', async(() => {
-    expect(component.completedCount).toBe(0);
-    expect(component.completedValue).toBe('');
-    component.updateValue('xxx');
-    setTimeout(() => {
-      expect(component.completedCount).toBe(1);
-      expect(component.completedValue).toBe('xxx');
-    }, delay);
-  }));
-
-  it('should not finish soon', async(() => {
-    expect(component.completedCount).toBe(0);
-    expect(component.completedValue).toBe('');
-    component.updateValue('xxx');
-    setTimeout(() => {
+  it(
+    'should finish in a time',
+    waitForAsync(() => {
       expect(component.completedCount).toBe(0);
       expect(component.completedValue).toBe('');
-    }, delay - 1);
-  }));
+      component.updateValue('xxx');
+      setTimeout(() => {
+        expect(component.completedCount).toBe(1);
+        expect(component.completedValue).toBe('xxx');
+      }, delay);
+    })
+  );
 
-  it('should finish only last', async(() => {
-    expect(component.completedCount).toBe(0);
-    expect(component.completedValue).toBe('');
-    component.updateValue('xxx');
-    component.updateValue('yyy');
-    component.updateValue('zzz');
-    setTimeout(() => {
-      expect(component.completedCount).toBe(1);
-      expect(component.completedValue).toBe('zzz');
-    }, delay);
-  }));
-
-  it('should not finish on component destroy', async(() => {
-    expect(component.completedCount).toBe(0);
-    expect(component.completedValue).toBe('');
-    component.updateValue('xxx');
-    component.ngOnDestroy();
-    setTimeout(() => {
+  it(
+    'should not finish soon',
+    waitForAsync(() => {
       expect(component.completedCount).toBe(0);
       expect(component.completedValue).toBe('');
-    }, delay);
-  }));
+      component.updateValue('xxx');
+      setTimeout(() => {
+        expect(component.completedCount).toBe(0);
+        expect(component.completedValue).toBe('');
+      }, delay - 1);
+    })
+  );
+
+  it(
+    'should finish only last',
+    waitForAsync(() => {
+      expect(component.completedCount).toBe(0);
+      expect(component.completedValue).toBe('');
+      component.updateValue('xxx');
+      component.updateValue('yyy');
+      component.updateValue('zzz');
+      setTimeout(() => {
+        expect(component.completedCount).toBe(1);
+        expect(component.completedValue).toBe('zzz');
+      }, delay);
+    })
+  );
+
+  it(
+    'should not finish on component destroy',
+    waitForAsync(() => {
+      expect(component.completedCount).toBe(0);
+      expect(component.completedValue).toBe('');
+      component.updateValue('xxx');
+      component.ngOnDestroy();
+      setTimeout(() => {
+        expect(component.completedCount).toBe(0);
+        expect(component.completedValue).toBe('');
+      }, delay);
+    })
+  );
 });

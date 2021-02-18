@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormDraftService, FormDraftServiceImpl } from './form-draft.service';
 
@@ -25,19 +25,21 @@ describe('IFormDraftService', () => {
   let compiled: any;
   let service: FormDraftService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, ReactiveFormsModule],
-      declarations: [FormDraftServiceTestComponent],
-      providers: [
-        FormBuilder,
-        {
-          provide: FormDraftService,
-          useClass: FormDraftServiceImpl,
-        },
-      ],
-    });
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, ReactiveFormsModule],
+        declarations: [FormDraftServiceTestComponent],
+        providers: [
+          FormBuilder,
+          {
+            provide: FormDraftService,
+            useClass: FormDraftServiceImpl,
+          },
+        ],
+      });
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FormDraftServiceTestComponent);

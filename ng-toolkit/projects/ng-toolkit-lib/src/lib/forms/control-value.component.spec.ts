@@ -4,7 +4,7 @@ import {
   Component,
   DebugElement,
 } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ControlValueComponent } from './control-value.component';
 
@@ -43,12 +43,14 @@ describe('ControlValueComponent', () => {
 
   const value = 'John Doe';
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [ControlValueTestComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule],
+        declarations: [ControlValueTestComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ControlValueTestComponent);

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   initialState,
@@ -50,16 +50,18 @@ describe('FormDirective', () => {
   let store: TestStore;
   let formBuilder: FormBuilder;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, ReactiveFormsModule],
-      declarations: [FormTestComponent, FormDirective],
-      providers: [TestStore, FormBuilder],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, ReactiveFormsModule],
+        declarations: [FormTestComponent, FormDirective],
+        providers: [TestStore, FormBuilder],
+      }).compileComponents();
 
-    store = TestBed.inject(TestStore);
-    formBuilder = TestBed.inject(FormBuilder);
-  }));
+      store = TestBed.inject(TestStore);
+      formBuilder = TestBed.inject(FormBuilder);
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FormTestComponent);

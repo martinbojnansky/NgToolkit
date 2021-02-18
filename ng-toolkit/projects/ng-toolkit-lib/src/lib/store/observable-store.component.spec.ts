@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ObservableStoreComponent } from './observable-store.component';
 import {
   TestAction,
@@ -11,7 +11,10 @@ import {
 @Component({
   template: ` <p>{{ store.state.testValue }}</p> `,
 })
-class ObservableStoreTestComponent extends ObservableStoreComponent<TestState, TestAction> {
+class ObservableStoreTestComponent extends ObservableStoreComponent<
+  TestState,
+  TestAction
+> {
   constructor(
     public store: TestStore,
     public changeDetectorRef: ChangeDetectorRef
@@ -35,12 +38,14 @@ describe('ObservableStoreComponent', () => {
 
   let changeDetectorRefSpy: jasmine.Spy;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ObservableStoreTestComponent],
-      providers: [TestStore],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ObservableStoreTestComponent],
+        providers: [TestStore],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ObservableStoreTestComponent);
