@@ -8,3 +8,4 @@ export * from './lib/rxjs';
 export * from './lib/store';
 export * from './lib/forms';
 export * from './lib/focus';
+export * from './lib/testing';
