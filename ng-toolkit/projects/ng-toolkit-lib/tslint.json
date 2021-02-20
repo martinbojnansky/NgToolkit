@@ -9,13 +9,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "atl",
+      "ngt",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "atl",
+      "ngt",
       "kebab-case"
     ]
   }

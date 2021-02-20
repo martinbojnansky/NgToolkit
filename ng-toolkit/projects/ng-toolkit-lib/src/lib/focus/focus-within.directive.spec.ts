@@ -8,7 +8,7 @@ import { FocusWithinDirective } from './focus-within.directive';
     <section>
       <h1>h1</h1>
       <button>button</button>
-      <div atlFocusWithin (focusIn)="onFocusin()" (focusOut)="onFocusout()">
+      <div ngtFocusWithin (focusIn)="onFocusin()" (focusOut)="onFocusout()">
         <a tabindex="0">a</a>
         <span>span</span>
       </div>
@@ -93,7 +93,7 @@ describe('FocusWithinDirective', () => {
       const a = compiled.querySelector('a');
       a.click();
       fixture.detectChanges();
-      expect(focusWithinElement.className).toContain('atl-state_focused');
+      expect(focusWithinElement.className).toContain('ngt-state_focused');
     })
   );
 
@@ -103,7 +103,7 @@ describe('FocusWithinDirective', () => {
       const h1 = compiled.querySelector('h1');
       h1.click();
       fixture.detectChanges();
-      expect(focusWithinElement.className).not.toContain('atl-state_focused');
+      expect(focusWithinElement.className).not.toContain('ngt-state_focused');
     })
   );
 
@@ -116,7 +116,7 @@ describe('FocusWithinDirective', () => {
       fixture.detectChanges();
       h1.click();
       fixture.detectChanges();
-      expect(focusWithinElement.className).not.toContain('atl-state_focused');
+      expect(focusWithinElement.className).not.toContain('ngt-state_focused');
     })
   );
 
@@ -129,7 +129,7 @@ describe('FocusWithinDirective', () => {
       fixture.detectChanges();
       span.click();
       fixture.detectChanges();
-      expect(focusWithinElement.className).toContain('atl-state_focused');
+      expect(focusWithinElement.className).toContain('ngt-state_focused');
     })
   );
 

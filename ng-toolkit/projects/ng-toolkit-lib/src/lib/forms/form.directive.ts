@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
 import { nameof } from '../helpers';
 
 @Directive({
-  selector: '[atlForm]',
+  selector: '[ngtForm]',
 })
 export class FormDirective implements OnInit, OnChanges {
   @Input()

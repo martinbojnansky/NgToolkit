@@ -9,15 +9,15 @@ import {
 } from './observable-store.spec';
 
 @Component({
-  template: ` <p>{{ store.state.testValue }}</p> `,
+  template: ` <p>{{ state.testValue }}</p> `,
 })
 class ObservableStoreTestComponent extends ObservableStoreComponent<
   TestState,
   TestAction
 > {
   constructor(
-    public store: TestStore,
-    public changeDetectorRef: ChangeDetectorRef
+    protected store: TestStore,
+    protected changeDetectorRef: ChangeDetectorRef
   ) {
     super(store, changeDetectorRef);
   }
@@ -53,7 +53,10 @@ describe('ObservableStoreComponent', () => {
     fixture.detectChanges();
     compiled = fixture.debugElement;
 
-    changeDetectorRefSpy = spyOn(component.changeDetectorRef, 'markForCheck');
+    changeDetectorRefSpy = spyOn(
+      component['changeDetectorRef'],
+      'markForCheck'
+    );
   });
 
   it('should create', () => {
@@ -66,7 +69,7 @@ describe('ObservableStoreComponent', () => {
   });
 
   it('should listen for state change', () => {
-    component.store.patchState('patchPartialState', {
+    component['store'].patchState('patchPartialState', {
       firstName: 'xxx',
     });
     expect(changeDetectorRefSpy).toHaveBeenCalledTimes(1);
@@ -74,14 +77,14 @@ describe('ObservableStoreComponent', () => {
 
   it('should not listen for state change after destroy', () => {
     component.ngOnDestroy();
-    component.store.patchState('patchPartialState', {
+    component['store'].patchState('patchPartialState', {
       firstName: 'xxx',
     });
     expect(changeDetectorRefSpy).not.toHaveBeenCalled();
   });
 
   it('should not run change detection on explicitly ignored action', () => {
-    component.store.patchState('null', null);
+    component['store'].patchState('null', null);
     expect(changeDetectorRefSpy).toHaveBeenCalledTimes(0);
   });
 });

@@ -13,7 +13,7 @@ import { FormDirective } from './form.directive';
 @Component({
   template: `
     <form
-      atlForm
+      ngtForm
       [formGroup]="formGroup"
       [formState]="formState"
       [isEditEnabled]="isEditEnabled"

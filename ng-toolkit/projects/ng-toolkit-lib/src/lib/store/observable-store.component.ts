@@ -3,12 +3,16 @@ import { SubscribableComponent } from '../rxjs';
 import { ObservableStateChange, ObservableStore } from './observable-store';
 
 @Component({
-  selector: 'atl-observable-store-component',
+  selector: 'ngt-observable-store-component',
   template: '',
 })
 export class ObservableStoreComponent<TState, TAction>
   extends SubscribableComponent
   implements OnInit {
+  get state(): TState {
+    return this.store.state;
+  }
+
   constructor(
     protected store: ObservableStore<TState, TAction>,
     protected changeDetectorRef: ChangeDetectorRef

@@ -7,7 +7,7 @@ import {
 
 @Component({
   template: `
-    <section [atlAutofocus]="selector">
+    <section [ngtAutofocus]="selector">
       <a tabindex="0">a</a>
       <input class=".autofocus" value="b" />
     </section>

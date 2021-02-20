@@ -3,7 +3,7 @@ import { Observable, PartialObserver, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'atl-subscribable-component',
+  selector: 'ngt-subscribable-component',
   template: '',
 })
 export class SubscribableComponent implements OnDestroy {
@@ -16,7 +16,7 @@ export class SubscribableComponent implements OnDestroy {
     this._ngOnDestroy$.complete();
   }
 
-  isSubscriptionInProgress(key: string): boolean {
+  isSubscribtionInProgress(key: string): boolean {
     const subscription = this.subscriptions[key];
     return subscription && !subscription.closed;
   }

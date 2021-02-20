@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[atlFocusWithin]',
+  selector: '[ngtFocusWithin]',
 })
 export class FocusWithinDirective {
   @Output()
@@ -19,7 +19,7 @@ export class FocusWithinDirective {
 
   constructor(protected elementRef: ElementRef) {}
 
-  @HostBinding('class.atl-state_focused')
+  @HostBinding('class.ngt-state_focused')
   protected hasFocus: boolean;
 
   @HostListener('document:click', ['$event'])

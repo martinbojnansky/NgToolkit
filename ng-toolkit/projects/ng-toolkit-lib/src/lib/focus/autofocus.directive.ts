@@ -5,11 +5,11 @@ export const createAutofocusEvent = (element: any): CustomEvent => {
 };
 
 @Directive({
-  selector: '[atlAutofocus]',
+  selector: '[ngtAutofocus]',
 })
 export class AutofocusDirective implements AfterViewInit {
   @Input()
-  atlAutofocus: string;
+  ngtAutofocus: string;
 
   constructor(protected elementRef: ElementRef) {}
 
@@ -18,8 +18,8 @@ export class AutofocusDirective implements AfterViewInit {
   }
 
   protected get selector() {
-    return this.atlAutofocus
-      ? this.atlAutofocus
+    return this.ngtAutofocus
+      ? this.ngtAutofocus
       : 'button, [href], input, select, textarea, *[tabindex]:not([tabindex="-1"])';
   }
 
