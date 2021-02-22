@@ -1,7 +1,6 @@
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { finalize, switchMap, tap } from 'rxjs/operators';
+import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { trySafe } from '../helpers';
-import { effect } from './effect';
 
 export interface ObservableStoreConfig {
   log?: boolean;
@@ -90,7 +89,7 @@ export class ObservableStore<TState, TAction> {
         isCompleted = false;
       }),
       switchMap(() => observable),
-      effect(
+      tap(
         (v) => {
           this.patchState(
             actionNames[1],
@@ -106,6 +105,7 @@ export class ObservableStore<TState, TAction> {
           isCompleted = true;
         }
       ),
+      map((_) => {}),
       finalize(() => {
         if (!isCompleted) {
           this.patchState(
@@ -143,9 +143,7 @@ export class ObservableStore<TState, TAction> {
       );
     }
 
-    const statePropChanges: ObservableStatePropChanges<TState> = {} as ObservableStatePropChanges<
-      TState
-    >;
+    const statePropChanges: ObservableStatePropChanges<TState> = {} as ObservableStatePropChanges<TState>;
     for (const prop of props) {
       if (this.state[prop] !== nextState[prop]) {
         statePropChanges[prop] = {

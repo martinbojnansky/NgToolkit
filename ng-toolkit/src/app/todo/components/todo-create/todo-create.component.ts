@@ -20,7 +20,7 @@ export class TodoCreateComponent extends ObservableStoreComponent<
   TodoAction
 > {
   get isBusy(): boolean {
-    return this.isSubscriptionInProgress('create');
+    return this.isSubscribtionInProgress('create');
   }
 
   errorMessage: string;
@@ -40,7 +40,9 @@ export class TodoCreateComponent extends ObservableStoreComponent<
 
   create() {
     this.errorMessage = null;
-    if (!this.formGroup.value.title?.length) { return; }
+    if (!this.formGroup.value.title?.length) {
+      return;
+    }
 
     this.subscribeSafe(
       'create',
