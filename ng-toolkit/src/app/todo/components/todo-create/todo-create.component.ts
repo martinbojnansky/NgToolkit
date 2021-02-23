@@ -19,8 +19,8 @@ export class TodoCreateComponent extends ObservableStoreComponent<
   TodoState,
   TodoAction
 > {
-  get isBusy(): boolean {
-    return this.isSubscribtionInProgress('create');
+  get busy(): boolean {
+    return this.subscribed('create');
   }
 
   errorMessage: string;

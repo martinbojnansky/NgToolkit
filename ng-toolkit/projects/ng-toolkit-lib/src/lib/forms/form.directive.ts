@@ -20,7 +20,7 @@ export class FormDirective implements OnInit, OnChanges {
   formState: any;
 
   @Input()
-  isEditEnabled: boolean;
+  editEnabled: boolean;
 
   constructor() {}
 
@@ -41,7 +41,7 @@ export class FormDirective implements OnInit, OnChanges {
 
     if (formStateChange) {
       this.applyFormState(formStateChange.currentValue);
-    } else if (changes[nameof<FormDirective>('isEditEnabled')]) {
+    } else if (changes[nameof<FormDirective>('editEnabled')]) {
       this.updateFormEnabled();
     }
   }
@@ -63,7 +63,7 @@ export class FormDirective implements OnInit, OnChanges {
     onlySelf?: boolean;
   }) {
     const opts = { emitEvent: false, ...options };
-    this.isEditEnabled
+    this.editEnabled
       ? this.formGroup.enable(opts)
       : this.formGroup.disable(opts);
   }

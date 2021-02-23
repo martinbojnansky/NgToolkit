@@ -27,15 +27,15 @@ export class TodoDetailComponent
     return this.todoStore.state.todo;
   }
 
-  get isEditEnabled() {
+  get editEnabled() {
     return (this.todo?.item && !this.todo?.isBusy) || this.formGroup.dirty;
   }
 
   readonly formGroup = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      description: [''],
-      completed: [false],
-    } as { [key in keyof TodoDetail]: any });
+    title: ['', [Validators.required]],
+    description: [''],
+    completed: [false],
+  } as { [key in keyof TodoDetail]: any });
 
   constructor(
     protected todoStore: TodoStore,

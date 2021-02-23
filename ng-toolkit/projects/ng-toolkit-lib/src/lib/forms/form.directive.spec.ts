@@ -16,7 +16,7 @@ import { FormDirective } from './form.directive';
       ngtForm
       [formGroup]="formGroup"
       [formState]="formState"
-      [isEditEnabled]="isEditEnabled"
+      [editEnabled]="editEnabled"
     >
       <label>
         <span>First Name:</span>
@@ -37,7 +37,7 @@ export class FormTestComponent {
   public formState: any;
 
   @Input()
-  public isEditEnabled = true;
+  public editEnabled = true;
 
   constructor() {}
 }
@@ -126,7 +126,7 @@ describe('FormDirective', () => {
   });
 
   it('should enable controls when patching', () => {
-    component.isEditEnabled = true;
+    component.editEnabled = true;
     component.formState = { ...newState };
     fixture.detectChanges();
     expect(component.formGroup.enabled).toBeTruthy();
@@ -136,7 +136,7 @@ describe('FormDirective', () => {
   });
 
   it('should disable controls when patching', () => {
-    component.isEditEnabled = false;
+    component.editEnabled = false;
     component.formState = { ...newState };
     fixture.detectChanges();
     expect(component.formGroup.enabled).toBeFalsy();
@@ -146,25 +146,25 @@ describe('FormDirective', () => {
   });
 
   it('should not enable when already enabled', () => {
-    expect(component.isEditEnabled).toBeTruthy();
+    expect(component.editEnabled).toBeTruthy();
     const enableSpy = spyOn(component.formGroup, 'enable');
-    component.isEditEnabled = true;
+    component.editEnabled = true;
     fixture.detectChanges();
     expect(enableSpy).not.toHaveBeenCalled();
   });
 
   it('should not emit value change event when enabling', () => {
-    component.isEditEnabled = false;
+    component.editEnabled = false;
     fixture.detectChanges();
     const enableSpy = spyOn(component.formGroup, 'enable');
-    component.isEditEnabled = true;
+    component.editEnabled = true;
     fixture.detectChanges();
     expect(enableSpy).toHaveBeenCalledWith({ emitEvent: false });
   });
 
   it('should not emit value change event when disabling', () => {
     const disableSpy = spyOn(component.formGroup, 'disable');
-    component.isEditEnabled = false;
+    component.editEnabled = false;
     fixture.detectChanges();
     expect(disableSpy).toHaveBeenCalledWith({ emitEvent: false });
   });

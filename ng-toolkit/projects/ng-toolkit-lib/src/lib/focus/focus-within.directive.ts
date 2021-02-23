@@ -20,7 +20,7 @@ export class FocusWithinDirective {
   constructor(protected elementRef: ElementRef) {}
 
   @HostBinding('class.ngt-state_focused')
-  protected hasFocus: boolean;
+  protected focused: boolean;
 
   @HostListener('document:click', ['$event'])
   protected onClick(e: Event) {
@@ -55,12 +55,12 @@ export class FocusWithinDirective {
       target = document.activeElement;
     }
 
-    const hasFocus = this.elementRef.nativeElement.contains(target);
-    if (this.hasFocus === hasFocus) {
+    const focused = this.elementRef.nativeElement.contains(target);
+    if (this.focused === focused) {
       return;
     }
 
-    this.hasFocus = hasFocus;
-    hasFocus ? this.focusIn.emit(e) : this.focusOut.emit(e);
+    this.focused = focused;
+    focused ? this.focusIn.emit(e) : this.focusOut.emit(e);
   }
 }

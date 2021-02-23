@@ -19,10 +19,6 @@ export class Harness<T> {
     return this._el;
   }
 
-  protected _fixture: ComponentFixture<T>;
-  protected _component: T;
-  protected _el: HTMLElement;
-
   constructor(protected componentFactory: () => ComponentFixture<T>) {}
 
   async create(props?: HarnessProps<T>): Promise<void> {
@@ -48,4 +44,8 @@ export class Harness<T> {
   whenStable(): Promise<void> {
     return this._fixture.whenStable();
   }
+
+  protected _fixture: ComponentFixture<T>;
+  protected _component: T;
+  protected _el: HTMLElement;
 }

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
 export abstract class FormDraftService {
-  public abstract get hasAnyDraft(): boolean;
+  public abstract get anyDraft(): boolean;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormDraftServiceImpl implements FormDraftService {
-  get hasAnyDraft() {
+  get anyDraft() {
     return !!document.querySelector('form.ng-dirty');
   }
 }

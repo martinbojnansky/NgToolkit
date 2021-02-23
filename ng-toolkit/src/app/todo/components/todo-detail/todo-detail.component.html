@@ -29,7 +29,7 @@
   ngtForm
   [formGroup]="formGroup"
   [formState]="todo?.item"
-  [isEditEnabled]="isEditEnabled"
+  [editEnabled]="editEnabled"
 >
   <div class="input-group mb-3">
     <div class="input-group-prepend">
@@ -71,7 +71,7 @@
     class="btn btn-light"
     title="Delete"
     (click)="delete()"
-    [disabled]="!isEditEnabled"
+    [disabled]="!editEnabled"
   >
     <svg
       width="1em"

@@ -16,17 +16,17 @@ export class FormDraftGuard implements CanDeactivate<any> {
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot
   ) {
-    if (this.formDraftService.hasAnyDraft && !this.isIgnoring) {
+    if (this.formDraftService.anyDraft && !this.ignoring) {
       return false;
     }
 
-    this.isIgnoring = false;
+    this.ignoring = false;
     return true;
   }
 
   public ignoreOnce(): void {
-    this.isIgnoring = true;
+    this.ignoring = true;
   }
 
-  protected isIgnoring = false;
+  protected ignoring = false;
 }

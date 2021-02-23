@@ -68,6 +68,7 @@ describe('ObservableStore', () => {
       store.stateChange$.subscribe((change) => {
         const expectedChange = {
           action: 'patchWholeState',
+          state: newState,
           propChanges: {
             lastName: {
               prevValue: initialState.lastName,
@@ -91,6 +92,7 @@ describe('ObservableStore', () => {
       store.stateChange$.subscribe((change) => {
         const expectedChange = {
           action: 'patchPartialState',
+          state: newState,
           propChanges: {
             lastName: {
               prevValue: initialState.lastName,
@@ -118,6 +120,7 @@ describe('ObservableStore', () => {
         actionCalled++;
         const expectedChange = {
           action: 'null',
+          state: initialState,
           propChanges: {},
         } as TestStateChange;
         expect(change).toEqual(expectedChange);
@@ -141,6 +144,7 @@ describe('ObservableStore', () => {
       store.stateChange$.subscribe((change) => {
         const expectedChange = {
           action: 'setState',
+          state: {},
           propChanges: {
             firstName: {
               prevValue: initialState.firstName,
@@ -169,6 +173,7 @@ describe('ObservableStore', () => {
       store.stateChange$.subscribe((change) => {
         const expectedChange = {
           action: 'setState',
+          state: { lastName: newState.lastName },
           propChanges: {
             firstName: {
               prevValue: initialState.firstName,
@@ -200,6 +205,7 @@ describe('ObservableStore', () => {
       store.stateChange$.subscribe((change) => {
         const expectedChange = {
           action: 'setState',
+          state: newState,
           propChanges: {
             firstName: { prevValue: undefined, nextValue: newState.firstName },
             lastName: { prevValue: undefined, nextValue: newState.lastName },
@@ -223,6 +229,7 @@ describe('ObservableStore', () => {
         called++;
         const expectedChange = {
           action: 'patchPartialState',
+          state: newState,
           propChanges: {
             lastName: {
               prevValue: initialState.lastName,

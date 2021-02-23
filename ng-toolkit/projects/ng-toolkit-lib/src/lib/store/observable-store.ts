@@ -8,6 +8,7 @@ export interface ObservableStoreConfig {
 
 export interface ObservableStateChange<TState, TAction> {
   action: TAction;
+  state: TState;
   propChanges: ObservableStatePropChanges<TState>;
 }
 
@@ -118,8 +119,8 @@ export class ObservableStore<TState, TAction> {
   }
 
   protected constructor(
-    protected initialState: Partial<TState> = {},
-    private _config: ObservableStoreConfig = {}
+    protected readonly initialState: Partial<TState> = {},
+    protected readonly _config: ObservableStoreConfig = {}
   ) {
     this._stateChange$ = new Subject();
     this._state$ = new BehaviorSubject(initialState as TState);
@@ -155,6 +156,7 @@ export class ObservableStore<TState, TAction> {
 
     return {
       action,
+      state: nextState,
       propChanges: statePropChanges,
     };
   }

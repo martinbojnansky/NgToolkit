@@ -1,4 +1,4 @@
-<form ngtForm [formGroup]="formGroup" [isEditEnabled]="!isBusy">
+<form ngtForm [formGroup]="formGroup" [editEnabled]="!busy">
   <div class="form-group">
     <input
       type="text"
@@ -9,7 +9,7 @@
       (keydown.enter)="create()"
     />
   </div>
-  <app-loading-overlay *ngIf="isBusy"></app-loading-overlay>
+  <app-loading-overlay *ngIf="busy"></app-loading-overlay>
 </form>
 
 <div *ngIf="errorMessage" class="alert alert-danger" role="alert">

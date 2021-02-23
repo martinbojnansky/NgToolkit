@@ -59,7 +59,7 @@ describe('IFormDraftService', () => {
 
   it('should return false when form is pristine', () => {
     expect(component.formGroup.pristine).toBeTruthy();
-    expect(service.hasAnyDraft).toBeFalsy();
+    expect(service.anyDraft).toBeFalsy();
   });
 
   it('should return true when form is dirty', async () => {
@@ -71,6 +71,6 @@ describe('IFormDraftService', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(component.formGroup.dirty).toBeTruthy();
-    expect(service.hasAnyDraft).toBeTruthy();
+    expect(service.anyDraft).toBeTruthy();
   });
 });

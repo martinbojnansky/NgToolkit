@@ -25,21 +25,19 @@ describe('FormDraftGuard', () => {
   });
 
   it('should not deactivate when unsaved changes', () => {
-    spyOnProperty(formDraftService, 'hasAnyDraft', 'get').and.returnValue(true);
+    spyOnProperty(formDraftService, 'anyDraft', 'get').and.returnValue(true);
     expect(guard.canDeactivate(null, null, null, null)).toBeFalsy();
   });
 
   it('should deactivate when function ignoreOnce() is called and should not deactivate after second call', () => {
-    spyOnProperty(formDraftService, 'hasAnyDraft', 'get').and.returnValue(true);
+    spyOnProperty(formDraftService, 'anyDraft', 'get').and.returnValue(true);
     guard.ignoreOnce();
     expect(guard.canDeactivate(null, null, null, null)).toBeTruthy();
     expect(guard.canDeactivate(null, null, null, null)).toBeFalsy();
   });
 
   it('should deactivate when no unsaved changes', () => {
-    spyOnProperty(formDraftService, 'hasAnyDraft', 'get').and.returnValue(
-      false
-    );
+    spyOnProperty(formDraftService, 'anyDraft', 'get').and.returnValue(false);
     expect(guard.canDeactivate(null, null, null, null)).toBeTruthy();
   });
 });
