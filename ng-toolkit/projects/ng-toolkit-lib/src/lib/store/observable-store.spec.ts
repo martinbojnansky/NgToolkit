@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { ObservableStateChange, ObservableStore } from './observable-store';
+import { skip } from 'rxjs/operators';
+import { ObservableStore, ObservableStoreChange } from './observable-store';
 
 export interface TestState {
   firstName: string;
@@ -24,7 +25,7 @@ export const newState: TestState = {
 };
 
 export interface TestStateChange
-  extends ObservableStateChange<TestState, TestAction> {}
+  extends ObservableStoreChange<TestState, TestAction> {}
 
 @Injectable()
 export class TestStore extends ObservableStore<TestState, TestAction> {
@@ -33,7 +34,7 @@ export class TestStore extends ObservableStore<TestState, TestAction> {
   }
 }
 
-describe('ObservableStore', () => {
+fdescribe('ObservableStore', () => {
   let store: TestStore;
 
   beforeEach(() => {
@@ -65,7 +66,7 @@ describe('ObservableStore', () => {
   it(
     'should patch whole state',
     waitForAsync(() => {
-      store.stateChange$.subscribe((change) => {
+      store.changes$.pipe(skip(1)).subscribe((change) => {
         const expectedChange = {
           action: 'patchWholeState',
           state: newState,
@@ -77,19 +78,17 @@ describe('ObservableStore', () => {
           },
         } as TestStateChange;
         expect(change).toEqual(expectedChange);
-        expect(store.stateChange).toEqual(expectedChange);
       });
 
       patchWholeState();
       expect(store.state).not.toBe(newState);
-      expect(store.state).toEqual(newState);
     })
   );
 
   it(
     'should patch partial state',
     waitForAsync(() => {
-      store.stateChange$.subscribe((change) => {
+      store.changes$.pipe(skip(1)).subscribe((change) => {
         const expectedChange = {
           action: 'patchPartialState',
           state: newState,
@@ -101,47 +100,17 @@ describe('ObservableStore', () => {
           },
         } as TestStateChange;
         expect(change).toEqual(expectedChange);
-        expect(store.stateChange).toEqual(expectedChange);
       });
 
       patchPartialState();
       expect(store.state).not.toBe(newState);
-      expect(store.state).toEqual(newState);
-    })
-  );
-
-  it(
-    'should emmit only change when patch is null',
-    waitForAsync(() => {
-      let actionCalled = 0;
-      let stateCalled = -1; // State is of type BehaviorSubject which will be called at least once on subscribe.
-
-      store.stateChange$.subscribe((change) => {
-        actionCalled++;
-        const expectedChange = {
-          action: 'null',
-          state: initialState,
-          propChanges: {},
-        } as TestStateChange;
-        expect(change).toEqual(expectedChange);
-        expect(store.stateChange).toEqual(expectedChange);
-      });
-      store.state$.subscribe((state: TestState) => {
-        stateCalled++;
-        expect(store.state).toBe(state);
-      });
-
-      store.patchState('null', null);
-
-      expect(actionCalled).toBe(1);
-      expect(stateCalled).toBe(0);
     })
   );
 
   it(
     'should set empty state',
     waitForAsync(() => {
-      store.stateChange$.subscribe((change) => {
+      store.changes$.pipe(skip(1)).subscribe((change) => {
         const expectedChange = {
           action: 'setState',
           state: {},
@@ -157,7 +126,6 @@ describe('ObservableStore', () => {
           },
         } as TestStateChange;
         expect(change).toEqual(expectedChange);
-        expect(store.stateChange).toEqual(expectedChange);
       });
 
       expect(store.state).toBe(initialState);
@@ -170,7 +138,7 @@ describe('ObservableStore', () => {
   it(
     'should set partial state',
     waitForAsync(() => {
-      store.stateChange$.subscribe((change) => {
+      store.changes$.pipe(skip(1)).subscribe((change) => {
         const expectedChange = {
           action: 'setState',
           state: { lastName: newState.lastName },
@@ -186,7 +154,6 @@ describe('ObservableStore', () => {
           },
         } as TestStateChange;
         expect(change).toEqual(expectedChange);
-        expect(store.stateChange).toEqual(expectedChange);
       });
 
       expect(store.state).toBe(initialState);
@@ -202,7 +169,7 @@ describe('ObservableStore', () => {
       store.setState('setState', {});
       expect(store.state).toEqual({} as any);
 
-      store.stateChange$.subscribe((change) => {
+      store.changes$.pipe(skip(1)).subscribe((change) => {
         const expectedChange = {
           action: 'setState',
           state: newState,
@@ -212,7 +179,6 @@ describe('ObservableStore', () => {
           },
         } as TestStateChange;
         expect(change).toEqual(expectedChange);
-        expect(store.stateChange).toEqual(expectedChange);
       });
 
       store.setState('setState', newState);
@@ -221,51 +187,14 @@ describe('ObservableStore', () => {
     })
   );
 
-  it(
-    'should emit new change after subscribe',
-    waitForAsync(() => {
-      let called = 0;
-      store.stateChange$.subscribe((change) => {
-        called++;
-        const expectedChange = {
-          action: 'patchPartialState',
-          state: newState,
-          propChanges: {
-            lastName: {
-              prevValue: initialState.lastName,
-              nextValue: newState.lastName,
-            },
-          },
-        } as TestStateChange;
-        expect(change).toEqual(expectedChange);
-        expect(store.stateChange).toEqual(expectedChange);
-      });
-
-      patchPartialState();
-      expect(called).toBe(1);
-    })
-  );
-
-  it(
-    'should not emit last change on subscribe',
-    waitForAsync(() => {
-      let called = 0;
-      patchPartialState();
-      store.stateChange$.subscribe((change) => {
-        called++;
-      });
-      expect(called).toBe(0);
-    })
-  );
-
-  it('should notify state subscriber on patch whole state', () => {
+  it('should notify subscriber on patch whole state', () => {
     let called = 0;
 
-    store.state$.subscribe((state) => {
+    store.changes$.subscribe((change) => {
       if (called === 0) {
-        expect(state).toEqual(initialState);
+        expect(change.state).toEqual(initialState);
       } else {
-        expect(state).toEqual(newState);
+        expect(change.state).toEqual(newState);
       }
       called++;
     });
@@ -275,14 +204,14 @@ describe('ObservableStore', () => {
     expect(called).toBe(2);
   });
 
-  it('should notify state subscriber on patch partial state', () => {
+  it('should notify subscriber on patch partial state', () => {
     let called = 0;
 
-    store.state$.subscribe((state) => {
+    store.changes$.subscribe((change) => {
       if (called === 0) {
-        expect(state).toEqual(initialState);
+        expect(change.state).toEqual(initialState);
       } else {
-        expect(state).toEqual(newState);
+        expect(change.state).toEqual(newState);
       }
       called++;
     });
@@ -297,7 +226,7 @@ describe('ObservableStore', () => {
     waitForAsync(() => {
       let called = 0;
 
-      const subscription = store.state$.subscribe(() => {
+      const subscription = store.changes$.subscribe(() => {
         called++;
       });
       expect(called).toBe(1);
@@ -331,7 +260,7 @@ describe('ObservableStore', () => {
     expect(logSpy).toHaveBeenCalledWith({
       action: 'patchWholeState',
       patch: newState,
-      nextState: newState,
+      state: newState,
       prevState: initialState,
       propChanges: {
         lastName: {
@@ -351,7 +280,7 @@ describe('ObservableStore', () => {
     expect(logSpy).toHaveBeenCalledWith({
       action: 'patchPartialState',
       patch: { lastName: newState.lastName },
-      nextState: newState,
+      state: newState,
       prevState: initialState,
       propChanges: {
         lastName: {
@@ -371,7 +300,7 @@ describe('ObservableStore', () => {
     expect(logSpy).toHaveBeenCalledWith({
       action: 'setState',
       patch: {},
-      nextState: {},
+      state: {},
       prevState: initialState,
       propChanges: {
         firstName: { prevValue: initialState.firstName, nextValue: undefined },
@@ -379,16 +308,6 @@ describe('ObservableStore', () => {
       },
     });
   });
-
-  it(
-    'should update state before emitting change',
-    waitForAsync(() => {
-      store.stateChange$.subscribe((change) => {
-        expect(store.state).toEqual(newState);
-      });
-      patchPartialState();
-    })
-  );
 
   // TODO: Test asyncAction.
 });
@@ -401,7 +320,7 @@ export enum TestActionEnum {
 }
 
 export interface TestStateChangeEnummed
-  extends ObservableStateChange<TestState, TestActionEnum> {}
+  extends ObservableStoreChange<TestState, TestActionEnum> {}
 
 @Injectable()
 export class TestStoreEnummed extends ObservableStore<
@@ -428,7 +347,7 @@ describe('ObservableStoreEnummed', () => {
   it(
     'should be able to use enum action',
     waitForAsync(() => {
-      store.stateChange$.subscribe((change) => {
+      store.changes$.subscribe((change) => {
         const expectedChange = {
           action: TestActionEnum.patchPartialState,
           propChanges: {
@@ -443,7 +362,6 @@ describe('ObservableStoreEnummed', () => {
           lastName: newState.lastName,
         });
         expect(change).toEqual(expectedChange);
-        expect(store.stateChange).toEqual(expectedChange);
       });
     })
   );

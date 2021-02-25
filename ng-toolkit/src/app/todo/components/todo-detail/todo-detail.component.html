@@ -1,93 +1,95 @@
-<div class="mb-2 d-flex flex-row justify-content-between">
-  <span>
-    <app-loading-overlay *ngIf="todo?.isBusy"></app-loading-overlay>
-  </span>
-  <span>
-    <a class="btn btn-light" title="Hide" routerLink="..">
+<ng-container *ngIf="props$ | async as props">
+  <div class="mb-2 d-flex flex-row justify-content-between">
+    <span>
+      <app-loading-overlay *ngIf="props.todo?.isBusy"></app-loading-overlay>
+    </span>
+    <span>
+      <a class="btn btn-light" title="Hide" routerLink="..">
+        <svg
+          width="1em"
+          height="1em"
+          viewBox="0 0 16 16"
+          class="bi bi-chevron-right"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+          />
+        </svg>
+      </a>
+    </span>
+  </div>
+
+  <div *ngIf="props.todo?.error" class="alert alert-danger" role="alert">
+    {{ props.todo.error?.message }}
+  </div>
+
+  <form
+    ngtForm
+    [formGroup]="formGroup"
+    [formState]="props.todo?.item"
+    [editEnabled]="props.editEnabled"
+  >
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input
+            type="checkbox"
+            formControlName="completed"
+            aria-label="Completed"
+          />
+        </div>
+      </div>
+      <input
+        type="text"
+        class="form-control form-control-lg"
+        formControlName="title"
+        placeholder="Title"
+        aria-label="Title"
+      />
+      <div class="invalid-feedback">Title is required.</div>
+    </div>
+
+    <div class="form-group">
+      <textarea
+        class="form-control"
+        formControlName="description"
+        placeholder="Description"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <small class="form-text text-muted"
+      >Created at: {{ props.todo?.item?.createdAt | date: "medium" }}</small
+    >
+  </form>
+
+  <div class="d-flex flex-row justify-content-end mt-2">
+    <button
+      type="button"
+      class="btn btn-light"
+      title="Delete"
+      (click)="delete()"
+      [disabled]="!props.editEnabled"
+    >
       <svg
         width="1em"
         height="1em"
         viewBox="0 0 16 16"
-        class="bi bi-chevron-right"
+        class="bi bi-trash"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
+          d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+        />
+        <path
           fill-rule="evenodd"
-          d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
         />
       </svg>
-    </a>
-  </span>
-</div>
-
-<div *ngIf="todo?.error" class="alert alert-danger" role="alert">
-  {{ todo.error?.message }}
-</div>
-
-<form
-  ngtForm
-  [formGroup]="formGroup"
-  [formState]="todo?.item"
-  [editEnabled]="editEnabled"
->
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <div class="input-group-text">
-        <input
-          type="checkbox"
-          formControlName="completed"
-          aria-label="Completed"
-        />
-      </div>
-    </div>
-    <input
-      type="text"
-      class="form-control form-control-lg"
-      formControlName="title"
-      placeholder="Title"
-      aria-label="Title"
-    />
-    <div class="invalid-feedback">Title is required.</div>
+    </button>
   </div>
-
-  <div class="form-group">
-    <textarea
-      class="form-control"
-      formControlName="description"
-      placeholder="Description"
-      rows="3"
-    ></textarea>
-  </div>
-
-  <small class="form-text text-muted"
-    >Created at: {{ todo?.item?.createdAt | date: "medium" }}</small
-  >
-</form>
-
-<div class="d-flex flex-row justify-content-end mt-2">
-  <button
-    type="button"
-    class="btn btn-light"
-    title="Delete"
-    (click)="delete()"
-    [disabled]="!editEnabled"
-  >
-    <svg
-      width="1em"
-      height="1em"
-      viewBox="0 0 16 16"
-      class="bi bi-trash"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-      />
-      <path
-        fill-rule="evenodd"
-        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-      />
-    </svg>
-  </button>
-</div>
+</ng-container>

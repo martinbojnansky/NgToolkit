@@ -1,12 +1,27 @@
 import { Injectable } from '@angular/core';
-import { nameof } from 'projects/ng-toolkit-lib/src/public-api';
+import {
+  nameof,
+  ObservableStoreChange,
+  ObservableStoreService,
+} from 'projects/ng-toolkit-lib/src/public-api';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DatasetQuery } from 'src/app/core/models';
 import { ApiService } from 'src/app/core/services/api.service';
 import { TodoDetail, TodoSummary } from '../../models';
-import { TodoStore } from '../../todo-store';
+import { TodoAction, TodoState, TodoStore } from '../../todo-store';
 
-export abstract class TodoService {
+export interface TodoServiceGetters {
+  editEnabled: boolean;
+}
+
+export abstract class TodoService
+  implements ObservableStoreService<TodoState, TodoAction, TodoServiceGetters> {
+  abstract stateChange$: Observable<
+    ObservableStoreChange<TodoState, TodoAction> & {
+      getters: TodoServiceGetters;
+    }
+  >;
   abstract createItem(title: string): Observable<void>;
   abstract readItems(): Observable<void>;
   abstract readItem(id: string): Observable<void>;
@@ -15,11 +30,24 @@ export abstract class TodoService {
 }
 
 @Injectable()
-export class TodoServiceImpl {
+export class TodoServiceImpl extends TodoService {
+  stateChange$ = this.todoStore.stateChange$.pipe(
+    map((sc) => ({
+      ...sc,
+      getters: {
+        editEnabled:
+          this.todoStore?.state?.todo?.item &&
+          !this.todoStore?.state?.todo?.isBusy,
+      },
+    }))
+  );
+
   constructor(
     protected todoStore: TodoStore,
     protected apiService: ApiService
-  ) { }
+  ) {
+    super();
+  }
 
   createItem(title: string) {
     return this.todoStore.patchStateAsync(

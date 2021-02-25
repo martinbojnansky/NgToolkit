@@ -1,17 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ObservableStateChange,
-  ObservableStoreComponent,
-} from 'ng-toolkit-lib';
-import { debounceTime, tap } from 'rxjs/operators';
-import { TodoAction, TodoState, TodoStore } from 'src/app/todo/todo-store';
+import { SubscribableComponent } from 'ng-toolkit-lib';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { TodoDetail } from '../../models';
 import { TodoService } from '../../services/todo/todo.service';
 @Component({
@@ -21,15 +12,15 @@ import { TodoService } from '../../services/todo/todo.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoDetailComponent
-  extends ObservableStoreComponent<TodoState, TodoAction>
+  extends SubscribableComponent
   implements OnInit {
-  get todo() {
-    return this.todoStore.state.todo;
-  }
-
-  get editEnabled() {
-    return (this.todo?.item && !this.todo?.isBusy) || this.formGroup.dirty;
-  }
+  readonly props$ = this.todoService.stateChange$.pipe(
+    map((sc) => ({
+      todo: sc.state.todo,
+      editEnabled: sc.getters.editEnabled,
+    })),
+    tap((x) => console.log(`${this.constructor.name} props updated:`, x))
+  );
 
   readonly formGroup = this.formBuilder.group({
     title: ['', [Validators.required]],
@@ -38,18 +29,15 @@ export class TodoDetailComponent
   } as { [key in keyof TodoDetail]: any });
 
   constructor(
-    protected todoStore: TodoStore,
-    protected changeDetectorRef: ChangeDetectorRef,
-    protected todoService: TodoService,
+    protected router: Router,
     protected activatedRoute: ActivatedRoute,
     protected formBuilder: FormBuilder,
-    protected router: Router
+    protected todoService: TodoService
   ) {
-    super(todoStore, changeDetectorRef);
+    super();
   }
 
   ngOnInit() {
-    super.ngOnInit();
     this.setupParamsObserver();
     this.setupAutoSave();
   }
@@ -93,7 +81,7 @@ export class TodoDetailComponent
     this.subscribeSafe(
       'save',
       this.todoService.updateItem({
-        ...this.todo.item,
+        ...this.props$['value'].todo.item,
         ...this.formGroup.value,
       }),
       null
@@ -102,25 +90,19 @@ export class TodoDetailComponent
 
   delete() {
     if (
-      confirm(`Are you sure you want to delete todo: ${this.todo?.item?.title}`)
+      confirm(
+        `Are you sure you want to delete todo: ${this.props$['value'].todo?.item?.title}`
+      )
     ) {
       this.subscribeSafe(
         'delete',
-        this.todoService.deleteItem(this.todo?.item?.id),
+        this.todoService.deleteItem(this.props$['value'].todo?.item?.id),
         {
           complete: () => {
             this.router.navigate(['..'], { relativeTo: this.activatedRoute });
           },
         }
       );
-    }
-  }
-
-  protected onStateChange(
-    change: ObservableStateChange<TodoState, TodoAction>
-  ): void {
-    if (change.propChanges.todo) {
-      this.markForChangeDetection();
     }
   }
 }

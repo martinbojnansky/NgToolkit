@@ -1,46 +1,38 @@
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { trySafe } from '../helpers';
 
-export interface ObservableStoreConfig {
-  log?: boolean;
-}
-
-export interface ObservableStateChange<TState, TAction> {
+export type ObservableStoreChange<TState, TAction> = {
   action: TAction;
   state: TState;
-  propChanges: ObservableStatePropChanges<TState>;
-}
+  propChanges: ObservableStorePropChanges<TState>;
+};
 
-export type ObservableStatePropChanges<TState> = {
+export type ObservableStorePropChanges<TState> = {
   [TProp in keyof TState]: {
     prevValue: TState[TProp];
     nextValue: TState[TProp];
   };
 };
 
-export interface ObservableStateEffects<TState, TPayload> {
+export type ObservableStateEffects<TState, TPayload> = {
   started?: () => Partial<TState>;
   completed?: (v: TPayload) => Partial<TState>;
   failed?: (e: Error) => Partial<TState>;
   cancelled?: () => Partial<TState>;
+};
+
+export interface ObservableStoreConfig {
+  log?: boolean;
 }
 
 export class ObservableStore<TState, TAction> {
-  get state(): Readonly<TState> {
-    return this._state$.getValue();
+  get state(): TState {
+    return this._change$.value?.state;
   }
 
-  get state$(): Observable<Readonly<TState>> {
-    return this._state$.asObservable();
-  }
-
-  get stateChange(): ObservableStateChange<TState, TAction> {
-    return this._stateChange;
-  }
-
-  get stateChange$(): Observable<ObservableStateChange<TState, TAction>> {
-    return this._stateChange$.asObservable();
+  get changes$(): Observable<ObservableStoreChange<TState, TAction>> {
+    return this._change$.asObservable();
   }
 
   get config(): ObservableStoreConfig {
@@ -50,8 +42,9 @@ export class ObservableStore<TState, TAction> {
   setState(action: TAction, state: Partial<TState>): void {
     const nextState: TState = state as TState;
     const patch = {};
-    const stateChange = this.buildStateChange(action, patch, nextState);
-    this.changeState(stateChange, patch, nextState);
+
+    const change = this.buildChange(action, patch, nextState);
+    this.changeState(change, patch, nextState);
   }
 
   patchState(action: TAction, patch: Partial<TState>): void {
@@ -59,9 +52,9 @@ export class ObservableStore<TState, TAction> {
       ...this.state,
       ...patch,
     } as TState;
-    const stateChange = this.buildStateChange(action, patch, nextState);
 
-    this.changeState(stateChange, patch, nextState);
+    const change = this.buildChange(action, patch, nextState);
+    this.changeState(change, patch, nextState);
   }
 
   patchStateAsync<T>(
@@ -119,18 +112,21 @@ export class ObservableStore<TState, TAction> {
   }
 
   protected constructor(
-    protected readonly initialState: Partial<TState> = {},
-    protected readonly _config: ObservableStoreConfig = {}
+    private readonly _initialState: Partial<TState> = {},
+    private readonly _config: ObservableStoreConfig = {}
   ) {
-    this._stateChange$ = new Subject();
-    this._state$ = new BehaviorSubject(initialState as TState);
+    this._change$ = new BehaviorSubject({
+      action: null,
+      state: _initialState as TState,
+      propChanges: null,
+    });
   }
 
-  protected buildStateChange(
+  private buildChange(
     action: TAction,
     patch: Partial<TState>,
     nextState: TState
-  ): ObservableStateChange<TState, TAction> {
+  ): ObservableStoreChange<TState, TAction> {
     let props: (keyof TState)[] = patch
       ? (Object.keys(patch) as (keyof TState)[])
       : [];
@@ -144,7 +140,7 @@ export class ObservableStore<TState, TAction> {
       );
     }
 
-    const statePropChanges: ObservableStatePropChanges<TState> = {} as ObservableStatePropChanges<TState>;
+    const statePropChanges: ObservableStorePropChanges<TState> = {} as ObservableStorePropChanges<TState>;
     for (const prop of props) {
       if (this.state[prop] !== nextState[prop]) {
         statePropChanges[prop] = {
@@ -161,30 +157,23 @@ export class ObservableStore<TState, TAction> {
     };
   }
 
-  private _stateChange: ObservableStateChange<TState, TAction>;
-  private _stateChange$: Subject<ObservableStateChange<TState, TAction>>;
-  private _state$: BehaviorSubject<Readonly<TState>>;
+  private _change$: BehaviorSubject<ObservableStoreChange<TState, TAction>>;
 
   private changeState(
-    stateChange: ObservableStateChange<TState, TAction>,
+    change: ObservableStoreChange<TState, TAction>,
     patch: Partial<TState>,
     nextState: TState
   ): void {
     if (this.config.log) {
       console.log({
-        action: stateChange.action,
+        action: change.action,
         patch,
-        nextState,
+        state: nextState,
+        propChanges: change.propChanges,
         prevState: this.state,
-        propChanges: stateChange.propChanges,
       });
     }
 
-    if (patch) {
-      this._state$.next(nextState);
-    }
-
-    this._stateChange = stateChange;
-    this._stateChange$.next(stateChange);
+    this._change$.next(change);
   }
 }
