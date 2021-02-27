@@ -34,7 +34,7 @@ export class TestStore extends ObservableStore<TestState, TestAction> {
   }
 }
 
-fdescribe('ObservableStore', () => {
+describe('ObservableStore', () => {
   let store: TestStore;
 
   beforeEach(() => {
@@ -347,9 +347,10 @@ describe('ObservableStoreEnummed', () => {
   it(
     'should be able to use enum action',
     waitForAsync(() => {
-      store.changes$.subscribe((change) => {
+      store.changes$.pipe(skip(1)).subscribe((change) => {
         const expectedChange = {
           action: TestActionEnum.patchPartialState,
+          state: newState,
           propChanges: {
             lastName: {
               prevValue: initialState.lastName,
@@ -358,13 +359,14 @@ describe('ObservableStoreEnummed', () => {
           },
         } as TestStateChangeEnummed;
 
-        store.patchState(TestActionEnum.patchPartialState, {
-          lastName: newState.lastName,
-        });
         expect(change).toEqual(expectedChange);
       });
+
+      store.patchState(TestActionEnum.patchPartialState, {
+        lastName: newState.lastName,
+      });
+      expect(store.snapshot.state.firstName).toBe(initialState.firstName);
+      expect(store.snapshot.state.lastName).toBe(newState.lastName);
     })
   );
-
-  // TODO: Test asyncAction.
 });

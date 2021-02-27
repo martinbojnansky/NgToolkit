@@ -1,33 +1,16 @@
 import { ObservableStore } from 'projects/ng-toolkit-lib/src/public-api';
-import { Dataset, Detail } from '../core/models';
-import { TodoDetail, TodoSummary } from './models';
+import { Dataset } from '../app-models';
+import { TodoSummary } from './todo-models';
 
 export type TodoState = {
   todos: Dataset<TodoSummary>;
-  todo: Detail<TodoDetail>;
 };
 
 export type TodoAction =
-  | 'createTodoStarted'
-  | 'createTodoCompleted'
-  | 'createTodoFailed'
-  | 'createTodoCancelled'
   | 'readTodosStarted'
   | 'readTodosCompleted'
   | 'readTodosFailed'
-  | 'readTodosCancelled'
-  | 'readTodoStarted'
-  | 'readTodoCompleted'
-  | 'readTodoFailed'
-  | 'readTodoCancelled'
-  | 'updateTodoStarted'
-  | 'updateTodoCompleted'
-  | 'updateTodoFailed'
-  | 'updateTodoCancelled'
-  | 'deleteTodoStarted'
-  | 'deleteTodoCompleted'
-  | 'deleteTodoFailed'
-  | 'deleteTodoCancelled';
+  | 'readTodosCancelled';
 
 export abstract class TodoStore extends ObservableStore<
   TodoState,

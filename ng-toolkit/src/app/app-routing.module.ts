@@ -3,12 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'todo', loadChildren: () => import('./todo/todo.module').then(m => m.TodoModule)
-  }
+    path: 'todo',
+    loadChildren: () => import('./todo/todo.module').then((m) => m.TodoModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

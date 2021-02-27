@@ -1,16 +1,15 @@
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { finalize, map, switchMap, tap } from 'rxjs/operators';
-import { trySafe } from '../helpers';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/internal/operators/map';
+import { Effects, effects } from '../rxjs';
 
-export type ObservableStoreSelect<TState, TAction> = {
+export type ObservableStoreSnapshot<TState, TAction> = {
   action: TAction;
-  props: TState;
-  changes$: Observable<ObservableStoreChange<TState, TAction>>;
+  state: TState;
 };
 
 export type ObservableStoreChange<TState, TAction> = {
   action: TAction;
-  props: TState;
+  state: TState;
   propChanges: ObservableStorePropChanges<TState>;
 };
 
@@ -21,24 +20,28 @@ export type ObservableStorePropChanges<TState> = {
   };
 };
 
-export type ObservableStateEffects<TState, TPayload> = {
-  started?: () => Partial<TState>;
-  completed?: (v: TPayload) => Partial<TState>;
-  failed?: (e: Error) => Partial<TState>;
-  cancelled?: () => Partial<TState>;
-};
+export interface ObservableStoreEffects<T, TState, TAction>
+  extends Effects<T, void> {
+  started?: () => [TAction, Partial<TState>];
+  completed?: (v: T) => [TAction, Partial<TState>];
+  failed?: (e: Error) => [TAction, Partial<TState>];
+  cancelled?: () => [TAction, Partial<TState>];
+}
 
 export interface ObservableStoreConfig {
   log?: boolean;
 }
 
 export class ObservableStore<TState, TAction> {
-  get snapshot(): ObservableStoreSelect<TState, TAction> {
+  get snapshot(): ObservableStoreSnapshot<TState, TAction> {
     return {
       action: this._change$.value?.action,
-      props: this._change$.value?.props,
-      changes$: this._change$.asObservable(),
+      state: this._change$.value?.state,
     };
+  }
+
+  get changes$(): Observable<ObservableStoreChange<TState, TAction>> {
+    return this._change$.asObservable();
   }
 
   get config(): ObservableStoreConfig {
@@ -55,7 +58,7 @@ export class ObservableStore<TState, TAction> {
 
   patchState(action: TAction, patch: Partial<TState>): void {
     const nextState: TState = {
-      ...this.snapshot.props,
+      ...this.snapshot.state,
       ...patch,
     } as TState;
 
@@ -64,56 +67,37 @@ export class ObservableStore<TState, TAction> {
   }
 
   patchStateAsync<T>(
-    action: TAction,
-    observable: Observable<T>,
-    effects: ObservableStateEffects<TState, T>
+    observable$: Observable<T>,
+    storeEffects: ObservableStoreEffects<T, TState, TAction>
   ): Observable<void> {
-    const actionBaseName = action
-      .toString()
-      .replace(/(Started|Completed|Failed|Cancelled)$/, '');
-    const actionNames = ([
-      `${actionBaseName}Started`,
-      `${actionBaseName}Completed`,
-      `${actionBaseName}Failed`,
-      `${actionBaseName}Cancelled`,
-    ] as any) as TAction[];
-
-    let isCompleted: boolean;
-
-    return of(1).pipe(
-      tap(() => {
-        this.patchState(
-          actionNames[0],
-          trySafe(() => effects.started())
-        );
-        isCompleted = false;
-      }),
-      switchMap(() => observable),
-      tap(
-        (v) => {
-          this.patchState(
-            actionNames[1],
-            trySafe(() => effects.completed(v))
-          );
-          isCompleted = true;
+    return observable$.pipe(
+      effects<T>({
+        started: () => {
+          if (storeEffects.started) {
+            const effect = storeEffects.started();
+            this.patchState(effect[0], effect[1]);
+          }
         },
-        (e) => {
-          this.patchState(
-            actionNames[2],
-            trySafe(() => effects.failed(e))
-          );
-          isCompleted = true;
-        }
-      ),
-      map((_) => {}),
-      finalize(() => {
-        if (!isCompleted) {
-          this.patchState(
-            actionNames[3],
-            trySafe(() => effects.cancelled())
-          );
-        }
-      })
+        completed: (v) => {
+          if (storeEffects.completed) {
+            const effect = storeEffects.completed(v);
+            this.patchState(effect[0], effect[1]);
+          }
+        },
+        failed: (e) => {
+          if (storeEffects.failed) {
+            const effect = storeEffects.failed(e);
+            this.patchState(effect[0], effect[1]);
+          }
+        },
+        cancelled: () => {
+          if (storeEffects.cancelled) {
+            const effect = storeEffects.cancelled();
+            this.patchState(effect[0], effect[1]);
+          }
+        },
+      }),
+      map((_) => {})
     );
   }
 
@@ -123,10 +107,12 @@ export class ObservableStore<TState, TAction> {
   ) {
     this._change$ = new BehaviorSubject({
       action: null,
-      props: _initialState as TState,
+      state: _initialState as TState,
       propChanges: null,
     });
   }
+
+  private _change$: BehaviorSubject<ObservableStoreChange<TState, TAction>>;
 
   private buildChange(
     action: TAction,
@@ -138,7 +124,7 @@ export class ObservableStore<TState, TAction> {
       : [];
     if (!props.length) {
       const allProps = [
-        ...Object.keys(this.snapshot.props),
+        ...Object.keys(this.snapshot.state),
         ...Object.keys(nextState),
       ] as (keyof TState)[];
       props = allProps.filter(
@@ -148,9 +134,9 @@ export class ObservableStore<TState, TAction> {
 
     const statePropChanges: ObservableStorePropChanges<TState> = {} as ObservableStorePropChanges<TState>;
     for (const prop of props) {
-      if (this.snapshot.props[prop] !== nextState[prop]) {
+      if (this.snapshot.state[prop] !== nextState[prop]) {
         statePropChanges[prop] = {
-          prevValue: this.snapshot.props[prop],
+          prevValue: this.snapshot.state[prop],
           nextValue: nextState[prop],
         };
       }
@@ -158,12 +144,10 @@ export class ObservableStore<TState, TAction> {
 
     return {
       action,
-      props: nextState,
+      state: nextState,
       propChanges: statePropChanges,
     };
   }
-
-  private _change$: BehaviorSubject<ObservableStoreChange<TState, TAction>>;
 
   private changeState(
     change: ObservableStoreChange<TState, TAction>,
@@ -173,10 +157,10 @@ export class ObservableStore<TState, TAction> {
     if (this.config.log) {
       console.log({
         action: change.action,
-        props: nextState,
+        state: nextState,
         patch,
         propChanges: change.propChanges,
-        prevProps: this.snapshot.props,
+        prevState: this.snapshot.state,
       });
     }
 
@@ -185,12 +169,12 @@ export class ObservableStore<TState, TAction> {
 }
 
 export class ObservableStoreQueries<TState, TAction> {
-  get props(): TState {
-    return this.store.snapshot.props;
+  get state(): TState {
+    return this.store.snapshot.state;
   }
 
   get changes$(): Observable<ObservableStoreChange<TState, TAction>> {
-    return this.store.snapshot.changes$;
+    return this.store.changes$;
   }
 
   constructor(protected store: ObservableStore<TState, TAction>) {}

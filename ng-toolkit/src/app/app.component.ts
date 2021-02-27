@@ -10,11 +10,11 @@ export class AppComponent {
   readonly samples = [
     {
       link: '',
-      label: 'Home'
+      label: 'Home',
     },
     {
       link: 'todo',
-      label: 'Todo List'
-    }
+      label: 'Todos',
+    },
   ];
 }

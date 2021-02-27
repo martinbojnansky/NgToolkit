@@ -1,7 +1,37 @@
-<ng-container *ngIf="changes$ | async">
-  <ul>
-    <li *ngFor="let item of queries.props.todos?.items">{{ item.title }}</li>
+<ng-container *ngIf="queries.changes$ | async">
+  <!-- toolbar -->
+  <div class="btn-group" role="group">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="updateList()"
+      title="Refresh"
+    >
+      🔄
+    </button>
+  </div>
+
+  <!-- list -->
+  <ul
+    *ngIf="queries.datasetNotEmpty(queries.state.todos); else emptyTemplate"
+    class="list-group mt-3"
+  >
+    <li *ngFor="let item of queries.state.todos?.items" class="list-group-item">
+      {{ item.title }}
+    </li>
   </ul>
-  empty: {{ queries.datasetEmpty(queries.props.todos) }} disabled:
-  {{ queries.detailDisabled(queries.props.todo) }}
+  <ng-template #emptyTemplate>
+    <p class="mt-3">No items.</p>
+  </ng-template>
+
+  <!-- loading overlay -->
+  <div
+    *ngIf="queries.state.todos?.busy"
+    class="position-fixed"
+    style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
+  >
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
 </ng-container>

@@ -1,5 +1,5 @@
 import { ObservableStoreQueries } from 'projects/ng-toolkit-lib/src/public-api';
-import { Dataset, Detail } from './core/models';
+import { Dataset } from './app-models';
 
 export abstract class AppQueries<
   TState,
@@ -11,13 +11,5 @@ export abstract class AppQueries<
 
   datasetNotEmpty<T>(dataset: Dataset<T>): boolean {
     return !this.datasetEmpty(dataset);
-  }
-
-  detailEnabled<T>(detail: Detail<T>): boolean {
-    return detail?.item && !detail?.isBusy;
-  }
-
-  detailDisabled<T>(detail: Detail<T>): boolean {
-    return !this.detailEnabled(detail);
   }
 }
