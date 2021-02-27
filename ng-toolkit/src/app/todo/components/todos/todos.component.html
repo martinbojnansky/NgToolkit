@@ -1,0 +1,7 @@
+<ng-container *ngIf="changes$ | async">
+  <ul>
+    <li *ngFor="let item of queries.props.todos?.items">{{ item.title }}</li>
+  </ul>
+  empty: {{ queries.datasetEmpty(queries.props.todos) }} disabled:
+  {{ queries.detailDisabled(queries.props.todo) }}
+</ng-container>

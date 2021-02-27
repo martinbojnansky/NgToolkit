@@ -2,9 +2,15 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { trySafe } from '../helpers';
 
+export type ObservableStoreSelect<TState, TAction> = {
+  action: TAction;
+  props: TState;
+  changes$: Observable<ObservableStoreChange<TState, TAction>>;
+};
+
 export type ObservableStoreChange<TState, TAction> = {
   action: TAction;
-  state: TState;
+  props: TState;
   propChanges: ObservableStorePropChanges<TState>;
 };
 
@@ -27,12 +33,12 @@ export interface ObservableStoreConfig {
 }
 
 export class ObservableStore<TState, TAction> {
-  get state(): TState {
-    return this._change$.value?.state;
-  }
-
-  get changes$(): Observable<ObservableStoreChange<TState, TAction>> {
-    return this._change$.asObservable();
+  get snapshot(): ObservableStoreSelect<TState, TAction> {
+    return {
+      action: this._change$.value?.action,
+      props: this._change$.value?.props,
+      changes$: this._change$.asObservable(),
+    };
   }
 
   get config(): ObservableStoreConfig {
@@ -49,7 +55,7 @@ export class ObservableStore<TState, TAction> {
 
   patchState(action: TAction, patch: Partial<TState>): void {
     const nextState: TState = {
-      ...this.state,
+      ...this.snapshot.props,
       ...patch,
     } as TState;
 
@@ -117,7 +123,7 @@ export class ObservableStore<TState, TAction> {
   ) {
     this._change$ = new BehaviorSubject({
       action: null,
-      state: _initialState as TState,
+      props: _initialState as TState,
       propChanges: null,
     });
   }
@@ -132,7 +138,7 @@ export class ObservableStore<TState, TAction> {
       : [];
     if (!props.length) {
       const allProps = [
-        ...Object.keys(this.state),
+        ...Object.keys(this.snapshot.props),
         ...Object.keys(nextState),
       ] as (keyof TState)[];
       props = allProps.filter(
@@ -142,9 +148,9 @@ export class ObservableStore<TState, TAction> {
 
     const statePropChanges: ObservableStorePropChanges<TState> = {} as ObservableStorePropChanges<TState>;
     for (const prop of props) {
-      if (this.state[prop] !== nextState[prop]) {
+      if (this.snapshot.props[prop] !== nextState[prop]) {
         statePropChanges[prop] = {
-          prevValue: this.state[prop],
+          prevValue: this.snapshot.props[prop],
           nextValue: nextState[prop],
         };
       }
@@ -152,7 +158,7 @@ export class ObservableStore<TState, TAction> {
 
     return {
       action,
-      state: nextState,
+      props: nextState,
       propChanges: statePropChanges,
     };
   }
@@ -167,13 +173,25 @@ export class ObservableStore<TState, TAction> {
     if (this.config.log) {
       console.log({
         action: change.action,
+        props: nextState,
         patch,
-        state: nextState,
         propChanges: change.propChanges,
-        prevState: this.state,
+        prevProps: this.snapshot.props,
       });
     }
 
     this._change$.next(change);
   }
+}
+
+export class ObservableStoreQueries<TState, TAction> {
+  get props(): TState {
+    return this.store.snapshot.props;
+  }
+
+  get changes$(): Observable<ObservableStoreChange<TState, TAction>> {
+    return this.store.snapshot.changes$;
+  }
+
+  constructor(protected store: ObservableStore<TState, TAction>) {}
 }

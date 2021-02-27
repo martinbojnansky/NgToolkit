@@ -1,21 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FormDraftGuard, nameof } from 'ng-toolkit-lib';
-import { TodoDetailComponent } from './components/todo-detail/todo-detail.component';
-import { TodoListComponent } from './components/todo-list/todo-list.component';
-import { TodoDetail } from './models';
+import { TodosComponent } from './components/todos/todos.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TodoListComponent,
-    children: [
-      {
-        path: `:${nameof<TodoDetail>('id')}`,
-        component: TodoDetailComponent,
-        canDeactivate: [FormDraftGuard],
-      },
-    ],
+    component: TodosComponent,
   },
 ];
 

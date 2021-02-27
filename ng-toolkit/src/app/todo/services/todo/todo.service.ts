@@ -1,27 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  nameof,
-  ObservableStoreChange,
-  ObservableStoreService,
-} from 'projects/ng-toolkit-lib/src/public-api';
+import { nameof } from 'projects/ng-toolkit-lib/src/public-api';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { DatasetQuery } from 'src/app/core/models';
 import { ApiService } from 'src/app/core/services/api.service';
 import { TodoDetail, TodoSummary } from '../../models';
-import { TodoAction, TodoState, TodoStore } from '../../todo-store';
+import { TodoStore } from '../../todo-store';
 
-export interface TodoServiceGetters {
-  editEnabled: boolean;
-}
-
-export abstract class TodoService
-  implements ObservableStoreService<TodoState, TodoAction, TodoServiceGetters> {
-  abstract stateChange$: Observable<
-    ObservableStoreChange<TodoState, TodoAction> & {
-      getters: TodoServiceGetters;
-    }
-  >;
+export abstract class TodoService {
   abstract createItem(title: string): Observable<void>;
   abstract readItems(): Observable<void>;
   abstract readItem(id: string): Observable<void>;
@@ -31,17 +16,6 @@ export abstract class TodoService
 
 @Injectable()
 export class TodoServiceImpl extends TodoService {
-  stateChange$ = this.todoStore.stateChange$.pipe(
-    map((sc) => ({
-      ...sc,
-      getters: {
-        editEnabled:
-          this.todoStore?.state?.todo?.item &&
-          !this.todoStore?.state?.todo?.isBusy,
-      },
-    }))
-  );
-
   constructor(
     protected todoStore: TodoStore,
     protected apiService: ApiService
@@ -62,14 +36,14 @@ export class TodoServiceImpl extends TodoService {
       {
         completed: (v) => ({
           todos: {
-            ...this.todoStore.state.todos,
+            ...this.todoStore.snapshot.props.todos,
             items: [
               {
                 id: v.id,
                 title: v.title,
                 completed: false,
               },
-              ...(this.todoStore.state.todos?.items || []),
+              ...(this.todoStore.snapshot.props.todos?.items || []),
             ],
           },
         }),
@@ -91,14 +65,14 @@ export class TodoServiceImpl extends TodoService {
       {
         started: () => ({
           todos: {
-            ...this.todoStore.state.todos,
+            ...this.todoStore.snapshot.props.todos,
             isBusy: true,
             error: null,
           },
         }),
         completed: (v) => ({
           todos: {
-            ...this.todoStore.state.todos,
+            ...this.todoStore.snapshot.props.todos,
             isBusy: false,
             error: null,
             items: v,
@@ -106,7 +80,7 @@ export class TodoServiceImpl extends TodoService {
         }),
         failed: (e) => ({
           todos: {
-            ...this.todoStore.state.todos,
+            ...this.todoStore.snapshot.props.todos,
             isBusy: false,
             error: { ...e, message: `Todos could not be loaded. ${e.message}` },
           },
@@ -122,16 +96,16 @@ export class TodoServiceImpl extends TodoService {
       {
         started: () => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: true,
-            item: this.todoStore.state.todos?.items?.find(
+            item: this.todoStore.snapshot.props.todos?.items?.find(
               (t) => t.id === id
             ) as TodoDetail,
           },
         }),
         completed: (v) => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: false,
             error: null,
             item: v,
@@ -139,14 +113,14 @@ export class TodoServiceImpl extends TodoService {
         }),
         failed: (e) => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: false,
             error: { ...e, message: `Todo could not be loaded. ${e.message}` },
           },
         }),
         cancelled: () => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: false,
             error: null,
           },
@@ -162,13 +136,13 @@ export class TodoServiceImpl extends TodoService {
       {
         started: () => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: true,
           },
         }),
         completed: (v) => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: false,
             error: null,
             item: v,
@@ -176,14 +150,14 @@ export class TodoServiceImpl extends TodoService {
         }),
         failed: (e) => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: false,
             error: { ...e, message: `Todo could not be saved. ${e.message}` },
           },
         }),
         cancelled: () => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: false,
             error: null,
           },
@@ -199,27 +173,28 @@ export class TodoServiceImpl extends TodoService {
       {
         started: () => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: true,
           },
         }),
         completed: (v) => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: false,
             error: null,
             item: null,
           },
           todos: {
-            ...this.todoStore.state.todos,
+            ...this.todoStore.snapshot.props.todos,
             items:
-              this.todoStore.state.todos?.items?.filter((t) => t.id !== id) ||
-              [],
+              this.todoStore.snapshot.props.todos?.items?.filter(
+                (t) => t.id !== id
+              ) || [],
           },
         }),
         failed: (e) => ({
           todo: {
-            ...this.todoStore.state.todo,
+            ...this.todoStore.snapshot.props.todo,
             isBusy: false,
             error: { ...e, message: `Todo could not be deleted. ${e.message}` },
           },

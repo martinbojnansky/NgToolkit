@@ -44,7 +44,7 @@ fdescribe('ObservableStore', () => {
 
   function patchWholeState(): void {
     store.patchState('patchWholeState', {
-      ...store.state,
+      ...store.snapshot.state,
       lastName: newState.lastName,
     });
   }
@@ -60,7 +60,7 @@ fdescribe('ObservableStore', () => {
   });
 
   it('should return initial state', () => {
-    expect(store.state).toBe(initialState);
+    expect(store.snapshot.state).toBe(initialState);
   });
 
   it(
@@ -81,7 +81,7 @@ fdescribe('ObservableStore', () => {
       });
 
       patchWholeState();
-      expect(store.state).not.toBe(newState);
+      expect(store.snapshot.state).not.toBe(newState);
     })
   );
 
@@ -103,7 +103,7 @@ fdescribe('ObservableStore', () => {
       });
 
       patchPartialState();
-      expect(store.state).not.toBe(newState);
+      expect(store.snapshot.state).not.toBe(newState);
     })
   );
 
@@ -128,10 +128,10 @@ fdescribe('ObservableStore', () => {
         expect(change).toEqual(expectedChange);
       });
 
-      expect(store.state).toBe(initialState);
+      expect(store.snapshot.state).toBe(initialState);
       store.setState('setState', {});
-      expect(store.state.firstName).toBeUndefined();
-      expect(store.state.lastName).toBeUndefined();
+      expect(store.snapshot.state.firstName).toBeUndefined();
+      expect(store.snapshot.state.lastName).toBeUndefined();
     })
   );
 
@@ -156,10 +156,10 @@ fdescribe('ObservableStore', () => {
         expect(change).toEqual(expectedChange);
       });
 
-      expect(store.state).toBe(initialState);
+      expect(store.snapshot.state).toBe(initialState);
       store.setState('setState', { lastName: newState.lastName });
-      expect(store.state.firstName).toBeUndefined();
-      expect(store.state.lastName).toBe(newState.lastName);
+      expect(store.snapshot.state.firstName).toBeUndefined();
+      expect(store.snapshot.state.lastName).toBe(newState.lastName);
     })
   );
 
@@ -167,7 +167,7 @@ fdescribe('ObservableStore', () => {
     'should set partial state',
     waitForAsync(() => {
       store.setState('setState', {});
-      expect(store.state).toEqual({} as any);
+      expect(store.snapshot.state).toEqual({} as any);
 
       store.changes$.pipe(skip(1)).subscribe((change) => {
         const expectedChange = {
@@ -182,8 +182,8 @@ fdescribe('ObservableStore', () => {
       });
 
       store.setState('setState', newState);
-      expect(store.state.firstName).toBe(newState.firstName);
-      expect(store.state.lastName).toBe(newState.lastName);
+      expect(store.snapshot.state.firstName).toBe(newState.firstName);
+      expect(store.snapshot.state.lastName).toBe(newState.lastName);
     })
   );
 

@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-import { ObservableStore } from 'ng-toolkit-lib';
-import { environment } from 'src/environments/environment';
+import { ObservableStore } from 'projects/ng-toolkit-lib/src/public-api';
 import { Dataset, Detail } from '../core/models';
 import { TodoDetail, TodoSummary } from './models';
 
-export interface TodoState {
+export type TodoState = {
   todos: Dataset<TodoSummary>;
   todo: Detail<TodoDetail>;
-}
+};
 
 export type TodoAction =
   | 'createTodoStarted'
@@ -31,9 +29,7 @@ export type TodoAction =
   | 'deleteTodoFailed'
   | 'deleteTodoCancelled';
 
-@Injectable()
-export class TodoStore extends ObservableStore<TodoState, TodoAction> {
-  constructor() {
-    super({}, { log: !environment.production });
-  }
-}
+export abstract class TodoStore extends ObservableStore<
+  TodoState,
+  TodoAction
+> {}
