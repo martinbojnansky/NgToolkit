@@ -1,0 +1,22 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "variable-name": {
+      "options": [
+        "allow-leading-underscore"
+      ]
+    },
+    "directive-selector": [
+      true,
+      "attribute",
+      "ngtl",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "ngtl",
+      "kebab-case"
+    ]
+  }
+}
