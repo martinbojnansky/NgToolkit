@@ -4,7 +4,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ObservableUnsubscriber } from 'ng-toolkit-lib';
+import { ObservableUnsubscriber } from 'dist/ng-toolkit-lib';
 import { filter, tap } from 'rxjs/operators';
 import { StoreSampleService } from '../../services/store-sample.service';
 import { StoreSampleQueries } from '../../store-sample-queries';

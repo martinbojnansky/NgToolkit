@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { uuid } from 'ng-toolkit-lib';
+import { uuid } from 'dist/ng-toolkit-lib';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { StoreSampleSummary } from '../store-sample-models';

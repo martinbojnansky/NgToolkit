@@ -1,4 +1,4 @@
-import { ObservableStoreQueries } from 'ng-toolkit-lib';
+import { ObservableStoreQueries } from 'dist/ng-toolkit-lib';
 import { Dataset } from './app-models';
 
 export abstract class AppQueries<

@@ -1,4 +1,4 @@
-import { ObservableStore } from 'ng-toolkit-lib';
+import { ObservableStore } from 'dist/ng-toolkit-lib';
 import {
   StoreSampleAction,
   StoreSampleState,
