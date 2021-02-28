@@ -1,5 +1,5 @@
 import { UuidObject } from '../app-models';
 
-export interface TodoSummary extends UuidObject {
+export interface StoreSampleSummary extends UuidObject {
   title: string;
 }

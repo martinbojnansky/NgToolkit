@@ -3,8 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'todo',
-    loadChildren: () => import('./todo/todo.module').then((m) => m.TodoModule),
+    path: 'store-sample',
+    loadChildren: () =>
+      import('./store-sample/store-sample.module').then(
+        (m) => m.StoreSampleModule
+      ),
   },
 ];
 

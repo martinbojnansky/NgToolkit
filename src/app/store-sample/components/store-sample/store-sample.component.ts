@@ -4,23 +4,21 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ObservableUnsubscriber } from 'projects/ng-toolkit-lib/src/public-api';
+import { ObservableUnsubscriber } from 'dist/ng-toolkit-lib';
 import { filter, tap } from 'rxjs/operators';
-import { TodoService } from '../../services/todo.service';
-import { TodoQueries } from '../../todo-queries';
+import { StoreSampleService } from '../../services/store-sample.service';
+import { StoreSampleQueries } from '../../store-sample-queries';
 
 @Component({
-  selector: 'app-todos',
-  templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.scss'],
+  selector: 'app-store-sample',
+  templateUrl: './store-sample.component.html',
+  styleUrls: ['./store-sample.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodosComponent implements OnInit, OnDestroy {
-  queries = this.todoQueries;
-
+export class StoreSampleComponent implements OnInit, OnDestroy {
   constructor(
-    protected todoQueries: TodoQueries,
-    protected todoService: TodoService
+    public query: StoreSampleQueries,
+    protected storeSampleService: StoreSampleService
   ) {}
 
   ngOnInit(): void {
@@ -33,15 +31,15 @@ export class TodosComponent implements OnInit, OnDestroy {
   }
 
   updateList(): void {
-    this.todoService
+    this.storeSampleService
       .readItems()
       .pipe(this.unsubscriber.onDestroyOrResubscribe('updateList'))
       .subscribe();
   }
 
   subscribeErrors(): void {
-    this.queries.changes$.pipe(
-      filter((c) => c.action === 'readTodosFailed'),
+    this.query.changes$.pipe(
+      filter((c) => c.action === 'readStoreSamplesFailed'),
       tap((c) => alert(`Loading failed.`)),
       this.unsubscriber.onDestroyOrResubscribe('subscribeErrors')
     );
