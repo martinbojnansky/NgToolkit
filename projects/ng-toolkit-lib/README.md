@@ -1,3 +1,3 @@
 # NgToolkitLib
 
-Not yet documented.
+npm install ng-toolkit-lib
