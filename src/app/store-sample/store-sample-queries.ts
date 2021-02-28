@@ -12,15 +12,15 @@ export class StoreSampleQueries extends ObservableStoreQueries<
   StoreSampleState,
   StoreSampleAction
 > {
+  constructor(protected store: StoreSampleStore) {
+    super(store);
+  }
+
   datasetEmpty<T>(dataset: Dataset<T>): boolean {
     return !dataset?.items?.length;
   }
 
   datasetNotEmpty<T>(dataset: Dataset<T>): boolean {
     return !this.datasetEmpty(dataset);
-  }
-
-  constructor(protected store: StoreSampleStore) {
-    super(store);
   }
 }
