@@ -10,7 +10,7 @@ import { StoreSampleService } from '../../services/store-sample.service';
 import { StoreSampleQueries } from '../../store-sample-queries';
 
 @Component({
-  selector: 'app-storeSamples',
+  selector: 'app-store-sample',
   templateUrl: './store-sample.component.html',
   styleUrls: ['./store-sample.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

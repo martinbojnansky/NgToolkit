@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AppQueries } from '../app-queries';
+import { ObservableStoreQueries } from 'ng-toolkit-lib';
+import { Dataset } from '../app-models';
 import {
   StoreSampleAction,
   StoreSampleState,
@@ -7,10 +8,18 @@ import {
 } from './store-sample-store';
 
 @Injectable()
-export class StoreSampleQueries extends AppQueries<
+export class StoreSampleQueries extends ObservableStoreQueries<
   StoreSampleState,
   StoreSampleAction
 > {
+  datasetEmpty<T>(dataset: Dataset<T>): boolean {
+    return !dataset?.items?.length;
+  }
+
+  datasetNotEmpty<T>(dataset: Dataset<T>): boolean {
+    return !this.datasetEmpty(dataset);
+  }
+
   constructor(protected store: StoreSampleStore) {
     super(store);
   }

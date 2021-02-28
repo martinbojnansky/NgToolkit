@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoreSampleTestingModule } from '../../store-sample-testing.module';
 import { StoreSampleComponent } from './store-sample.component';
 
-describe('StoreSamplesComponent', () => {
+describe('StoreSampleComponent', () => {
   let component: StoreSampleComponent;
   let fixture: ComponentFixture<StoreSampleComponent>;
 
