@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [master, dev/*]
+    branches-ignore: []
   pull_request:
-    branches: [master, dev/*]
+    branches-ignore: []
 
 jobs:
   build:
@@ -22,5 +22,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run build-lib:prod
-      - run: npm run test:prod
-      - run: npm run lint
+      - run: npm run test-lib:prod
+      - run: npm run lint-lib
+      - run: npm run build-sample:prod
+      - run: npm run test-sample:prod
+      - run: npm run lint-sample

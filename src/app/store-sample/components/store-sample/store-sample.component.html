@@ -13,10 +13,16 @@
 
   <!-- list -->
   <ul
-    *ngIf="queries.datasetNotEmpty(queries.state.todos); else emptyTemplate"
+    *ngIf="
+      queries.datasetNotEmpty(queries.state.storeSamples);
+      else emptyTemplate
+    "
     class="list-group mt-3"
   >
-    <li *ngFor="let item of queries.state.todos?.items" class="list-group-item">
+    <li
+      *ngFor="let item of queries.state.storeSamples?.items"
+      class="list-group-item"
+    >
       {{ item.title }}
     </li>
   </ul>
@@ -26,7 +32,7 @@
 
   <!-- loading overlay -->
   <div
-    *ngIf="queries.state.todos?.busy"
+    *ngIf="queries.state.storeSamples?.busy"
     class="position-fixed"
     style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
   >

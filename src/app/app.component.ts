@@ -13,8 +13,8 @@ export class AppComponent {
       label: 'Home',
     },
     {
-      link: 'todo',
-      label: 'Todos',
+      link: 'store-sample',
+      label: 'Store sample',
     },
   ];
 }
