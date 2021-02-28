@@ -1,4 +1,4 @@
-<ng-container *ngIf="queries.changes$ | async">
+<ng-container *ngIf="query.changes$ | async">
   <!-- toolbar -->
   <div class="btn-group" role="group">
     <button
@@ -13,14 +13,11 @@
 
   <!-- list -->
   <ul
-    *ngIf="
-      queries.datasetNotEmpty(queries.state.storeSamples);
-      else emptyTemplate
-    "
+    *ngIf="query.datasetNotEmpty(query.state.storeSamples); else emptyTemplate"
     class="list-group mt-3"
   >
     <li
-      *ngFor="let item of queries.state.storeSamples?.items"
+      *ngFor="let item of query.state.storeSamples?.items"
       class="list-group-item"
     >
       {{ item.title }}
@@ -32,7 +29,7 @@
 
   <!-- loading overlay -->
   <div
-    *ngIf="queries.state.storeSamples?.busy"
+    *ngIf="query.state.storeSamples?.busy"
     class="position-fixed"
     style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
   >

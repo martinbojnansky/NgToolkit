@@ -16,10 +16,8 @@ import { StoreSampleQueries } from '../../store-sample-queries';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreSampleComponent implements OnInit, OnDestroy {
-  queries = this.storeSampleQueries;
-
   constructor(
-    protected storeSampleQueries: StoreSampleQueries,
+    public query: StoreSampleQueries,
     protected storeSampleService: StoreSampleService
   ) {}
 
@@ -40,7 +38,7 @@ export class StoreSampleComponent implements OnInit, OnDestroy {
   }
 
   subscribeErrors(): void {
-    this.queries.changes$.pipe(
+    this.query.changes$.pipe(
       filter((c) => c.action === 'readStoreSamplesFailed'),
       tap((c) => alert(`Loading failed.`)),
       this.unsubscriber.onDestroyOrResubscribe('subscribeErrors')
