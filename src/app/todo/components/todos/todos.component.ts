@@ -4,7 +4,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ObservableUnsubscriber } from 'projects/ng-toolkit-lib/src/public-api';
+import { ObservableUnsubscriber } from 'ng-toolkit-lib';
 import { filter, tap } from 'rxjs/operators';
 import { TodoService } from '../../services/todo.service';
 import { TodoQueries } from '../../todo-queries';

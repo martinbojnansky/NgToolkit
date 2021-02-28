@@ -1,4 +1,4 @@
-import { ObservableStore } from 'projects/ng-toolkit-lib/src/public-api';
+import { ObservableStore } from 'ng-toolkit-lib';
 import { Dataset } from '../app-models';
 import { TodoSummary } from './todo-models';
 

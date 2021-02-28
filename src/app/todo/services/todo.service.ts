@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { uuid } from 'projects/ng-toolkit-lib/src/public-api';
+import { uuid } from 'ng-toolkit-lib';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { TodoSummary } from '../todo-models';

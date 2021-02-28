@@ -1,4 +1,4 @@
-import { ObservableStore } from 'projects/ng-toolkit-lib/src/public-api';
+import { ObservableStore } from 'ng-toolkit-lib';
 import { TodoAction, TodoState } from './todo/todo-store';
 
 export type AppState = TodoState; // Combine types with "&" operator.
