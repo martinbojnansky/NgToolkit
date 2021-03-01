@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { ObservableUnsubscriber } from 'dist/ng-toolkit-lib';
 import { filter, tap } from 'rxjs/operators';
+import { TranslationService } from 'src/app/translation/translation.module';
 import { StoreSampleService } from '../../services/store-sample.service';
 import { StoreSampleQueries } from '../../store-sample-queries';
 
@@ -18,7 +19,8 @@ import { StoreSampleQueries } from '../../store-sample-queries';
 export class StoreSampleComponent implements OnInit, OnDestroy {
   constructor(
     public query: StoreSampleQueries,
-    protected storeSampleService: StoreSampleService
+    protected storeSampleService: StoreSampleService,
+    public translationService: TranslationService
   ) {}
 
   ngOnInit(): void {
