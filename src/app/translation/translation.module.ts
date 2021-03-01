@@ -4,22 +4,23 @@ import { TranslationGuard } from './translation.guard';
 
 export type TranslationLang = 'en' | 'de';
 
-export interface TranslationValues {
-  welcomeMessage: string;
+export interface TranslationModules {
+  storeSample: {
+    welcomeMessage: string;
+    refreshButtonTitle: string;
+  };
 }
 
 @Injectable()
 export class TranslationService extends TranslationServiceBase<
   TranslationLang,
-  TranslationValues
+  TranslationModules
 > {
   constructor() {
-    super(localStorage, {
-      defaultLang: 'en',
-      onImportLang: (
-        lang: TranslationLang
-      ): Promise<{ localizedValues: TranslationValues }> =>
-        import(`src/app/translation/${lang}`),
+    super({
+      getLang: () => 'en',
+      importLang: (module: keyof TranslationModules, lang: TranslationLang) =>
+        import(`src/app/translation/${module}/${lang}`),
     });
   }
 }

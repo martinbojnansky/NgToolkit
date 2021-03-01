@@ -1,73 +1,53 @@
-import { Subject } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-export interface TranslationConfig<TLang, TLocalizedValues> {
-  defaultLang: TLang; // Get via lamda and use user locale as default
-  onImportLang: (lang: TLang) => Promise<{ localizedValues: TLocalizedValues }>;
+export interface TranslationConfig<TLang, TModules> {
+  getLang: () => TLang;
+  importLang: (
+    module: keyof TModules,
+    lang: TLang
+  ) => Promise<Partial<{ [TKey in keyof TModules]: TModules[TKey] }>>;
 }
 
-const LOCALE_SETTING_KEY = 'ngtl-lang'; // TODO: Get from config
-
-export abstract class TranslationService<TLang, TLocalizedValues> {
-  get lang() {
+export abstract class TranslationService<TLang, TModules> {
+  get lang(): TLang {
     return this._lang;
   }
 
-  get values() {
-    return this._values;
+  get modules(): Partial<TModules> {
+    return this._modules;
   }
 
   get config() {
     return this._config;
   }
 
-  get isLangChanging$() {
-    return this._isLangChanging$.asObservable();
+  constructor(private _config: TranslationConfig<TLang, TModules>) {
+    this._lang = this.config.getLang();
   }
 
-  constructor(
-    protected storage: Storage,
-    private _config: TranslationConfig<TLang, TLocalizedValues>
-  ) {
-    this.restoreLangSetting();
-  }
-
-  async changeLang(lang: TLang) {
-    if (this.lang === lang) {
-      return;
+  load(module: keyof TModules): Observable<boolean> {
+    if (this._modules[module]) {
+      return of(true);
     }
 
-    await this.setLang(lang);
+    return from(this.config.importLang(module, this.lang)).pipe(
+      map(
+        (m) => {
+          this._modules = <any>{
+            ...this.modules,
+            [module]: m[module],
+          };
+          console.log(m, this._modules);
+          return true;
+        },
+        () => {
+          return false;
+        }
+      )
+    );
   }
 
   private _lang: TLang;
-  private _values: TLocalizedValues;
-  private _isLangChanging$ = new Subject<boolean>();
-
-  private async setLang(lang: TLang) {
-    try {
-      this._isLangChanging$.next(true);
-      const m = await this.config.onImportLang(lang);
-      this._lang = lang;
-      this._values = m.localizedValues as TLocalizedValues;
-      this.storage.setItem(LOCALE_SETTING_KEY, lang.toString());
-    } catch (e) {
-      throw new Error(`Lang ${lang} not supported. ${JSON.stringify(e)}`);
-    } finally {
-      this._isLangChanging$.next(false);
-    }
-  }
-
-  private async setDefaultLang() {
-    await this.setLang(this.config.defaultLang);
-  }
-
-  private async restoreLangSetting() {
-    const langSetting = this.storage.getItem(LOCALE_SETTING_KEY);
-
-    if (langSetting) {
-      await this.setLang((langSetting as unknown) as TLang);
-    } else {
-      await this.setDefaultLang();
-    }
-  }
+  private _modules: Partial<TModules> = {};
 }
