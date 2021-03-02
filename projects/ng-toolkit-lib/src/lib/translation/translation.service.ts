@@ -9,7 +9,7 @@ export interface TranslationConfig<TLang, TModules> {
   ) => Promise<Partial<{ [TKey in keyof TModules]: TModules[TKey] }>>;
 }
 
-export abstract class TranslationService<TLang, TModules> {
+export class TranslationService<TLang, TModules> {
   get lang(): TLang {
     return this._lang;
   }
@@ -38,7 +38,6 @@ export abstract class TranslationService<TLang, TModules> {
             ...this.modules,
             [module]: m[module],
           };
-          console.log(m, this._modules);
           return true;
         },
         () => {

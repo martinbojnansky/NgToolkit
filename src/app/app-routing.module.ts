@@ -1,15 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TranslationGuard } from './translation/translation.guard';
+import { TranslationGuard } from 'dist/ng-toolkit-lib';
+import { TranslationModules } from './translation/translation.module';
 
 const routes: Routes = [
   {
-    path: 'store-sample',
-    canActivate: [TranslationGuard],
-    loadChildren: () =>
-      import('./store-sample/store-sample.module').then(
-        (m) => m.StoreSampleModule
-      ),
+    path: '',
+    canActivateChild: [TranslationGuard],
+    children: [
+      {
+        path: 'store-sample',
+        loadChildren: () =>
+          import('./store-sample/store-sample.module').then(
+            (m) => m.StoreSampleModule
+          ),
+        data: {
+          ...TranslationGuard.withModule<TranslationModules>('storeSample'),
+        },
+      },
+    ],
   },
 ];
 

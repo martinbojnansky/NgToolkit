@@ -1,13 +1,14 @@
 import { Injectable, NgModule } from '@angular/core';
-import { TranslationService as TranslationServiceBase } from 'dist/ng-toolkit-lib';
-import { TranslationGuard } from './translation.guard';
+import {
+  TranslationGuard,
+  TranslationService as TranslationServiceBase,
+} from 'dist/ng-toolkit-lib';
 
 export type TranslationLang = 'en' | 'de';
 
 export interface TranslationModules {
   storeSample: {
     welcomeMessage: string;
-    refreshButtonTitle: string;
   };
 }
 
@@ -18,14 +19,28 @@ export class TranslationService extends TranslationServiceBase<
 > {
   constructor() {
     super({
-      getLang: () => 'en',
-      importLang: (module: keyof TranslationModules, lang: TranslationLang) =>
-        import(`src/app/translation/${module}/${lang}`),
+      getLang: () => {
+        return (
+          (Intl.NumberFormat().resolvedOptions().locale.substr(0, 2) as any) ||
+          'en'
+        );
+      },
+      importLang: (module: keyof TranslationModules, lang: TranslationLang) => {
+        return import(`src/app/translation/${module}/${lang}`);
+      },
     });
   }
 }
 
 @NgModule({
-  providers: [TranslationService, TranslationGuard],
+  providers: [
+    TranslationService,
+    {
+      provide: TranslationGuard,
+      deps: [TranslationService],
+      useFactory: (translationService: TranslationService) =>
+        new TranslationGuard(translationService),
+    },
+  ],
 })
 export class TranslationModule {}

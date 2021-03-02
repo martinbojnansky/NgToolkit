@@ -1,6 +1,5 @@
 import { TranslationModules } from '../translation.module';
 
 export const storeSample: TranslationModules['storeSample'] = {
-  welcomeMessage: 'Welcome to NgToolkit Demo',
-  refreshButtonTitle: 'Refresh',
+  welcomeMessage: 'Welcome to NgToolkit Demo'
 };
