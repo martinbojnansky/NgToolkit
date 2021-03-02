@@ -1,6 +1,7 @@
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable, NgModule, Pipe } from '@angular/core';
 import {
   TranslationGuard,
+  TranslationPipe as TranslationPipeBase,
   TranslationService as TranslationServiceBase,
 } from 'dist/ng-toolkit-lib';
 
@@ -29,6 +30,16 @@ export class TranslationService extends TranslationServiceBase<
         return import(`src/app/translation/${module}/${lang}`);
       },
     });
+  }
+}
+
+@Pipe({
+  name: 'translate',
+  pure: true,
+})
+export class TranslationPipe extends TranslationPipeBase<TranslationModules> {
+  constructor(protected translationService: TranslationService) {
+    super(translationService);
   }
 }
 
