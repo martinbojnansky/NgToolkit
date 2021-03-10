@@ -16,6 +16,8 @@ import { StoreSampleQueries } from '../../store-sample-queries';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreSampleComponent implements OnInit, OnDestroy {
+  num = 0;
+
   constructor(
     public query: StoreSampleQueries,
     protected storeSampleService: StoreSampleService

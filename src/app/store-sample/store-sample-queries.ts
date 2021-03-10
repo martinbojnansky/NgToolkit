@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ObservableStoreQueries } from 'ng-toolkit-lib';
+import { ObservableStoreQueries, query } from 'ng-toolkit-lib';
 import { Dataset } from '../app-models';
 import {
   StoreSampleAction,
@@ -16,11 +16,16 @@ export class StoreSampleQueries extends ObservableStoreQueries<
     super(store);
   }
 
-  datasetEmpty<T>(dataset: Dataset<T>): boolean {
+  @query()
+  get storeSamplesNotEmpty(): boolean {
+    return this.datasetNotEmpty(this.state.storeSamples);
+  }
+
+  protected datasetEmpty<T>(dataset: Dataset<T>): boolean {
     return !dataset?.items?.length;
   }
 
-  datasetNotEmpty<T>(dataset: Dataset<T>): boolean {
+  protected datasetNotEmpty<T>(dataset: Dataset<T>): boolean {
     return !this.datasetEmpty(dataset);
   }
 }

@@ -11,12 +11,15 @@
       🔄
     </button>
   </div>
-
+  <button (click)="num = num + 1">+1</button> {{ num }}
   <!-- list -->
   <ul
-    *ngIf="query.datasetNotEmpty(query.state.storeSamples); else emptyTemplate"
+    *ngIf="query.storeSamplesNotEmpty; else emptyTemplate"
     class="list-group mt-3"
   >
+    {{
+      query.storeSamplesNotEmpty
+    }}
     <li
       *ngFor="let item of query.state.storeSamples?.items"
       class="list-group-item"
