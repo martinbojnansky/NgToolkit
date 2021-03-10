@@ -169,6 +169,8 @@ export class ObservableStore<TState, TAction> {
 }
 
 export class ObservableStoreQueries<TState, TAction> {
+  protected _queryResults: { [key: string]: { value: any } } = {};
+
   get state(): TState {
     return this.store.snapshot.state;
   }
@@ -177,5 +179,33 @@ export class ObservableStoreQueries<TState, TAction> {
     return this.store.changes$;
   }
 
-  constructor(protected store: ObservableStore<TState, TAction>) {}
+  constructor(protected store: ObservableStore<TState, TAction>) {
+    store.changes$.subscribe(() => {
+      this._queryResults = {};
+    });
+  }
+}
+
+export function query<TState, TAction>(): (
+  target: ObservableStoreQueries<TState, TAction>,
+  prop: string | Symbol,
+  descriptor: PropertyDescriptor
+) => PropertyDescriptor {
+  return (
+    target: ObservableStoreQueries<TState, TAction>,
+    key: string,
+    descriptor: PropertyDescriptor
+  ): PropertyDescriptor => {
+    return {
+      get: function (this: ObservableStoreQueries<TState, TAction>): any {
+        console.log(this._queryResults[key]?.value);
+        if (!this._queryResults[key]) {
+          this._queryResults[key] = { value: descriptor.get.apply(this) };
+        }
+        return this._queryResults[key].value;
+      },
+      configurable: false,
+      enumerable: false,
+    } as PropertyDescriptor;
+  };
 }
