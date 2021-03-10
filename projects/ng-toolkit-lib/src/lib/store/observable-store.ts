@@ -198,7 +198,6 @@ export function query<TState, TAction>(): (
   ): PropertyDescriptor => {
     return {
       get: function (this: ObservableStoreQueries<TState, TAction>): any {
-        console.log(this._queryResults[key]?.value);
         if (!this._queryResults[key]) {
           this._queryResults[key] = { value: descriptor.get.apply(this) };
         }
