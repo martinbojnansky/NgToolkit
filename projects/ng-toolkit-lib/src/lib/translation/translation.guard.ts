@@ -6,14 +6,15 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { trySafe } from '../helpers';
 import { TranslationService } from './translation.service';
 
 @Injectable()
 export class TranslationGuard implements CanActivate, CanActivateChild {
-  static withModule<TModules>(module: keyof TModules) {
-    return { translationModule: module };
+  static withModules<TModules>(...modules: (keyof TModules)[]) {
+    return { translationModules: modules };
   }
 
   constructor(protected translationService: TranslationService<any, any>) {}
@@ -43,9 +44,13 @@ export class TranslationGuard implements CanActivate, CanActivateChild {
   private translationLoaded(
     route: ActivatedRouteSnapshot
   ): Observable<boolean> | true {
-    const translationModule = trySafe(() => route.data.translationModule);
-    if (translationModule) {
-      return this.translationService.load(translationModule);
+    const translationModules = trySafe(
+      () => route.data.translationModules as string[]
+    );
+    if (translationModules) {
+      return forkJoin(
+        translationModules.map((module) => this.translationService.load(module))
+      ).pipe(map(() => true));
     } else {
       return true;
     }

@@ -15,7 +15,7 @@ const routes: Routes = [
             (m) => m.StoreSampleModule
           ),
         data: {
-          ...TranslationGuard.withModule<TranslationModules>('storeSample'),
+          ...TranslationGuard.withModules<TranslationModules>('storeSample'),
         },
       },
     ],
