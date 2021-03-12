@@ -17,4 +17,6 @@ export class AppComponent {
       label: 'Store sample',
     },
   ];
+
+  constructor() {}
 }

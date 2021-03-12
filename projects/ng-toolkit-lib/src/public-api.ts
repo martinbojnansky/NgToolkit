@@ -7,3 +7,4 @@ export * from './lib/helpers';
 export * from './lib/rxjs';
 export * from './lib/store';
 export * from './lib/testing';
+export * from './lib/translation';

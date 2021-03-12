@@ -1,13 +1,19 @@
 <div class="p-3">
-    <header>
-        <h1>NG Toolkit Lib Demo</h1>
-        <ul class="nav nav-pills mt-4">
-            <li *ngFor="let sample of samples" class="nav-item">
-                <a class="nav-link" [routerLink]="sample.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: sample.link ? false : true }">{{ sample.label }}</a>
-            </li>
-        </ul>
-    </header>
-    <main class="mt-5">
-        <router-outlet></router-outlet>
-    </main>
+  <header>
+    <h1>NG Toolkit Lib Demo</h1>
+    <ul class="nav nav-pills mt-4">
+      <li *ngFor="let sample of samples" class="nav-item">
+        <a
+          class="nav-link"
+          [routerLink]="sample.link"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: sample.link ? false : true }"
+          >{{ sample.label }}</a
+        >
+      </li>
+    </ul>
+  </header>
+  <main class="mt-5">
+    <router-outlet></router-outlet>
+  </main>
 </div>

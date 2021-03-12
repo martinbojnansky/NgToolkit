@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AppStore } from '../app-store';
+import { TranslationPipe } from '../translation/translation.module';
 import { StoreSampleComponent } from './components/store-sample/store-sample.component';
 import {
   StoreSampleService,
@@ -11,7 +12,7 @@ import { StoreSampleRoutingModule } from './store-sample-routing.module';
 import { StoreSampleStore } from './store-sample-store';
 
 @NgModule({
-  declarations: [StoreSampleComponent],
+  declarations: [StoreSampleComponent, TranslationPipe],
   imports: [CommonModule, StoreSampleRoutingModule],
   providers: [
     {
