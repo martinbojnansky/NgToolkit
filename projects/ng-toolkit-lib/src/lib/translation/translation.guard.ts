@@ -13,11 +13,11 @@ import { TranslationService } from './translation.service';
 
 @Injectable()
 export class TranslationGuard implements CanActivate, CanActivateChild {
+  constructor(protected translationService: TranslationService<any, any>) {}
+
   static withModules<TModules>(...modules: (keyof TModules)[]) {
     return { translationModules: modules };
   }
-
-  constructor(protected translationService: TranslationService<any, any>) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,

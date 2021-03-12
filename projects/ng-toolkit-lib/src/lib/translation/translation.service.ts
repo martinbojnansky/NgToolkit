@@ -34,7 +34,7 @@ export class TranslationService<TLang, TModules> {
     return from(this.config.importLang(module, this.lang)).pipe(
       map(
         (m) => {
-          this._modules = <any>{
+          this._modules = {
             ...this.modules,
             [module]: m[module],
           };

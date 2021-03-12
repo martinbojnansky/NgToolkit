@@ -1,4 +1,4 @@
-import { Injectable, NgModule, Pipe } from '@angular/core';
+import { Injectable, NgModule, Pipe, PipeTransform } from '@angular/core';
 import {
   TranslationGuard,
   TranslationPipe as TranslationPipeBase,
@@ -37,7 +37,9 @@ export class TranslationService extends TranslationServiceBase<
   name: 'translate',
   pure: true,
 })
-export class TranslationPipe extends TranslationPipeBase<TranslationModules> {
+export class TranslationPipe
+  extends TranslationPipeBase<TranslationModules>
+  implements PipeTransform {
   constructor(protected translationService: TranslationService) {
     super(translationService);
   }
