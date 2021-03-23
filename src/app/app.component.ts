@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { actions } from './store/actions';
+import { Store } from './store/store';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +8,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   readonly samples = [
     {
       link: '',
@@ -18,5 +20,10 @@ export class AppComponent {
     },
   ];
 
-  constructor() {}
+  constructor(protected store: Store) {}
+
+  ngOnInit(): void {
+    // this.store.dispatch(actions.sayHi.create({ name: 'bla bla' }));
+    this.store.dispatch(actions.sayHiAsync.create({ name: 'bla bla' }));
+  }
 }

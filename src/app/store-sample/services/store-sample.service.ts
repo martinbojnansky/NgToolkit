@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { uuid } from 'dist/ng-toolkit-lib';
+import { ObservableStoreEffects, uuid } from 'dist/ng-toolkit-lib';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { StoreSampleSummary } from '../store-sample-models';
-import { StoreSampleStore } from '../store-sample-store';
+import {
+  StoreSampleAction,
+  StoreSampleState,
+  StoreSampleStore,
+} from '../store-sample-store';
 
 export abstract class StoreSampleService {
   abstract readItems(): Observable<void>;
@@ -16,7 +20,22 @@ export class StoreSampleServiceImpl extends StoreSampleService {
   }
 
   readItems() {
-    return this.storeSampleStore.patchStateAsync(getFakeStoreSamples(), {
+    return this.storeSampleStore.patchStateAsync(
+      this.getReadItemsObservable(),
+      this.getReadItemsEffects()
+    );
+  }
+
+  private getReadItemsObservable(): Observable<StoreSampleSummary[]> {
+    return getFakeStoreSamples();
+  }
+
+  private getReadItemsEffects(): ObservableStoreEffects<
+    StoreSampleSummary[],
+    StoreSampleState,
+    StoreSampleAction
+  > {
+    return {
       started: () => [
         'readStoreSamplesStarted',
         {
@@ -52,7 +71,7 @@ export class StoreSampleServiceImpl extends StoreSampleService {
         },
       ],
       cancelled: () => ['readStoreSamplesCancelled', null],
-    });
+    };
   }
 }
 

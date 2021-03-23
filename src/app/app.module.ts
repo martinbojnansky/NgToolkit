@@ -6,7 +6,13 @@ import { AppQueries } from './app-queries';
 import { AppRoutingModule } from './app-routing.module';
 import { AppStore } from './app-store';
 import { AppComponent } from './app.component';
+import { actions } from './store/actions';
+import { Store } from './store/store';
 import { TranslationModule } from './translation/translation.module';
+
+const getReducerProviders = () => {
+  return Object.keys(actions).map((k) => actions[k].reducer);
+};
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +23,7 @@ import { TranslationModule } from './translation/translation.module';
     RouterModule,
     AppRoutingModule,
   ],
-  providers: [AppStore, AppQueries],
+  providers: [AppStore, AppQueries, Store, ...getReducerProviders()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

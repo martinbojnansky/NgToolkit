@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -16,7 +17,8 @@ import { StoreSampleQueries } from '../../store-sample-queries';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreSampleComponent implements OnInit, OnDestroy {
-  num = 0;
+  @Input()
+  num;
 
   constructor(
     public query: StoreSampleQueries,
@@ -50,4 +52,28 @@ export class StoreSampleComponent implements OnInit, OnDestroy {
   protected unsubscriber = new ObservableUnsubscriber<
     'updateList' | 'subscribeErrors'
   >();
+}
+
+export function Prop<T>(): (
+  target: any,
+  prop: keyof T,
+  descriptor: PropertyDescriptor
+) => PropertyDescriptor {
+  return (
+    target: any,
+    key: keyof T,
+    descriptor: PropertyDescriptor
+  ): PropertyDescriptor => {
+    return {
+      get: function (this: any): any {
+        // return this.props$.value[key];
+        return null;
+      },
+      set: function (this: any, value: any) {
+        // this.props$.next({ ...this.props$.value, [key]: value });
+      },
+      configurable: true,
+      enumerable: true,
+    } as PropertyDescriptor;
+  };
 }
