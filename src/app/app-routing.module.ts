@@ -9,16 +9,32 @@ const routes: Routes = [
     canActivateChild: [TranslationGuard],
     children: [
       {
-        path: 'store-sample',
+        path: 'translation-sample',
         loadChildren: () =>
-          import('./store-sample/store-sample.module').then(
-            (m) => m.StoreSampleModule
+          import('./translation-sample/translation-sample.module').then(
+            (m) => m.TranslationSampleModule
           ),
         data: {
-          ...TranslationGuard.withModules<TranslationModules>('storeSample'),
+          ...TranslationGuard.withModules<TranslationModules>(
+            'translationSample'
+          ),
         },
       },
     ],
+  },
+  {
+    path: 'mvvm-sample',
+    loadChildren: () =>
+      import('./mvvm-sample/mvvm-sample.module').then(
+        (m) => m.MvvmSampleModule
+      ),
+  },
+  {
+    path: 'store-sample',
+    loadChildren: () =>
+      import('./store-sample/store-sample.module').then(
+        (m) => m.StoreSampleModule
+      ),
   },
 ];
 

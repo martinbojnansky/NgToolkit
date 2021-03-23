@@ -1,5 +1,5 @@
 import { TranslationModules } from '../translation.module';
 
-export const storeSample: TranslationModules['storeSample'] = {
+export const translationSample: TranslationModules['translationSample'] = {
   welcomeMessage: 'Willkommen bei NgToolkit Demo',
 };

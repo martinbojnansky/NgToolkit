@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppStore } from './app-store';
 import { AppComponent } from './app.component';
+import { BootstrapModule } from './shared/bootstrap/bootstrap.module';
 import { TranslationModule } from './translation/translation.module';
 
 @NgModule({
@@ -15,6 +16,7 @@ import { TranslationModule } from './translation/translation.module';
     TranslationModule,
     RouterModule,
     AppRoutingModule,
+    BootstrapModule,
   ],
   providers: [AppStore],
   bootstrap: [AppComponent],

@@ -62,5 +62,13 @@ const getFakeStoreSamples = () => {
     { id: uuid(), title: `Name ${uuid()}` },
     { id: uuid(), title: `Name ${uuid()}` },
     { id: uuid(), title: `Name ${uuid()}` },
-  ] as StoreSampleSummary[]).pipe(delay(1500));
+    { id: uuid(), title: `Name ${uuid()}` },
+    { id: uuid(), title: `Name ${uuid()}` },
+    { id: uuid(), title: `Name ${uuid()}` },
+    { id: uuid(), title: `Name ${uuid()}` },
+    { id: uuid(), title: `Name ${uuid()}` },
+    { id: uuid(), title: `Name ${uuid()}` },
+    { id: uuid(), title: `Name ${uuid()}` },
+    { id: uuid(), title: `Name ${uuid()}` },
+  ] as StoreSampleSummary[]).pipe(delay(3000));
 };
