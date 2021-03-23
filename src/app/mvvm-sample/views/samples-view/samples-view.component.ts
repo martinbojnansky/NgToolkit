@@ -11,5 +11,7 @@ import { SamplesViewModel } from '../../view-models/samples-view-model';
 export class SamplesViewComponent implements OnInit {
   constructor(public vm: SamplesViewModel) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.vm.onInit();
+  }
 }

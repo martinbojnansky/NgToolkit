@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MvvmSampleRoutingModule } from './mvvm-sample-routing.module';
 import { SampleService } from './services/sample.service';
 import { CrudActionsViewComponent } from './views/crud-actions-view/crud-actions-view.component';
@@ -15,7 +15,12 @@ import { SamplesViewComponent } from './views/samples-view/samples-view.componen
     SampleDetailViewComponent,
     SamplesViewComponent,
   ],
-  imports: [CommonModule, MvvmSampleRoutingModule, FormsModule],
+  imports: [
+    CommonModule,
+    MvvmSampleRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   providers: [SampleService],
 })
 export class MvvmSampleModule {}

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CrudDetailViewModel } from '../../view-models/crud-detail-view-model';
 import { SampleDetailViewModel } from '../../view-models/sample-detail-view-model';
+
 @Component({
   selector: 'app-sample-detail-view',
   templateUrl: './sample-detail-view.component.html',
@@ -14,5 +15,7 @@ import { SampleDetailViewModel } from '../../view-models/sample-detail-view-mode
 export class SampleDetailViewComponent implements OnInit {
   constructor(public vm: SampleDetailViewModel) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.vm.onInit();
+  }
 }
