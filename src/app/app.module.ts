@@ -11,7 +11,7 @@ import { Store } from './store/store';
 import { TranslationModule } from './translation/translation.module';
 
 const getReducerProviders = () => {
-  return Object.keys(actions).map((k) => actions[k].reducer);
+  return Object.keys(actions).map((k) => actions[k].reducerType);
 };
 
 @NgModule({

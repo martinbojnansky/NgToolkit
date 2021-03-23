@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   constructor(protected store: Store) {}
 
   ngOnInit(): void {
-    // this.store.dispatch(actions.sayHi.create({ name: 'bla bla' }));
-    this.store.dispatch(actions.sayHiAsync.create({ name: 'bla bla' }));
+    this.store.dispatch(actions.sayHi.create({ name: 'bla bla' }));
+    //this.store.dispatch(actions.sayHiAsync.create({ name: 'bla bla' }));
   }
 }

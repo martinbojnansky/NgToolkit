@@ -1,56 +1,75 @@
 import { Type } from '@angular/core';
-import { Reducer, SayHiAsyncReducer, SayHiReducer } from './reducers';
+import { SayHiReducer } from './reducers';
 
-export interface AppAction<TPayload> {
-  name: string;
+export interface AppAction<TAction extends string, TPayload, TReducer> {
+  name: TAction;
   payload: TPayload;
-  reducer: Type<Reducer>;
+  reducerType: Type<TReducer>;
 }
 
-export interface AppAsyncAction<TPayload> {
-  name: string;
-  payload: TPayload;
-  reducer: Type<Reducer>;
+export interface AppActionDef<TAction extends string, TPayload, TReducer> {
+  actionType: AppAction<TAction, TPayload, TReducer>;
+  payloadType: TPayload;
+  reducerType: Type<TReducer>;
+  create: (payload: TPayload) => AppAction<TAction, TPayload, TReducer>;
 }
 
-const createAction = <TAction extends string, TPayload>(
+// export interface AppAsyncAction<TPayload> {
+//   name: string;
+//   payload: TPayload;
+//   reducer: Type<Reducer>;
+// }
+
+const createAction = <TAction extends string, TPayload, TReducer>(
   name: TAction,
-  reducer: Type<Reducer>
-) => ({
-  create: (payload: TPayload) => ({
+  payloadType: Type<TPayload>,
+  reducerType: Type<TReducer>
+): AppActionDef<TAction, TPayload, TReducer> => ({
+  actionType: <AppAction<TAction, TPayload, TReducer>>null,
+  payloadType: <TPayload>null,
+  reducerType: reducerType,
+  create: (payload: TPayload): AppAction<TAction, TPayload, TReducer> => ({
     name: name,
     payload: payload,
+    reducerType: reducerType,
   }),
-  name: name,
-  payloadType: <TPayload>null,
-  reducer: reducer,
 });
 
-const createAsyncAction = <
-  TName extends string,
-  TPayload,
-  TReducer,
-  TEffects extends string
->(
-  name: TName,
-  reducer: Type<TReducer>
-) => ({
-  create: (payload: TPayload) => ({
-    name: name,
-    payload: payload,
-  }),
-  name: name,
-  payloadType: <TPayload>null,
-  effectsType: <TEffects>null,
-  reducer: reducer,
-});
+// const createAsyncAction = <TName extends string, TPayload, TEffects, TReducer>(
+//   name: TName,
+//   payloadType: Type<TPayload>,
+//   effectsType: Type<TEffects>,
+//   reducer: Type<TReducer>
+// ) => ({
+//   name: name,
+//   payloadType: <TPayload>null,
+//   effects: <TEffects>null,
+//   reducer: reducer,
+//   create: (payload: TPayload) => ({
+//     name: name,
+//     payload: payload,
+//     reducer: reducer,
+//   }),
+// });
 
 export const actions = {
-  sayHi: createAction<'sayHi', { name: string }>('sayHi', SayHiReducer),
-  sayHiAsync: createAsyncAction<
-    'sayHiAsync',
-    { name: string },
-    SayHiAsyncReducer,
-    'started' | 'completed'
-  >('sayHiAsync', SayHiAsyncReducer),
+  sayHi: createAction(
+    'sayHi',
+    class {
+      name: string;
+    },
+    SayHiReducer
+  ),
+
+  // sayHiAsync: createAsyncAction(
+  //   'sayHiAsync',
+  //   class {
+  //     name: string;
+  //   },
+  //   class {
+  //     started: 'started';
+  //     completed: 'completed';
+  //   },
+  //   SayHiAsyncReducer
+  // ),
 };

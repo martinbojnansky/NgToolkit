@@ -1,12 +1,11 @@
 import { Injectable, Injector } from '@angular/core';
-import { actions, AppAction } from './actions';
+import { AppAction } from './actions';
 
 @Injectable()
 export class Store {
   constructor(protected injector: Injector) {}
 
-  dispatch(action: AppAction<any>['payload']) {
-    console.log(this.injector, action);
-    this.injector.get(actions.sayHiAsync.reducer)?.reduce(action)?.subscribe();
+  dispatch(action: AppAction<any, any, any>) {
+    this.injector.get(action.reducerType)?.reduce(action)?.subscribe(); // TODO: Subscribe until..
   }
 }
