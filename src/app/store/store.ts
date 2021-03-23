@@ -6,6 +6,6 @@ export class Store {
   constructor(protected injector: Injector) {}
 
   dispatch(action: AppAction<any, any, any>) {
-    this.injector.get(action.reducerType)?.reduce(action)?.subscribe(); // TODO: Subscribe until..
+    this.injector.get(action.reducerType)?.reduce(action); // TODO: Subscribe until.. ?.subscribe() with async action
   }
 }

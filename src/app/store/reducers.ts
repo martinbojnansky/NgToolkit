@@ -10,7 +10,6 @@ export class SayHiReducer implements Reducer<typeof actions.sayHi.actionType> {
   constructor() {}
 
   reduce(action: typeof actions.sayHi.actionType): any {
-    console.log(action);
     return { greeting: action.payload.name };
   }
 }
