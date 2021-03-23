@@ -16,6 +16,14 @@ export class AppComponent {
       link: 'store-sample',
       label: 'Store sample',
     },
+    {
+      link: 'mvvm-sample',
+      label: 'MVVM sample',
+    },
+    {
+      link: 'translation-sample',
+      label: 'Translation sample',
+    },
   ];
 
   constructor() {}

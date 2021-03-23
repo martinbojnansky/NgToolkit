@@ -1,0 +1,41 @@
+<ng-container *ngIf="vm.propertyChanged$ | async">
+  <div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Editable</span>
+      <select class="form-control" [(ngModel)]="vm.editable">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <span class="input-group-text">{{ vm.isEditable }}</span>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Id</span>
+      <input
+        type="text"
+        [ngModel]="vm.detail?.id"
+        class="form-control"
+        disabled
+      />
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Name</span>
+      <input
+        type="text"
+        [ngModel]="vm.detail?.name"
+        class="form-control"
+        disabled
+      />
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Description</span>
+      <input
+        type="text"
+        [ngModel]="vm.detail?.description"
+        class="form-control"
+        disabled
+      />
+    </div>
+    <ng-content></ng-content>
+  </div>
+  <app-crud-actions-view></app-crud-actions-view>
+</ng-container>

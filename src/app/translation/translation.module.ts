@@ -8,7 +8,7 @@ import {
 export type TranslationLang = 'en' | 'de';
 
 export interface TranslationModules {
-  storeSample: {
+  translationSample: {
     welcomeMessage: string;
   };
 }
