@@ -10,6 +10,10 @@ export class SampleDetailViewModel extends CrudDetailViewModel<SampleDetail> {
     return this.samplesViewModel.editable$;
   }
 
+  get samplesForm() {
+    return this.samplesViewModel.form;
+  }
+
   constructor(
     protected samplesViewModel: SamplesViewModel,
     protected crudService: SampleService

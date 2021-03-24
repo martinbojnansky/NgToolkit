@@ -5,13 +5,13 @@
   </h3>
   <app-crud-detail-view>
     <div class="input-group mb-3">
-      <span class="input-group-text">Type</span>
+      <span class="input-group-text">Detail$.Type</span>
       <span class="input-group-text">{{
         (vm.detail$ | async).type || "..."
       }}</span>
     </div>
     <div class="input-group mb-3">
-      <span class="input-group-text">Editable</span>
+      <span class="input-group-text">SamplesVM.Editable$</span>
       <button
         class="btn"
         [class.btn-primary]="vm.editable$.value"
@@ -29,6 +29,15 @@
         No
       </button>
       <span class="input-group-text">{{ vm.editable$.value }}</span>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">SamplesVM.Form.Text</span>
+      <input
+        type="text"
+        class="form-control"
+        [formControl]="vm.samplesForm.get('text')"
+        [value]="vm.samplesForm.value.text"
+      />
     </div>
   </app-crud-detail-view>
 </ng-container>
