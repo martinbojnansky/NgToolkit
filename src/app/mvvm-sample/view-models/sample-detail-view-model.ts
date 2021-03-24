@@ -19,6 +19,6 @@ export class SampleDetailViewModel extends CrudDetailViewModel<SampleDetail> {
     protected crudService: SampleService
   ) {
     super();
-    this.observeProperties(samplesViewModel);
+    this.init(samplesViewModel);
   }
 }

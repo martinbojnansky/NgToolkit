@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { nameof, trySafe } from '../helpers';
 import { ObservableUnsubscriber } from '../rxjs';
 
@@ -11,39 +11,36 @@ export class ViewModel implements OnDestroy {
 
   constructor() {}
 
-  observeProperties(this: ViewModel, ...parentViewModels: ViewModel[]): void {
+  init(this: ViewModel, ...parentViewModels: ViewModel[]): void {
+    const propertyObservers: Observable<any>[] = [];
+
     Object.keys(this).forEach((key) => {
+      if ([nameof<ViewModel>('changes$')].includes(key as keyof ViewModel)) {
+        return;
+      }
+
       const property = trySafe(() => this[key]);
-      if (
-        ![nameof<ViewModel>('changes$').toString()].includes(key) &&
-        property
+      if (property instanceof Observable) {
+        propertyObservers.push(property);
+      } else if (
+        property instanceof FormGroup ||
+        property instanceof FormControl
       ) {
-        if (property instanceof Observable) {
-          this[key].pipe(this.unsubscriber.onDestroy()).subscribe(() => {
-            this.changes$.next(this.changes$.value + 1);
-          });
-        } else if (
-          property instanceof FormGroup ||
-          property instanceof FormControl
-        ) {
-          this[key].valueChanges
-            .pipe(this.unsubscriber.onDestroy())
-            .subscribe(() => {
-              this.changes$.next(this.changes$.value + 1);
-            });
-        }
+        propertyObservers.push(property.valueChanges);
       }
     });
 
     for (const parentViewModel of parentViewModels) {
       if (parentViewModel instanceof ViewModel) {
-        parentViewModel.changes$
-          .pipe(this.unsubscriber.onDestroy())
-          .subscribe(() => {
-            this.changes$.next(this.changes$.value + 1);
-          });
+        propertyObservers.push(parentViewModel.changes$);
       }
     }
+
+    merge(...propertyObservers)
+      .pipe(this.unsubscriber.onDestroy())
+      .subscribe(() => {
+        this.changes$.next(this.changes$.value + 1);
+      });
   }
 
   ngOnDestroy(): void {

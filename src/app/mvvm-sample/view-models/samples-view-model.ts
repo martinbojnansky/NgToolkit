@@ -14,6 +14,6 @@ export class SamplesViewModel extends ViewModel {
 
   constructor() {
     super();
-    this.observeProperties();
+    this.init();
   }
 }

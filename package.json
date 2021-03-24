@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -- --port 4400",
+    "start": "npm run build-lib && ng serve -- --port 4400",
     "build-lib": "ng build ng-toolkit-lib",
     "build-lib:prod": "ng build ng-toolkit-lib --prod",
     "build-sample": "ng build ng-toolkit",
