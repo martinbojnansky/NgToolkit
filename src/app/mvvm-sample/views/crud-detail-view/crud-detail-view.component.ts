@@ -11,6 +11,6 @@ export class CrudDetailViewComponent implements OnInit {
   constructor(public vm: CrudDetailViewModel) {}
 
   ngOnInit(): void {
-    this.vm.onInit();
+    this.vm.load(1);
   }
 }

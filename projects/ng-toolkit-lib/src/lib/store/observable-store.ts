@@ -101,7 +101,7 @@ export class ObservableStore<TState, TAction> {
     );
   }
 
-  constructor(
+  protected constructor(
     protected readonly _initialState: Partial<TState> = {},
     protected readonly _config: ObservableStoreConfig = {}
   ) {

@@ -1,8 +1,8 @@
 <ng-container *ngIf="vm.changes$ | async">
   <button
     class="btn btn-secondary"
-    (click)="vm.load(vm.detail.value.id + 1)"
-    [disabled]="!vm.detail.value"
+    (click)="vm.load(vm.detail$.value.id + 1)"
+    [disabled]="!vm.detail$.value.id"
   >
     Next
   </button>

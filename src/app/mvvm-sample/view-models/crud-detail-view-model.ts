@@ -1,33 +1,27 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ViewModel } from 'dist/ng-toolkit-lib';
+import { BehaviorSubject } from 'rxjs';
+import { CrudDetail } from '../models/crud';
 import { CrudService } from '../services/crud.service';
 
 @Injectable()
-export abstract class CrudDetailViewModel<TDetail = any> extends ViewModel {
-  abstract detail: FormGroup;
+export abstract class CrudDetailViewModel<
+  TDetail = CrudDetail
+> extends ViewModel {
+  detail$ = new BehaviorSubject<TDetail>({} as TDetail);
 
   constructor() {
     super();
-  }
-
-  onInit(): void {
-    this.changes$.next(1);
-    this.detail.valueChanges
-      .pipe(this.unsubscriber.onDestroy())
-      .subscribe((v) => {
-        this.changes$.next(this.changes$.value + 1);
-      });
-    this.load(1);
+    this.observeProperties();
   }
 
   load(id: number): void {
-    this.detail.reset();
+    this.detail$.next({} as TDetail);
     this.crudService
       .readDetail(id)
       .pipe(this.unsubscriber.onDestroyOrResubscribe('load'))
       .subscribe((detail) => {
-        this.detail.patchValue(detail);
+        this.detail$.next(detail);
       });
   }
 

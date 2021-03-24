@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CrudDetailViewModel } from '../../view-models/crud-detail-view-model';
 
 @Component({
@@ -7,8 +7,6 @@ import { CrudDetailViewModel } from '../../view-models/crud-detail-view-model';
   styleUrls: ['./crud-actions-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CrudActionsViewComponent implements OnInit {
+export class CrudActionsViewComponent {
   constructor(public vm: CrudDetailViewModel) {}
-
-  ngOnInit(): void {}
 }

@@ -1,13 +1,29 @@
 <ng-container *ngIf="vm.changes$ | async">
-  <h3 class="mb-4 mt-2">Samples View</h3>
-  <div class="d-flex justify-content-center input-group mb-3 w-auto">
+  <h3 class="mb-4 mt-2">
+    Samples View
+    <span class="badge bg-secondary">{{ vm.changes$.value }}</span>
+  </h3>
+  <div class="d-flex input-group w-auto">
     <span class="input-group-text">Editable</span>
-    <select class="form-control" [formControl]="vm.editable">
-      <option value="true" [selected]="vm.editable.value === true">Yes</option>
-      <option value="false" [selected]="vm.editable.value === false">No</option>
-    </select>
-    <span class="input-group-text">{{ vm.editable.value }}</span>
+    <button
+      class="btn"
+      [class.btn-primary]="vm.editable$.value"
+      [class.btn-secondary]="!vm.editable$.value"
+      (click)="vm.editable$.next(true)"
+    >
+      Yes
+    </button>
+    <button
+      class="btn"
+      [class.btn-primary]="!vm.editable$.value"
+      [class.btn-secondary]="vm.editable$.value"
+      (click)="vm.editable$.next(false)"
+    >
+      No
+    </button>
+    <span class="input-group-text">{{ vm.editable$.value }}</span>
   </div>
+
   <div class="d-flex gap-3">
     <app-sample-detail-view class="flex-grow-1"></app-sample-detail-view>
     <app-sample-detail-view class="flex-grow-1"></app-sample-detail-view>

@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { ViewModel } from 'dist/ng-toolkit-lib';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SamplesViewModel extends ViewModel {
-  editable = new FormControl(true);
+  editable$ = new BehaviorSubject<boolean>(true);
 
-  onInit(): void {
-    this.changes$.next(1);
-    this.editable.valueChanges
-      .pipe(this.unsubscriber.onDestroy())
-      .subscribe((v) => {
-        this.editable.patchValue(v, { emitEvent: false });
-        this.changes$.next(this.changes$.value + 1);
-      });
+  constructor() {
+    super();
+    this.observeProperties();
   }
 }
