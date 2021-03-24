@@ -1,12 +1,34 @@
-<h3 class="mb-4 mt-5">Sample Detail View</h3>
-<app-crud-detail-view>
-  <div class="input-group mb-3">
-    <span class="input-group-text">Type</span>
-    <input
-      type="text"
-      [ngModel]="vm.detail?.type"
-      class="form-control"
-      disabled
-    />
-  </div>
-</app-crud-detail-view>
+<ng-container *ngIf="vm.changes$ | async">
+  <h3 class="mb-4 mt-5">
+    Sample Detail View
+    <span class="badge bg-secondary">{{ vm.changes$.value }}</span>
+  </h3>
+  <app-crud-detail-view>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Type</span>
+      <span class="input-group-text">{{
+        (vm.detail$ | async).type || "..."
+      }}</span>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Editable</span>
+      <button
+        class="btn"
+        [class.btn-primary]="vm.editable$.value"
+        [class.btn-secondary]="!vm.editable$.value"
+        (click)="vm.editable$.next(true)"
+      >
+        Yes
+      </button>
+      <button
+        class="btn"
+        [class.btn-primary]="!vm.editable$.value"
+        [class.btn-secondary]="vm.editable$.value"
+        (click)="vm.editable$.next(false)"
+      >
+        No
+      </button>
+      <span class="input-group-text">{{ vm.editable$.value }}</span>
+    </div>
+  </app-crud-detail-view>
+</ng-container>

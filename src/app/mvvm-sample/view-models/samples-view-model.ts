@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Property, ViewModel } from 'dist/ng-toolkit-lib';
+import { ViewModel } from 'dist/ng-toolkit-lib';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SamplesViewModel extends ViewModel {
-  @Property()
-  editable = false;
+  editable$ = new BehaviorSubject<boolean>(true);
+
+  constructor() {
+    super();
+    this.observeProperties();
+  }
 }

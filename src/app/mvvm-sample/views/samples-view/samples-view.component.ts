@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SamplesViewModel } from '../../view-models/samples-view-model';
 
 @Component({
@@ -8,8 +8,6 @@ import { SamplesViewModel } from '../../view-models/samples-view-model';
   providers: [SamplesViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SamplesViewComponent implements OnInit {
+export class SamplesViewComponent {
   constructor(public vm: SamplesViewModel) {}
-
-  ngOnInit(): void {}
 }

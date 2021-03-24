@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Property, ViewModel } from 'dist/ng-toolkit-lib';
+import { ViewModel } from 'dist/ng-toolkit-lib';
+import { BehaviorSubject } from 'rxjs';
+import { CrudDetail } from '../models/crud';
 import { CrudService } from '../services/crud.service';
 
 @Injectable()
-export abstract class CrudDetailViewModel<TDetail = any> extends ViewModel {
-  @Property()
-  detail: TDetail;
-
-  abstract readonly isEditable: boolean;
-  abstract editable: boolean;
+export abstract class CrudDetailViewModel<
+  TDetail = CrudDetail
+> extends ViewModel {
+  detail$ = new BehaviorSubject<TDetail>({} as TDetail);
 
   constructor() {
     super();
-  }
-
-  onInit(): void {
-    this.load(1);
+    this.observeProperties();
   }
 
   load(id: number): void {
-    this.detail = null;
-    this.crudService.readDetail(id).subscribe((detail) => {
-      this.detail = detail;
-    });
+    this.detail$.next({} as TDetail);
+    this.crudService
+      .readDetail(id)
+      .pipe(this.unsubscriber.onDestroyOrResubscribe('load'))
+      .subscribe((detail) => {
+        this.detail$.next(detail);
+      });
   }
 
   protected abstract readonly crudService: CrudService<

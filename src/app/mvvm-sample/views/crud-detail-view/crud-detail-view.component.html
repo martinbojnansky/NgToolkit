@@ -1,41 +1,26 @@
-<ng-container *ngIf="vm.propertyChanged$ | async">
+<ng-container *ngIf="vm.changes$ | async">
+  <h6>
+    CRUD Detail View
+    <span class="badge bg-secondary">{{ vm.changes$.value }}</span>
+  </h6>
   <div>
     <div class="input-group mb-3">
-      <span class="input-group-text">Editable</span>
-      <select class="form-control" [(ngModel)]="vm.editable">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-      <span class="input-group-text">{{ vm.isEditable }}</span>
-    </div>
-    <div class="input-group mb-3">
       <span class="input-group-text">Id</span>
-      <input
-        type="text"
-        [ngModel]="vm.detail?.id"
-        class="form-control"
-        disabled
-      />
+      <span class="input-group-text">{{ vm.detail$.value.id || "..." }}</span>
     </div>
     <div class="input-group mb-3">
       <span class="input-group-text">Name</span>
-      <input
-        type="text"
-        [ngModel]="vm.detail?.name"
-        class="form-control"
-        disabled
-      />
+      <span class="input-group-text">{{ vm.detail$.value.name || "..." }}</span>
     </div>
     <div class="input-group mb-3">
       <span class="input-group-text">Description</span>
-      <input
-        type="text"
-        [ngModel]="vm.detail?.description"
-        class="form-control"
-        disabled
-      />
+      <span class="input-group-text">{{
+        vm.detail$.value.description || "..."
+      }}</span>
     </div>
+    <h6>CRUD Detail View -> Content Template</h6>
     <ng-content></ng-content>
   </div>
+  <h6>CRUD Detail View -> Actions View</h6>
   <app-crud-actions-view></app-crud-actions-view>
 </ng-container>

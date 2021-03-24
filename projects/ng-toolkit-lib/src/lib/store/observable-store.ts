@@ -102,8 +102,8 @@ export class ObservableStore<TState, TAction> {
   }
 
   protected constructor(
-    private readonly _initialState: Partial<TState> = {},
-    private readonly _config: ObservableStoreConfig = {}
+    protected readonly _initialState: Partial<TState> = {},
+    protected readonly _config: ObservableStoreConfig = {}
   ) {
     this._change$ = new BehaviorSubject({
       action: null,
