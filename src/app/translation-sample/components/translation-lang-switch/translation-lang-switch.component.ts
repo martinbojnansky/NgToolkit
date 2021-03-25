@@ -29,6 +29,7 @@ export class TranslationLangSwitchComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  changeLang = (lang: TranslationLang) =>
+  changeLang(lang: TranslationLang): void {
     this.translateService.changeLang(lang);
+  }
 }
