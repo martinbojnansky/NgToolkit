@@ -6,7 +6,11 @@
       [value]="langOption.value"
       [selected]="langOption === selectedLangOption"
     >
-      {{ langOption.label }}
+      {{
+        ("" | translate).translationSample.translationLangLabel(
+          langOption.value
+        )
+      }}
     </option>
   </select>
 </div>

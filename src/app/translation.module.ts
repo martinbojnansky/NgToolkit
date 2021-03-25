@@ -10,6 +10,8 @@ export type TranslationLang = 'en' | 'de';
 export interface TranslationModules {
   translationSample: {
     welcomeMessage: string;
+    welcomeMessageParametrized: (name: string) => string;
+    translationLangLabel: (lang: TranslationLang) => string;
   };
 }
 
