@@ -10,20 +10,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TranslationLangSwitchComponent implements OnInit {
-  readonly langOptions: { value: TranslationLang; label: string }[] = [
-    {
-      value: 'en',
-      label: 'English',
-    },
-    {
-      value: 'de',
-      label: 'Deutsch',
-    },
-  ];
-
-  readonly selectedLangOption = this.langOptions.find(
-    (lo) => lo.value === this.translateService.lang
-  );
+  readonly langs = Object.keys(TranslationLang);
+  readonly selectedLang = this.translateService.lang;
 
   constructor(protected translateService: TranslationService) {}
 
