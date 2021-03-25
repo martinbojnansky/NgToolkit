@@ -5,7 +5,10 @@ import {
   TranslationServiceBase,
 } from 'dist/ng-toolkit-lib';
 
-export type TranslationLang = 'en' | 'de';
+export enum TranslationLang {
+  en = 'en',
+  de = 'de',
+}
 
 export interface TranslationModules {
   translationSample: {
