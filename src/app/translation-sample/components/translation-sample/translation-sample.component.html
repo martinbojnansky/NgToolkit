@@ -1,0 +1,13 @@
+<app-translation-lang-switch></app-translation-lang-switch>
+
+<div class="input-group mb-3">
+  <span class="input-group-text">Pipe Binding</span>
+  <span class="input-group-text">{{
+    ("" | translate).translationSample?.welcomeMessage
+  }}</span>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text">Service Binding</span>
+  <span class="input-group-text">{{ welcomeMessage }}</span>
+</div>

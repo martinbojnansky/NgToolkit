@@ -1,9 +1,9 @@
 import { PipeTransform } from '@angular/core';
-import { TranslationService } from './translation.service';
+import { TranslationServiceBase } from './translation.service';
 
-export class TranslationPipe<TModules> implements PipeTransform {
+export class TranslationPipeBase<TLang, TModules> implements PipeTransform {
   constructor(
-    protected translationService: TranslationService<any, TModules>
+    protected translationService: TranslationServiceBase<TLang, TModules>
   ) {}
 
   public transform(value: string, args?: any): Partial<TModules> {

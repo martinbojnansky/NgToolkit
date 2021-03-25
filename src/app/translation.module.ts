@@ -1,8 +1,8 @@
-import { Injectable, NgModule, Pipe, PipeTransform } from '@angular/core';
+import { Injectable, NgModule, Pipe } from '@angular/core';
 import {
   TranslationGuard,
-  TranslationPipe as TranslationPipeBase,
-  TranslationService as TranslationServiceBase,
+  TranslationPipeBase,
+  TranslationServiceBase,
 } from 'dist/ng-toolkit-lib';
 
 export type TranslationLang = 'en' | 'de';
@@ -19,17 +19,7 @@ export class TranslationService extends TranslationServiceBase<
   TranslationModules
 > {
   constructor() {
-    super({
-      getLang: () => {
-        return (
-          (Intl.NumberFormat().resolvedOptions().locale.substr(0, 2) as any) ||
-          'en'
-        );
-      },
-      importLang: (module: keyof TranslationModules, lang: TranslationLang) => {
-        return import(`src/app/translation/${module}/${lang}`);
-      },
-    });
+    super();
   }
 }
 
@@ -37,9 +27,10 @@ export class TranslationService extends TranslationServiceBase<
   name: 'translate',
   pure: true,
 })
-export class TranslationPipe
-  extends TranslationPipeBase<TranslationModules>
-  implements PipeTransform {
+export class TranslationPipe extends TranslationPipeBase<
+  TranslationLang,
+  TranslationModules
+> {
   constructor(protected translationService: TranslationService) {
     super(translationService);
   }
