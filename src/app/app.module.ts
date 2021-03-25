@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppStore } from './app-store';
 import { AppComponent } from './app.component';
 import { BootstrapModule } from './shared/bootstrap/bootstrap.module';
-import { TranslationModule } from './translation/translation.module';
+import { TranslationModule } from './translation.module';
 
 @NgModule({
   declarations: [AppComponent],

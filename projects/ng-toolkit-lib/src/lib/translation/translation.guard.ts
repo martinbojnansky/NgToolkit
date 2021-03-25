@@ -9,15 +9,11 @@ import {
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { trySafe } from '../helpers';
-import { TranslationService } from './translation.service';
+import { TranslationServiceBase } from './translation.service';
 
 @Injectable()
 export class TranslationGuard implements CanActivate, CanActivateChild {
-  constructor(protected translationService: TranslationService<any, any>) {}
-
-  static withModules<TModules>(...modules: (keyof TModules)[]) {
-    return { translationModules: modules };
-  }
+  constructor(protected translationService: TranslationServiceBase<any, any>) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,

@@ -5,6 +5,5 @@
     "types": []
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts", "src/app/translation/**/*.ts"],
-  "exclude": ["src/app/translation/translation.module.ts"]
+  "include": ["src/**/*.d.ts", "src/translations/**/*.ts"]
 }

@@ -1,0 +1,30 @@
+<app-translation-lang-switch></app-translation-lang-switch>
+
+<div class="input-group mb-3">
+  <span class="input-group-text">Pipe Binding</span>
+  <span class="input-group-text flex-grow-1">{{
+    ("" | translate).translationSample.welcomeMessage
+  }}</span>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text">Service Binding</span>
+  <span class="input-group-text flex-grow-1">{{ welcomeMessage }}</span>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text">Parametrized</span>
+  <span class="input-group-text flex-grow-1">{{
+    ("" | translate).translationSample.welcomeMessageParametrized(
+      "NG Toolkit Lib"
+    )
+  }}</span>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text">Type-Safe</span>
+  <span class="input-group-text flex-grow-1"
+    >{{ ("" | translate).translationSample.translationLangLabel("en") }},
+    {{ ("" | translate).translationSample.translationLangLabel("de") }}</span
+  >
+</div>
