@@ -3,41 +3,44 @@
     Sample Detail View
     <span class="badge bg-secondary">{{ vm.changes$.value }}</span>
   </h3>
+
   <app-crud-detail-view>
-    <div class="input-group mb-3">
-      <span class="input-group-text">Detail$.Type</span>
+    <app-form-control label="Detail$.Type" class="d-block mb-3">
       <span class="input-group-text">{{
         (vm.detail$ | async).type || "..."
       }}</span>
-    </div>
-    <div class="input-group mb-3">
-      <span class="input-group-text">SamplesVM.Editable$</span>
-      <button
-        class="btn"
-        [class.btn-primary]="vm.editable$.value"
-        [class.btn-secondary]="!vm.editable$.value"
-        (click)="vm.editable$.next(true)"
-      >
-        Yes
-      </button>
-      <button
-        class="btn"
-        [class.btn-primary]="!vm.editable$.value"
-        [class.btn-secondary]="vm.editable$.value"
-        (click)="vm.editable$.next(false)"
-      >
-        No
-      </button>
-      <span class="input-group-text">{{ vm.editable$.value }}</span>
-    </div>
-    <div class="input-group mb-3">
-      <span class="input-group-text">SamplesVM.Form.Text</span>
-      <input
-        type="text"
-        class="form-control"
-        [formControl]="vm.samplesForm.get('text')"
-        [value]="vm.samplesForm.value.text"
-      />
-    </div>
+    </app-form-control>
+
+    <app-form-control
+      [control]="vm.samplesForm.get('text')"
+      label="SamplesVM.Form.Text"
+      class="d-block mb-3"
+    >
+      <ng-template #contentTemplate let-control>
+        <input type="text" class="form-control" [formControl]="control" />
+      </ng-template>
+    </app-form-control>
+
+    <app-form-control
+      [control]="vm.samplesForm.get('bool')"
+      label="SamplesVM.Form.Bool"
+      class="d-block mb-3"
+    >
+      <ng-template #contentTemplate let-control>
+        <div class="input-group-text">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [formControl]="control"
+              id="bool-switch"
+            />
+            <label class="form-check-label" for="bool-switch">
+              {{ control.value }}
+            </label>
+          </div>
+        </div>
+      </ng-template>
+    </app-form-control>
   </app-crud-detail-view>
 </ng-container>

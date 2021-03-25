@@ -6,10 +6,6 @@ import { SamplesViewModel } from './samples-view-model';
 
 @Injectable()
 export class SampleDetailViewModel extends CrudDetailViewModel<SampleDetail> {
-  get editable$() {
-    return this.samplesViewModel.editable$;
-  }
-
   get samplesForm() {
     return this.samplesViewModel.form;
   }

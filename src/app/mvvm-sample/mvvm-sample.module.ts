@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControlComponent } from './components/form-control/form-control.component';
 import { MvvmSampleRoutingModule } from './mvvm-sample-routing.module';
 import { SampleService } from './services/sample.service';
 import { CrudActionsViewComponent } from './views/crud-actions-view/crud-actions-view.component';
@@ -10,6 +11,7 @@ import { SamplesViewComponent } from './views/samples-view/samples-view.componen
 
 @NgModule({
   declarations: [
+    FormControlComponent,
     CrudDetailViewComponent,
     CrudActionsViewComponent,
     SampleDetailViewComponent,

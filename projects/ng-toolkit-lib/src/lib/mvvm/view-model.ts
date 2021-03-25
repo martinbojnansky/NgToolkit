@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { nameof, trySafe } from '../helpers';
 import { ObservableUnsubscriber } from '../rxjs';
 
@@ -26,7 +27,15 @@ export class ViewModel implements OnDestroy {
         property instanceof FormGroup ||
         property instanceof FormControl
       ) {
-        propertyObservers.push(property.valueChanges);
+        propertyObservers.push(
+          property.valueChanges.pipe(
+            tap((v) => {
+              // Silent re-emit is needed in order to reflect changes
+              // in all [formControl] or [formGroup] bindings.
+              property.setValue(v, { emitEvent: false });
+            })
+          )
+        );
       }
     });
 
