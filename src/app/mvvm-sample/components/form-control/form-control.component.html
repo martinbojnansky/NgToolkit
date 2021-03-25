@@ -1,0 +1,8 @@
+<div class="input-group">
+  <span *ngIf="label" class="input-group-text">{{ label }}</span>
+  <ng-content></ng-content>
+  <ng-container
+    [ngTemplateOutlet]="contentTemplate"
+    [ngTemplateOutletContext]="{ $implicit: control }"
+  ></ng-container>
+</div>

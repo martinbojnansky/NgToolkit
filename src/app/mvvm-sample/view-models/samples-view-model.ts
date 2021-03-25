@@ -5,15 +5,15 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SamplesViewModel extends ViewModel {
-  editable$ = new BehaviorSubject<boolean>(true);
-
   form = new FormGroup({
-    editable: new FormControl(),
-    text: new FormControl('intial text'),
+    text: new FormControl('FormControl Text'),
+    bool: new FormControl(true),
   });
+
+  text$ = new BehaviorSubject<string>('Observable Text');
 
   constructor() {
     super();
-    this.observeProperties();
+    this.init();
   }
 }

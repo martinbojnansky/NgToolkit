@@ -3,35 +3,34 @@
     Samples View
     <span class="badge bg-secondary">{{ vm.changes$.value }}</span>
   </h3>
-  <div class="d-flex input-group mb-3 w-auto">
-    <span class="input-group-text">Editable$</span>
-    <button
-      class="btn"
-      [class.btn-primary]="vm.editable$.value"
-      [class.btn-secondary]="!vm.editable$.value"
-      (click)="vm.editable$.next(true)"
-    >
-      Yes
-    </button>
-    <button
-      class="btn"
-      [class.btn-primary]="!vm.editable$.value"
-      [class.btn-secondary]="vm.editable$.value"
-      (click)="vm.editable$.next(false)"
-    >
-      No
-    </button>
-    <span class="input-group-text">{{ vm.editable$.value }}</span>
-  </div>
-  <div class="input-group">
-    <span class="input-group-text">Form.Text</span>
-    <input
-      type="text"
-      class="form-control"
-      [formControl]="vm.form.get('text')"
-      [value]="vm.form.value.text"
-    />
-  </div>
+
+  <app-form-control
+    [control]="vm.form.get('text')"
+    label="SamplesVM.Form.Text"
+    class="d-block mb-3"
+  >
+    <ng-template #contentTemplate let-control>
+      <input type="text" class="form-control" [formControl]="control" />
+    </ng-template>
+  </app-form-control>
+
+  <app-form-control [control]="vm.form.get('bool')" label="SamplesVM.Form.Bool">
+    <ng-template #contentTemplate let-control>
+      <div class="input-group-text">
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [formControl]="vm.form.get('bool')"
+            id="boolean-switch"
+          />
+          <label class="form-check-label" for="boolean-switch">
+            {{ vm.form.value.bool }}
+          </label>
+        </div>
+      </div>
+    </ng-template>
+  </app-form-control>
 
   <div class="d-flex gap-3">
     <app-sample-detail-view class="flex-grow-1"></app-sample-detail-view>

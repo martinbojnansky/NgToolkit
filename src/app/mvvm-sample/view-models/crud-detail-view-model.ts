@@ -12,7 +12,7 @@ export abstract class CrudDetailViewModel<
 
   constructor() {
     super();
-    this.observeProperties();
+    this.init();
   }
 
   load(id: number): void {
