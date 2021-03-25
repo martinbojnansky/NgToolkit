@@ -42,5 +42,14 @@
         </div>
       </ng-template>
     </app-form-control>
+
+    <app-form-control label="SamplesVM.Text$" class="d-block mb-3">
+      <input
+        type="text"
+        class="form-control"
+        [value]="vm.samplesText$.value"
+        (change)="vm.samplesText$.next($event.target.value)"
+      />
+    </app-form-control>
   </app-crud-detail-view>
 </ng-container>

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ViewModel } from 'dist/ng-toolkit-lib';
 import { BehaviorSubject } from 'rxjs';
-import { CrudDetail } from '../models/crud';
-import { CrudService } from '../services/crud.service';
+import { CrudDetail } from '../../models/crud/crud';
+import { CrudService } from '../../services/crud/crud.service';
 
 @Injectable()
 export abstract class CrudDetailViewModel<

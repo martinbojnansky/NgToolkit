@@ -6,7 +6,7 @@
 
   <app-form-control
     [control]="vm.form.get('text')"
-    label="SamplesVM.Form.Text"
+    label="Form.Text"
     class="d-block mb-3"
   >
     <ng-template #contentTemplate let-control>
@@ -14,7 +14,11 @@
     </ng-template>
   </app-form-control>
 
-  <app-form-control [control]="vm.form.get('bool')" label="SamplesVM.Form.Bool">
+  <app-form-control
+    [control]="vm.form.get('bool')"
+    label="Form.Bool"
+    class="d-block mb-3"
+  >
     <ng-template #contentTemplate let-control>
       <div class="input-group-text">
         <div class="form-check form-switch">
@@ -30,6 +34,15 @@
         </div>
       </div>
     </ng-template>
+  </app-form-control>
+
+  <app-form-control label="Text$">
+    <input
+      type="text"
+      class="form-control"
+      [value]="vm.text$.value"
+      (change)="vm.text$.next($event.target.value)"
+    />
   </app-form-control>
 
   <div class="d-flex gap-3">

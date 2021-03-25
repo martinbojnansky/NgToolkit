@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { SampleDetail, SampleSummary } from '../models/sample';
-import { CrudService } from './crud.service';
+import { SampleDetail, SampleSummary } from '../../models/samples/samples';
+import { CrudService } from '../crud/crud.service';
 
 @Injectable({ providedIn: 'root' })
 export class SampleService extends CrudService<
