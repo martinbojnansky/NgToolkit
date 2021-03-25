@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SamplesViewModel } from '../../view-models/samples-view-model';
+import { SamplesViewModel } from 'src/app/mvvm-sample/view-models/samples/samples-view-model';
 
 @Component({
   selector: 'app-samples-view',

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CrudDetailViewModel } from '../../view-models/crud-detail-view-model';
+import { CrudDetailViewModel } from 'src/app/mvvm-sample/view-models/crud/crud-detail-view-model';
 
 @Component({
   selector: 'app-crud-detail-view',

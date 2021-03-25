@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CrudDetailViewModel } from '../../view-models/crud-detail-view-model';
-import { SampleDetailViewModel } from '../../view-models/sample-detail-view-model';
+import { CrudDetailViewModel } from 'src/app/mvvm-sample/view-models/crud/crud-detail-view-model';
+import { SampleDetailViewModel } from 'src/app/mvvm-sample/view-models/samples/sample-detail-view-model';
 
 @Component({
   selector: 'app-sample-detail-view',

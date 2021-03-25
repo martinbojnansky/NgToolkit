@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SamplesViewComponent } from './views/samples-view/samples-view.component';
+import { SamplesViewComponent } from './views/samples/samples-view/samples-view.component';
 
 const routes: Routes = [{ path: '', component: SamplesViewComponent }];
 
