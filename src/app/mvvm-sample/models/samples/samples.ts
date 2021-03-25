@@ -1,4 +1,4 @@
-import { CrudSummary, CrudDetail } from './crud';
+import { CrudDetail, CrudSummary } from '../crud/crud';
 
 export interface SampleSummary extends CrudSummary {}
 
