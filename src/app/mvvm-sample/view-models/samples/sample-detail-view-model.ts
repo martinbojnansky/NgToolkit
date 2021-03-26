@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
+import { FormGroupName } from '@angular/forms';
 import { SampleDetail } from '../../models/samples/samples';
 import { SampleService } from '../../services/samples/sample.service';
 import { CrudDetailViewModel } from '../crud/crud-detail-view-model';
@@ -6,19 +7,17 @@ import { SamplesViewModel } from './samples-view-model';
 
 @Injectable()
 export class SampleDetailViewModel extends CrudDetailViewModel<SampleDetail> {
-  get samplesForm() {
-    return this.samplesViewModel.form;
-  }
-
-  get samplesText$() {
-    return this.samplesViewModel.text$;
+  get index(): number {
+    return Number(this.formGroupNameDirective?.name || null);
   }
 
   constructor(
-    protected samplesViewModel: SamplesViewModel,
-    protected crudService: SampleService
+    public samples: SamplesViewModel,
+    protected crudService: SampleService,
+    @Optional() protected formGroupNameDirective: FormGroupName
   ) {
     super();
-    this.init(samplesViewModel);
+    console.log(formGroupNameDirective);
+    this.init(samples);
   }
 }

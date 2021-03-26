@@ -50,13 +50,6 @@
       <button class="btn btn-success" (click)="vm.addSample()">
         + Add Sample
       </button>
-      <button
-        class="btn btn-danger"
-        (click)="vm.removeSample(vm.formSamples.length - 1)"
-        [disabled]="!vm.formSamples.length"
-      >
-        - Remove Sample
-      </button>
     </div>
 
     <div class="d-flex flex-wrap gap-3" formArrayName="samples">
