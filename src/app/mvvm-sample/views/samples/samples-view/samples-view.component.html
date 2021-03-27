@@ -54,7 +54,7 @@
 
     <div class="d-flex flex-wrap gap-3" formArrayName="samples">
       <div *ngFor="let sample of vm.formSamples.controls; let i = index">
-        <div class="card flex-grow-1" [formGroupName]="i">
+        <div class="card flex-grow-1" [vmContext]="{ index: i }">
           <app-sample-detail-view class="card-body"></app-sample-detail-view>
         </div>
       </div>

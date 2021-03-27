@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MvvmModule } from 'dist/ng-toolkit-lib';
 import { FormControlComponent } from './components/form-control/form-control.component';
 import { MvvmSampleRoutingModule } from './mvvm-sample-routing.module';
 import { SampleService } from './services/samples/sample.service';
@@ -22,6 +23,7 @@ import { SamplesViewComponent } from './views/samples/samples-view/samples-view.
     MvvmSampleRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MvvmModule,
   ],
   providers: [SampleService],
 })

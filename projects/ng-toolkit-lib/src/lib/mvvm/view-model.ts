@@ -4,6 +4,7 @@ import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { nameof, trySafe } from '../helpers';
 import { ObservableUnsubscriber } from '../rxjs';
+import { ViewModelContextDirective } from './view-model-context.directive';
 
 @Injectable()
 export class ViewModel implements OnDestroy {
@@ -21,9 +22,12 @@ export class ViewModel implements OnDestroy {
       }
 
       const property = trySafe(() => this[key]);
+      // Observe any observable
       if (property instanceof Observable) {
         propertyObservers.push(property);
-      } else if (
+      }
+      // Observe form controls
+      else if (
         property instanceof FormGroup ||
         property instanceof FormControl
       ) {
@@ -36,6 +40,10 @@ export class ViewModel implements OnDestroy {
             })
           )
         );
+      }
+      // Observe contexts
+      else if (property instanceof ViewModelContextDirective) {
+        propertyObservers.push(property.changes$);
       }
     });
 
