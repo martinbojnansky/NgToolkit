@@ -12,8 +12,8 @@
     </app-form-control>
 
     <app-form-control
-      [control]="vm.samplesForm.get('text')"
-      label="SamplesVM.Form.Text"
+      [control]="vm.samples.form.get('text')"
+      label="vm.samples.Form.Text"
       class="d-block mb-3"
     >
       <ng-template #contentTemplate let-control>
@@ -22,8 +22,8 @@
     </app-form-control>
 
     <app-form-control
-      [control]="vm.samplesForm.get('bool')"
-      label="SamplesVM.Form.Bool"
+      [control]="vm.samples.form.get('bool')"
+      label="vm.samples.Form.Bool"
       class="d-block mb-3"
     >
       <ng-template #contentTemplate let-control>
@@ -43,13 +43,20 @@
       </ng-template>
     </app-form-control>
 
-    <app-form-control label="SamplesVM.Text$" class="d-block mb-3">
+    <app-form-control label="vm.samples.Text$" class="d-block mb-3">
       <input
         type="text"
         class="form-control"
-        [value]="vm.samplesText$.value"
-        (change)="vm.samplesText$.next($event.target.value)"
+        [value]="vm.samples.text$.value"
+        (change)="vm.samples.text$.next($event.target.value)"
       />
     </app-form-control>
   </app-crud-detail-view>
+
+  <button
+    class="btn btn-danger ms-2"
+    (click)="vm.samples.removeSample(vm.context.value.index)"
+  >
+    Remove
+  </button>
 </ng-container>

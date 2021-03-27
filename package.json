@@ -14,7 +14,8 @@
     "test-sample:prod": "ng test ng-toolkit --browsers=ChromeHeadless --watch=false",
     "lint-lib": "ng lint ng-toolkit-lib",
     "lint-sample": "ng lint ng-toolkit",
-    "e2e": "npm run build-lib:prod && ng e2e"
+    "e2e": "npm run build-lib:prod && ng e2e",
+    "publish-lib": "npm run lint-lib && npm run test-lib:prod && npm run build-lib:prod && cd projects/ng-toolkit-lib/ && npm publish"
   },
   "private": true,
   "dependencies": {

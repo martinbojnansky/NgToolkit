@@ -10,6 +10,7 @@
       true,
       "attribute",
       "ngtl",
+      "vm",
       "camelCase"
     ],
     "component-selector": [

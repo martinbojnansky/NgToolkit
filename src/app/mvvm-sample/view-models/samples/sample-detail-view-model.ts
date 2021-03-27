@@ -1,4 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
+import {
+  ViewModelContext,
+  ViewModelContextDirective,
+} from 'dist/ng-toolkit-lib';
 import { SampleDetail } from '../../models/samples/samples';
 import { SampleService } from '../../services/samples/sample.service';
 import { CrudDetailViewModel } from '../crud/crud-detail-view-model';
@@ -6,19 +10,14 @@ import { SamplesViewModel } from './samples-view-model';
 
 @Injectable()
 export class SampleDetailViewModel extends CrudDetailViewModel<SampleDetail> {
-  get samplesForm() {
-    return this.samplesViewModel.form;
-  }
-
-  get samplesText$() {
-    return this.samplesViewModel.text$;
-  }
-
   constructor(
-    protected samplesViewModel: SamplesViewModel,
+    public samples: SamplesViewModel,
+    @Optional()
+    @Inject(ViewModelContextDirective)
+    public context: ViewModelContext<{ index: number }>,
     protected crudService: SampleService
   ) {
     super();
-    this.init(samplesViewModel);
+    this.init(samples);
   }
 }
