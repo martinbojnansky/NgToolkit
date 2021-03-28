@@ -177,5 +177,53 @@ export class ObservableStoreQueries<TState, TAction> {
     return this.store.changes$;
   }
 
-  constructor(protected store: ObservableStore<TState, TAction>) {}
+  constructor(protected store: ObservableStore<TState, TAction>) {
+    store.changes$.subscribe(() => {
+      this._queryResults = {};
+    });
+  }
+
+  setState(action: TAction, state: Partial<TState>): void {
+    this.store.setState(action, state);
+  }
+
+  patchState(action: TAction, patch: Partial<TState>): void {
+    this.store.patchState(action, patch);
+  }
+
+  patchStateAsync<T>(
+    observable$: Observable<T>,
+    storeEffects: ObservableStoreEffects<T, TState, TAction>
+  ): Observable<void> {
+    return this.store.patchStateAsync(observable$, storeEffects);
+  }
+
+  protected _queryResults: { [key: string]: { value: any } } = {};
+}
+
+export function query<TState, TAction>(): (
+  target: ObservableStoreQueries<TState, TAction>,
+  prop: string,
+  descriptor: PropertyDescriptor
+) => PropertyDescriptor {
+  return (
+    target: ObservableStoreQueries<TState, TAction>,
+    key: string,
+    descriptor: PropertyDescriptor
+  ): PropertyDescriptor => {
+    const getter = function get(
+      this: ObservableStoreQueries<TState, TAction>
+    ): any {
+      if (!this._queryResults[key]) {
+        this._queryResults[key] = { value: descriptor.get.apply(this) };
+      }
+      return this._queryResults[key].value;
+    };
+
+    return {
+      get: getter,
+      configurable: false,
+      enumerable: false,
+    } as PropertyDescriptor;
+  };
 }
