@@ -211,13 +211,17 @@ export function query<TState, TAction>(): (
     key: string,
     descriptor: PropertyDescriptor
   ): PropertyDescriptor => {
+    const get = function get(
+      this: ObservableStoreQueries<TState, TAction>
+    ): any {
+      if (!this._queryResults[key]) {
+        this._queryResults[key] = { value: descriptor.get.apply(this) };
+      }
+      return this._queryResults[key].value;
+    };
+
     return {
-      get: function (this: ObservableStoreQueries<TState, TAction>): any {
-        if (!this._queryResults[key]) {
-          this._queryResults[key] = { value: descriptor.get.apply(this) };
-        }
-        return this._queryResults[key].value;
-      },
+      ...{ get },
       configurable: false,
       enumerable: false,
     } as PropertyDescriptor;
