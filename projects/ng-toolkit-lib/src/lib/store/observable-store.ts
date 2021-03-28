@@ -211,7 +211,7 @@ export function query<TState, TAction>(): (
     key: string,
     descriptor: PropertyDescriptor
   ): PropertyDescriptor => {
-    const get = function get(
+    const getter = function get(
       this: ObservableStoreQueries<TState, TAction>
     ): any {
       if (!this._queryResults[key]) {
@@ -221,7 +221,7 @@ export function query<TState, TAction>(): (
     };
 
     return {
-      ...{ get },
+      get: getter,
       configurable: false,
       enumerable: false,
     } as PropertyDescriptor;
