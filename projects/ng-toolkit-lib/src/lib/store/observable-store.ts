@@ -169,8 +169,6 @@ export class ObservableStore<TState, TAction> {
 }
 
 export class ObservableStoreQueries<TState, TAction> {
-  protected _queryResults: { [key: string]: { value: any } } = {};
-
   get state(): TState {
     return this.store.snapshot.state;
   }
@@ -184,11 +182,28 @@ export class ObservableStoreQueries<TState, TAction> {
       this._queryResults = {};
     });
   }
+
+  setState(action: TAction, state: Partial<TState>): void {
+    this.store.setState(action, state);
+  }
+
+  patchState(action: TAction, patch: Partial<TState>): void {
+    this.store.patchState(action, patch);
+  }
+
+  patchStateAsync<T>(
+    observable$: Observable<T>,
+    storeEffects: ObservableStoreEffects<T, TState, TAction>
+  ): Observable<void> {
+    return this.store.patchStateAsync(observable$, storeEffects);
+  }
+
+  protected _queryResults: { [key: string]: { value: any } } = {};
 }
 
 export function query<TState, TAction>(): (
   target: ObservableStoreQueries<TState, TAction>,
-  prop: string | Symbol,
+  prop: string,
   descriptor: PropertyDescriptor
 ) => PropertyDescriptor {
   return (

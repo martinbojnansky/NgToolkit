@@ -3,7 +3,7 @@ import { uuid } from 'dist/ng-toolkit-lib';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { StoreSampleSummary } from '../store-sample-models';
-import { StoreSampleStore } from '../store-sample-store';
+import { StoreSampleQueries } from '../store-sample-queries';
 
 export abstract class StoreSampleService {
   abstract readItems(): Observable<void>;
@@ -11,17 +11,17 @@ export abstract class StoreSampleService {
 
 @Injectable()
 export class StoreSampleServiceImpl extends StoreSampleService {
-  constructor(protected storeSampleStore: StoreSampleStore) {
+  constructor(protected storeSampleQueries: StoreSampleQueries) {
     super();
   }
 
   readItems() {
-    return this.storeSampleStore.patchStateAsync(getFakeStoreSamples(), {
+    return this.storeSampleQueries.patchStateAsync(getFakeStoreSamples(), {
       started: () => [
         'readStoreSamplesStarted',
         {
           storeSamples: {
-            ...this.storeSampleStore.snapshot.state.storeSamples,
+            ...this.storeSampleQueries.state.storeSamples,
             busy: true,
             error: null,
           },
@@ -31,7 +31,7 @@ export class StoreSampleServiceImpl extends StoreSampleService {
         'readStoreSamplesCompleted',
         {
           storeSamples: {
-            ...this.storeSampleStore.snapshot.state.storeSamples,
+            ...this.storeSampleQueries.state.storeSamples,
             busy: false,
             error: null,
             items: v,
@@ -42,7 +42,7 @@ export class StoreSampleServiceImpl extends StoreSampleService {
         'readStoreSamplesFailed',
         {
           storeSamples: {
-            ...this.storeSampleStore.snapshot.state.storeSamples,
+            ...this.storeSampleQueries.state.storeSamples,
             busy: false,
             error: {
               ...e,
