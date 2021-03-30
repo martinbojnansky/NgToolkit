@@ -5,30 +5,17 @@
       <span class="badge bg-secondary">{{ vm.changes$.value }}</span>
     </h3>
 
-    <app-form-control
-      [control]="vm.form.get('text')"
-      label="Form.Text"
-      class="d-block mb-3"
-    >
+    <app-form-control [control]="vm.form.get('text')" label="Form.Text" class="d-block mb-3">
       <ng-template #contentTemplate let-control>
         <input type="text" class="form-control" [formControl]="control" />
       </ng-template>
     </app-form-control>
 
-    <app-form-control
-      [control]="vm.form.get('bool')"
-      label="Form.Bool"
-      class="d-block mb-3"
-    >
+    <app-form-control [control]="vm.form.get('bool')" label="Form.Bool" class="d-block mb-3">
       <ng-template #contentTemplate let-control>
         <div class="input-group-text">
           <div class="form-check form-switch">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              [formControl]="vm.form.get('bool')"
-              id="boolean-switch"
-            />
+            <input class="form-check-input" type="checkbox" [formControl]="vm.form.get('bool')" id="boolean-switch" />
             <label class="form-check-label" for="boolean-switch">
               {{ vm.form.value.bool }}
             </label>
@@ -38,12 +25,7 @@
     </app-form-control>
 
     <app-form-control label="Text$" class="d-block mb-3">
-      <input
-        type="text"
-        class="form-control"
-        [value]="vm.text$.value"
-        (change)="vm.text$.next($event.target.value)"
-      />
+      <input type="text" class="form-control" [value]="vm.text$.value" (change)="vm.text$.next($event.target.value)" />
     </app-form-control>
 
     <div class="btn-group mb-3 sticky-top">

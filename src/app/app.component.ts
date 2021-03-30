@@ -23,8 +23,8 @@ export class AppComponent {
     {
       link: 'store-sample',
       label: 'Store sample',
-    },
+    }
   ];
 
-  constructor() {}
+  constructor() { }
 }

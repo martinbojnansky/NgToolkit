@@ -9,5 +9,5 @@ import { SamplesViewModel } from 'src/app/mvvm-sample/view-models/samples/sample
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SamplesViewComponent {
-  constructor(public vm: SamplesViewModel) {}
+  constructor(public vm: SamplesViewModel) { }
 }

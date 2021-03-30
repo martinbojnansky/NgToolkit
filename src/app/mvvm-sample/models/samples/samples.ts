@@ -1,7 +1,9 @@
-import { CrudDetail, CrudSummary } from '../crud/crud';
 
-export interface SampleSummary extends CrudSummary {}
+export interface SampleSummary {
+  id: number;
+  name: string;
+}
 
-export interface SampleDetail extends CrudDetail {
-  type: 'Beginner' | 'Advanced' | 'Expert';
+export interface SampleDetail extends SampleSummary {
+  description: string;
 }
