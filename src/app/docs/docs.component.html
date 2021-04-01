@@ -1,0 +1,45 @@
+<div class="d-flex flex-row align-items-start">
+  <!-- docs navigation -->
+  <nav
+    #docsAccordion
+    id="docsAccordion"
+    class="accordion accordion-flush sticky-top flex-shrink-0 me-5"
+    style="width: 16rem"
+  >
+    <div *ngFor="let group of docsNavGroups" class="accordion-item">
+      <h2 class="accordion-header" [attr.id]="group.id + 'DocsAccordionHeader'">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          [attr.data-bs-target]="'#' + group.id + 'DocsAccordionContent'"
+          aria-expanded="true"
+          [attr.aria-controls]="group.id + 'DocsAccordionContent'"
+        >
+          {{ group.label }}
+        </button>
+      </h2>
+      <div
+        [attr.id]="group.id + 'DocsAccordionContent'"
+        class="accordion-collapse show"
+        [attr.aria-labelledby]="group.id + 'DocsAccordionHeader'"
+      >
+        <div class="accordion-body">
+          <ul class="list-group list-group-flush">
+            <li
+              *ngFor="let item of group.items"
+              class="list-group-item list-group-item-action"
+              [routerLink]="group.routerLink + '/' + item.routerLink"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              → {{ item.label }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- page content -->
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,24 @@
+<div class="d-flex flex-row align-items-start">
+  <!-- content -->
+  <section #contentSection class="content-section flex-grow-1">
+    <ng-content></ng-content>
+  </section>
+  <!-- contents -->
+  <section
+    id="tableOfContentsSection"
+    class="navbar navbar-light bg-light sticky-top d-flex flex-column flex-shrink-0 align-items-stretch ms-4 p-3"
+    style="width: 15rem"
+  >
+    <h6 href="#">On this page</h6>
+    <nav class="nav nav-pills flex-column">
+      <a
+        *ngFor="let contents of tableOfContents"
+        class="nav-link"
+        [attr.href]="'#' + contents.id"
+        routerLink="."
+        [attr.fragment]="contents.id"
+        >{{ contents.label }}</a
+      >
+    </nav>
+  </section>
+</div>

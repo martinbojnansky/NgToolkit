@@ -1,0 +1,13 @@
+@import "global";
+
+::ng-deep {
+  .content-section {
+    h2 {
+      margin-top: $spacer * 3;
+    }
+
+    h3 {
+      margin-top: $spacer * 2;
+    }
+  }
+}
