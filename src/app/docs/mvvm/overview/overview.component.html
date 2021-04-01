@@ -1,22 +1,165 @@
 <app-contents-scrollspy>
   <h1>Model-View-ViewModel (MVVM)</h1>
   <p class="lead">
-    Learn how to create Angular applications using popular MVVM architectural
-    pattern.
+    Learn how to create Angular applications using popular architectural pattern
+    - MVVM.
   </p>
+
+  <!-- why-mvvm -->
+  <section id="why-mvvm" aria-label="Why MVVM?">
+    <h2>Why MVVM?</h2>
+    <div>
+      <p>
+        MVVM is a well-known architectural pattern, mostly used in .NET or
+        Android application development, but can also be found in other
+        frameworks and libraries.
+      </p>
+      <p>
+        Angular itself already uses an MVVM-like approach where View can be
+        referred to component's template, and ViewModel to component's class.
+        However, including a presentational logic in code-behind code of the the
+        component is not always a good idea, because very often it is loosely
+        coupled with a component, and either duplicates a code or does not
+        provide a good separation of concerns.
+      </p>
+      <p>
+        Therefore, developers usually manage a state of the application using
+        services layer or 3rd party solutions like NgRx. NgRx provides great
+        separation of concerns, however, it is also connected with a slower
+        learning curve and requires a lot of boilerplate code.
+      </p>
+      <p>
+        For these reasons, NgToolkit proposes an architecture that corresponds
+        more with Angular native approach to the UI development and MVVM pattern
+        as known from .NET development. MVVM implementation of NgToolkit is
+        more-or-less an architectural proposal extended with ViewModel base
+        class implementation that notifies a View about the changes of ViewModel
+        observables or ReactiveForm instances.
+      </p>
+    </div>
+  </section>
 
   <!-- mvvm-layers -->
   <section id="mvvm-layers" aria-label="MVVM Layers">
-    <h2>Layers o</h2>
+    <h2>Layers of MVVM</h2>
+    <p>
+      Please note, that the following description might not correspond to
+      "traditional" MVVM model that thinks about the Model layer more in terms
+      of a backend application, but tries to exclusively organize the frontend
+      application code.
+    </p>
     <div>
-      <h3>Model</h3>
-      <p>...</p>
+      <div class="d-flex flex-column align-items-center">
+        <div class="h3 w-100">
+          <span
+            class="badge bg-warning d-flex flex-column justify-content-center w-100"
+            style="height: 10rem"
+            >Model</span
+          >
+        </div>
+        <p class="align-self-start">
+          The Model is usually referred to data access layer, however, it can
+          also contain a business logic of the application.
+        </p>
+        <p class="align-self-start">For example:</p>
+        <ul class="align-self-start">
+          <li>A service used to create, read, update or delete data.</li>
+          <li>
+            A service containing or providing some kind of business-logic.
+          </li>
+        </ul>
+        <ul
+          class="list-unstyled d-flex flex-column justify-content-center mt-4 mb-5 p-3 text-center border rounded w-100"
+        >
+          <li>Send data</li>
+          <li>Receive data</li>
+        </ul>
+        <div class="h3 w-100">
+          <span
+            class="badge bg-success d-flex flex-column justify-content-center w-100"
+            style="height: 10rem"
+            >ViewModel</span
+          >
+        </div>
+        <p class="align-self-start">
+          The ViewModel is a layer of presentational logic and keeps a state of
+          the View and operations that can be performed within a View. ViewModel
+          is also responsible for notifying a View about its state changes,
+          validating user inputs or communication with the Model layer.
+        </p>
+        <ul
+          class="list-unstyled d-flex flex-column justify-content-center mt-4 mb-5 p-3 text-center border rounded w-100"
+        >
+          <li>2-Way Bindings</li>
+          <li>Commands</li>
+          <li>Value Changes</li>
+        </ul>
+        <div class="h3 w-100">
+          <span
+            class="badge bg-primary d-flex flex-column justify-content-center w-100"
+            style="height: 10rem"
+            >View</span
+          >
+        </div>
+        <p class="align-self-start">
+          The View can be referred to a display component, which consumes
+          ViewModel in order to bind the state of its properties or action
+          triggers. Using ReactiveForms we can also perform so-called two-way
+          binding and synchronize user input back to the ViewModel. The View is
+          updated when a state of ViewModel has changed.
+        </p>
+      </div>
+    </div>
+  </section>
 
-      <h3>View</h3>
-      <p>...</p>
-
-      <h3>ViewModel</h3>
-      <p>...</p>
+  <!-- folder-structure -->
+  <section id="folder-structure" aria-label="Folder structure">
+    <h2>Folder structure</h2>
+    <div>
+      <p>
+        In order to separate concers following folders are contained in each
+        feature module of the Angular application.
+      </p>
+      <ul>
+        <li><small>app</small></li>
+        <ul>
+          <li><small>sample</small></li>
+          <ul>
+            <li>
+              <b>components</b>&nbsp;<i
+                >(...dumb components with only inputs and outputs goes here)</i
+              >
+            </li>
+            <li>
+              <b>models</b>&nbsp;<i
+                >(...interfaces, enums, or other types goes here)</i
+              >
+            </li>
+            <li><b>services</b></li>
+            <ul>
+              <li>sample.service.ts</li>
+            </ul>
+            <li><b>view-models</b></li>
+            <ul>
+              <li>sample-view-model.ts</li>
+            </ul>
+            <li><b>views</b></li>
+            <ul>
+              <li>sample-view</li>
+              <ul>
+                <li>sample-view.component.html</li>
+                <li>sample-view.component.ts</li>
+              </ul>
+            </ul>
+            <li><small>sample-routing.module.ts</small></li>
+            <li><small>sample.module.ts</small></li>
+          </ul>
+          <li><small>app-routing.module.ts</small></li>
+          <li><small>app.component.html</small></li>
+          <li><small>app.component.ts</small></li>
+          <li><small>app.module.ts</small></li>
+        </ul>
+      </ul>
     </div>
   </section>
 </app-contents-scrollspy>
