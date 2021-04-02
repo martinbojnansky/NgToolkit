@@ -59,9 +59,6 @@ export class TranslationPipe
   constructor(protected translationService: TranslationService) {
     super(translationService);
   }
-  transform(value: any, ...args: any[]) {
-    throw new Error('Method not implemented.');
-  }
 }
 
 @NgModule({
