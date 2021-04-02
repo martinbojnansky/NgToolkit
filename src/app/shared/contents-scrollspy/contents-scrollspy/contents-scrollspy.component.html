@@ -14,7 +14,7 @@
       <a
         *ngFor="let contents of tableOfContents"
         class="nav-link"
-        [attr.href]="'#' + contents.id"
+        [attr.href]="getLinkToFragment(contents.id)"
         routerLink="."
         [attr.fragment]="contents.id"
         >{{ contents.label }}</a

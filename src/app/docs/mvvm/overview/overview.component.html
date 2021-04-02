@@ -160,6 +160,48 @@
           <li><small>app.module.ts</small></li>
         </ul>
       </ul>
+      <p>
+        If you want, you can also further organize the services, view-models and
+        views folders into sub-folders.
+      </p>
+      <ul>
+        <li><b>view-models</b></li>
+        <ul>
+          <li>employee</li>
+          <ul>
+            <li>employee-list-view-model.ts</li>
+            <li>employee-detail-view-model.ts</li>
+          </ul>
+          <li>customer</li>
+          <ul>
+            <li>customer-list-view-model.ts</li>
+            <li>customer-detail-view-model.ts</li>
+          </ul>
+        </ul>
+      </ul>
+    </div>
+  </section>
+
+  <!-- creating-viewmodel -->
+  <section id="creating-viewmodel" aria-label="Creating ViewModel">
+    <h2>Creating ViewModel</h2>
+    <div>
+      <p>
+        Once we are settled on folder structure, we can add our first ViewModel
+        by creating a class suffixed with ViewModel and extending ViewModel
+        class from NgToolkit.
+      </p>
+      <app-code-highlighter> </app-code-highlighter>
+      <p>
+        In order to emit ViewModel changes it is required to to call init
+        function inside the constructor.
+      </p>
+      <p>
+        Once we have created our first ViewModel, let's add a ReactiveForm and
+        Observable, of which state we will update or use in ViewModel functions
+        or using bindings in a View.
+      </p>
+      <app-code-highlighter> </app-code-highlighter>
     </div>
   </section>
 </app-contents-scrollspy>

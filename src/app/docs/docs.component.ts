@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-docs',
@@ -37,13 +36,7 @@ export class DocsComponent implements OnInit {
   @ViewChild('docsAccordion')
   docsAccordion: ElementRef<HTMLDivElement>;
 
-  constructor(protected router: Router) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    // this.router.events.subscribe((e) => {
-    //   if (e instanceof NavigationEnd) {
-    //     e.urlAfterRedirects.startsWith(`/${this.docsNavGroups[0].routerLink}/`);
-    //   }
-    // });
-  }
+  ngOnInit(): void {}
 }

@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 
@@ -13,16 +14,24 @@ import {
   styleUrls: ['./contents-scrollspy.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentsScrollspyComponent implements AfterViewInit {
+export class ContentsScrollspyComponent implements OnInit, AfterViewInit {
   @ViewChild('contentSection')
   contentSection: ElementRef<HTMLDivElement>;
 
   tableOfContents: { id: string; label: string }[] = [];
 
+  urlAfterRedirects: string;
+
   constructor(protected cd: ChangeDetectorRef) {}
+
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.updateTableOfContents();
+  }
+
+  getLinkToFragment(fragment: string): string {
+    return `${window.location.pathname}#${fragment}`;
   }
 
   protected updateTableOfContents() {
