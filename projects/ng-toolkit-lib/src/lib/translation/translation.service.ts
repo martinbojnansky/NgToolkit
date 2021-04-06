@@ -19,24 +19,8 @@ export class TranslationServiceBase<TLang, TModules> {
     return this._modules;
   }
 
-  constructor(config?: Partial<TranslationConfig<TLang, TModules>>) {
-    this._config = {
-      getLang: () => {
-        return (
-          ((localStorage.getItem('lang') as unknown) as TLang) ||
-          (Intl.NumberFormat().resolvedOptions().locale.substr(0, 2) as any) ||
-          'en'
-        );
-      },
-      setLang: (lang: TLang) => {
-        localStorage.setItem('lang', lang.toString());
-        window.location.reload();
-      },
-      importLang: (module: keyof TModules, lang: TLang) => {
-        return import(`src/translations/${module}/${lang}`);
-      },
-      ...config,
-    };
+  constructor(config: TranslationConfig<TLang, TModules>) {
+    this._config = config;
     this._lang = this._config.getLang();
   }
 

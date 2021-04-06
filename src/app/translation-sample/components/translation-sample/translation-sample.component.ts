@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslationService } from 'src/app/translation.module';
+import { TranslationLang, TranslationService } from 'src/app/translation.module';
 
 @Component({
   selector: 'app-translation-sample',
@@ -11,7 +11,9 @@ export class TranslationSampleComponent implements OnInit {
     return this.translationService.modules.translationSample.welcomeMessage;
   }
 
-  constructor(protected translationService: TranslationService) {}
+  readonly langs = TranslationLang;
 
-  ngOnInit(): void {}
+  constructor(protected translationService: TranslationService) { }
+
+  ngOnInit(): void { }
 }

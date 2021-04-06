@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   TranslationLang,
-  TranslationService,
+  TranslationService
 } from 'src/app/translation.module';
 
 @Component({
@@ -13,9 +13,9 @@ export class TranslationLangSwitchComponent implements OnInit {
   readonly langs = Object.keys(TranslationLang);
   readonly selectedLang = this.translateService.lang;
 
-  constructor(protected translateService: TranslationService) {}
+  constructor(protected translateService: TranslationService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   changeLang(lang: TranslationLang): void {
     this.translateService.changeLang(lang);
