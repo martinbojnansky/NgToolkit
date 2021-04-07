@@ -3,6 +3,7 @@ import {
   TranslationGuard,
   TranslationPipeBase,
   TranslationServiceBase,
+  trySafe
 } from 'dist/ng-toolkit-lib';
 
 export enum TranslationLang {
@@ -20,11 +21,31 @@ export interface TranslationModules {
 
 @Injectable()
 export class TranslationService extends TranslationServiceBase<
-  TranslationLang,
-  TranslationModules
+TranslationLang,
+TranslationModules
 > {
   constructor() {
-    super();
+    super({
+      getLang: () => {
+        const getInitialLang = () => {
+          const intlLang = trySafe(() => Intl.NumberFormat().resolvedOptions().locale.substr(0, 2)) as any as TranslationLang;
+          const intlLangSupported = Object.keys(TranslationLang).map(k => TranslationLang[k]).includes(intlLang);
+          return intlLangSupported ? intlLang : TranslationLang.en;
+        };
+
+        return (
+          (localStorage.getItem('lang') as any)
+          || getInitialLang()
+        );
+      },
+      setLang: (lang) => {
+        localStorage.setItem('lang', lang);
+        window.location.reload();
+      },
+      importLang: (module, lang) => {
+        return import(`src/translations/${module}/${lang}`);
+      }
+    });
   }
 }
 
@@ -51,4 +72,4 @@ export class TranslationPipe
     },
   ],
 })
-export class TranslationModule {}
+export class TranslationModule { }

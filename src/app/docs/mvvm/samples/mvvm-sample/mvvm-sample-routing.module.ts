@@ -8,4 +8,4 @@ const routes: Routes = [{ path: '', component: SamplesViewComponent }];
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MvvmSampleRoutingModule {}
+export class MvvmSampleRoutingModule { }
