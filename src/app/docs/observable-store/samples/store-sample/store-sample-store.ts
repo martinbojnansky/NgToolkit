@@ -1,6 +1,6 @@
+import { Injectable } from '@angular/core';
 import { ObservableStore } from 'dist/ng-toolkit-lib';
-import { Dataset } from '../app-models';
-import { StoreSampleSummary } from './store-sample-models';
+import { Dataset, StoreSampleSummary } from './store-sample-models';
 
 export type StoreSampleState = {
   storeSamples: Dataset<StoreSampleSummary>;
@@ -12,7 +12,12 @@ export type StoreSampleAction =
   | 'readStoreSamplesFailed'
   | 'readStoreSamplesCancelled';
 
-export abstract class StoreSampleStore extends ObservableStore<
+@Injectable()
+export class StoreSampleStore extends ObservableStore<
   StoreSampleState,
   StoreSampleAction
-> {}
+> {
+  constructor() {
+    super({}, { log: true });
+  }
+}

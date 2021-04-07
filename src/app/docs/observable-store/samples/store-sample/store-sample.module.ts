@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { AppStore } from '../app-store';
 import { StoreSampleComponent } from './components/store-sample/store-sample.component';
 import {
   StoreSampleService,
@@ -14,10 +13,7 @@ import { StoreSampleStore } from './store-sample-store';
   declarations: [StoreSampleComponent],
   imports: [CommonModule, StoreSampleRoutingModule],
   providers: [
-    {
-      provide: StoreSampleStore,
-      useExisting: AppStore,
-    },
+    StoreSampleStore,
     StoreSampleQueries,
     {
       provide: StoreSampleService,

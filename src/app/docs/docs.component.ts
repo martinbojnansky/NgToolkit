@@ -19,7 +19,7 @@ export class DocsComponent implements OnInit {
         },
         {
           id: 'releaseNotes',
-          label: "What's new?",
+          label: `What's new?`,
           routerLink: 'release-notes',
         },
       ],
@@ -28,6 +28,30 @@ export class DocsComponent implements OnInit {
       id: 'mvvmStarted',
       label: 'MVVM',
       routerLink: 'mvvm',
+      items: [
+        {
+          id: 'overview',
+          label: 'Overview',
+          routerLink: 'overview',
+        },
+      ],
+    },
+    {
+      id: 'translation',
+      label: 'Translation',
+      routerLink: 'translation',
+      items: [
+        {
+          id: 'overview',
+          label: 'Overview',
+          routerLink: 'overview',
+        },
+      ],
+    },
+    {
+      id: 'observableStore',
+      label: 'Observable Store',
+      routerLink: 'observable-store',
       items: [
         {
           id: 'overview',

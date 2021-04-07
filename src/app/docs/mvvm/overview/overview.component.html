@@ -174,17 +174,7 @@
         order to emit changes of its Observables or FormControls.
       </p>
       <app-code-highlighter
-        code="
-import { Injectable } from '@angular/core';
-import { ViewModel } from 'ng-toolkit-lib';
-
-@Injectable()
-export class SamplesViewModel extends ViewModel {
-  constructor() {
-    super();
-    this.init();
-  }
-}"
+        [code]="snippets.viewModelInit"
       ></app-code-highlighter>
       <p>
         You can also notice that a ViewModel is treated as injectable service.
@@ -197,42 +187,14 @@ export class SamplesViewModel extends ViewModel {
         using bindings in a View.
       </p>
       <app-code-highlighter
-        code="
-@Injectable()
-export class SamplesViewModel extends ViewModel {
-  form = new FormGroup({
-    text: new FormControl('FormControl Text'),
-    bool: new FormControl(true),
-    samples: new FormArray([new FormControl(), new FormControl()]),
-  });
-
-  text$ = new BehaviorSubject<string>('Observable Text');
-
-  ...
-}"
+        [code]="snippets.viewModelObservables"
       ></app-code-highlighter>
       <p>
         Last, but not least, let's add some methods to either add or remove an
         item of form.samples array.
       </p>
       <app-code-highlighter
-        code="
-@Injectable()
-export class SamplesViewModel extends ViewModel {
-  get formSamples(): FormArray {
-    return this.form.get('samples') as FormArray;
-  }
-
-  ...
-
-  addSample(): void {
-    this.formSamples.push(new FormControl());
-  }
-
-  removeSample(index: number): void {
-    this.formSamples.removeAt(index);
-  }
-}"
+        [code]="snippets.viewModelMethods"
       ></app-code-highlighter>
     </div>
   </section>
@@ -248,54 +210,112 @@ export class SamplesViewModel extends ViewModel {
         rather wish to share a ViewModel between multiple components, define a
         provider in one of the parent Views or parent NgModule).
       </p>
-      <app-code-highlighter
-        code="
-@Component({
-  selector: 'app-samples-view',
-  templateUrl: './samples-view.component.html',
-  styleUrls: ['./samples-view.component.scss'],
-  providers: [SamplesViewModel],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class SamplesViewComponent {
-  constructor(public vm: SamplesViewModel) { }
-}"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewInit"></app-code-highlighter>
       <p>
         As you can notice, our ViewModel type will be then injected to public
         property called vm upon component's creation.
       </p>
       <p>
-        In HTML template we then subscribe once using async pipe to all changes
-        on a ViewModel observables.
+        In HTML template we then subscribe to all changes of the ViewModel
+        observables only once using async pipe.
       </p>
       <app-code-highlighter
-        code="
-<ng-container *ngIf=''vm.changes$ | async''>
-  ...
-</ng-container>''"
+        [code]="snippets.viewSubscription"
       ></app-code-highlighter>
       <p>
-        and bind a Observable and FormControl instances, as well as their
-        values, or last but not least, the methods defined on the ViewModel.
+        And we can bind Observable and FormControl instances (as well as their
+        values), or the methods defined on the ViewModel.
       </p>
       <app-code-highlighter
-        code="
-<!-- FormControl binding -->
-<input type=''text'' [formControl]=''vm.form.get('text')'' />
-
-<!-- FormControl value binding -->
-[[ form.get('text').value ]]
-
-<!-- Observable value binding -->
-[[ text$.value ]]
-
-<!-- Observable value/change binding -->
-<input type=''text'' [value]=''vm.text$.value'' (change)=''vm.text$.next($event.target.value)'' />
-
-<!-- Method binding -->
-<button class=''btn btn-success'' (click)=''vm.addSample()''>+ Add Sample</button>"
+        [code]="snippets.viewBindings"
       ></app-code-highlighter>
+    </div>
+  </section>
+
+  <!-- parent-viewmodels -->
+  <section id="parent-viewmodels" aria-label="Parent ViewModels">
+    <h2>Parent ViewModels</h2>
+    <div>
+      <p>
+        Your application might contain a tree of a View components which needs
+        to share a specific functionality. In such cases we should structure the
+        application so there is always at least one parent View on the way up to
+        the root View. Then we can easily inject any of parent ViewModels in
+        ViewModel constructor as its dependency.
+      </p>
+      <p>
+        Please note, that any parent ViewModel which properties will be bound in
+        the View has to be passed to init(...parentViewModels) function.
+      </p>
+      <app-code-highlighter
+        [code]="snippets.parentViewModelInit"
+      ></app-code-highlighter>
+      <p>
+        Afterwards, we can access all its public properties or methods within a
+        ViewModel or a View. Bindings of such a properties will be always in
+        sync, and View will be marked for change detection whenever there is a
+        change to parent ViewModel observables.
+      </p>
+      <app-code-highlighter
+        [code]="snippets.parentViewBinding"
+      ></app-code-highlighter>
+    </div>
+  </section>
+
+  <!-- viewmodel-context -->
+  <section id="viewmodel-context" aria-label="ViewModel Context">
+    <h2>ViewModel Context</h2>
+    <div>
+      <p>
+        In case there are multiple instances of a View on same level, we might
+        need to pass down some properties to its ViewModel. In such a case you
+        can use ViewModelContextDirective and define it as a dependency on child
+        ViewModel.
+      </p>
+      <p>First you will have to import MvvmModule module.</p>
+      <app-code-highlighter
+        [code]="snippets.mvvmModuleImport"
+      ></app-code-highlighter>
+      <p>
+        Then define a provider with additional properties within a loop
+        rendering.
+      </p>
+      <app-code-highlighter
+        [code]="snippets.viewModelContextDirectiveProvider"
+      ></app-code-highlighter>
+      <p>And inject a directive in child ViewModel.</p>
+      <app-code-highlighter
+        [code]="snippets.viewModelContextDirectiveInjector"
+      ></app-code-highlighter>
+      <p>
+        Last but not least, we can use the context to call a method on a parent
+        ViewModel and define an index at which item should be deleted.
+      </p>
+      <app-code-highlighter
+        [code]="snippets.viewModelContextDirectiveBinding"
+      ></app-code-highlighter>
+    </div>
+  </section>
+
+  <!-- inheritance -->
+  <section id="inheritance" aria-label="Inheritance">
+    <h2>Inheritance</h2>
+    <div>
+      <p>...</p>
+    </div>
+  </section>
+
+  <!-- sample -->
+  <section id="sample" aria-label="Sample">
+    <h2>Sample</h2>
+    <div>
+      <p>
+        Checkout the <a routerLink="../samples/mvvm-sample">sample</a> or the
+        <a
+          href="https://github.com/martinbojnansky/NgToolkit/tree/master/src/app/docs/mvvm/samples/mvvm-sample"
+          >code</a
+        >.
+      </p>
     </div>
   </section>
 </app-contents-scrollspy>

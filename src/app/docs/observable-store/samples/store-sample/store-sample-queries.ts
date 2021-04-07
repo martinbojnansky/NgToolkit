@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ObservableStoreQueries, query } from 'ng-toolkit-lib';
-import { Dataset } from '../app-models';
+import { Dataset } from './store-sample-models';
 import {
   StoreSampleAction,
   StoreSampleState,

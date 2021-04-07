@@ -7,15 +7,7 @@ const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
   {
     path: 'samples',
-    children: [
-      {
-        path: 'mvvm-sample',
-        loadChildren: () =>
-          import('./samples/mvvm-sample/mvvm-sample.module').then(
-            (m) => m.MvvmSampleModule
-          ),
-      },
-    ],
+    children: [],
   },
 ];
 
@@ -23,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MvvmRoutingModule {}
+export class TranslationRoutingModule {}

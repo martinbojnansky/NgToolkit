@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SamplesViewModel } from 'src/app/mvvm-sample/view-models/samples/samples-view-model';
+import { SamplesViewModel } from '../../../view-models/samples/samples-view-model';
 
 @Component({
   selector: 'app-samples-view',
@@ -9,5 +9,5 @@ import { SamplesViewModel } from 'src/app/mvvm-sample/view-models/samples/sample
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SamplesViewComponent {
-  constructor(public vm: SamplesViewModel) { }
+  constructor(public vm: SamplesViewModel) {}
 }

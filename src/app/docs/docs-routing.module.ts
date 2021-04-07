@@ -24,6 +24,20 @@ const routes: Routes = [
         loadChildren: () =>
           import('./mvvm/mvvm.module').then((m) => m.MvvmModule),
       },
+      {
+        path: 'translation',
+        loadChildren: () =>
+          import('./translation/translation.module').then(
+            (m) => m.TranslationModule
+          ),
+      },
+      {
+        path: 'observable-store',
+        loadChildren: () =>
+          import('./observable-store/observable-store.module').then(
+            (m) => m.ObservableStoreModule
+          ),
+      },
     ],
   },
 ];

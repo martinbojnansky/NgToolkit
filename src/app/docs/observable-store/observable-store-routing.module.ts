@@ -9,10 +9,10 @@ const routes: Routes = [
     path: 'samples',
     children: [
       {
-        path: 'mvvm-sample',
+        path: 'store-sample',
         loadChildren: () =>
-          import('./samples/mvvm-sample/mvvm-sample.module').then(
-            (m) => m.MvvmSampleModule
+          import('./samples/store-sample/store-sample.module').then(
+            (m) => m.StoreSampleModule
           ),
       },
     ],
@@ -23,4 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MvvmRoutingModule {}
+export class ObservableStoreRoutingModule {}

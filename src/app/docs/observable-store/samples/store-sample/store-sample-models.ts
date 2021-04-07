@@ -10,3 +10,7 @@ export interface AsyncStateObject {
 export interface Dataset<T> extends AsyncStateObject {
   items: T[];
 }
+
+export interface StoreSampleSummary extends UuidObject {
+  title: string;
+}
