@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'app-code-highlighter',
@@ -7,6 +12,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodeHighlighterComponent implements OnInit {
+  @Input()
+  code: string;
+
   constructor() {}
 
   ngOnInit(): void {}

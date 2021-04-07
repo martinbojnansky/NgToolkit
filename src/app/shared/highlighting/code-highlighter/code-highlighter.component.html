@@ -1,11 +1,10 @@
 <div class="position-relative bg-light p-3">
-  <pre class="mb-0">
-  <ng-content></ng-content></pre>
+  <pre class="mb-0">{{ code }}</pre>
   <div class="position-absolute top-0 end-0">
     <button
       type="button"
       class="btn btn-link btn-sm"
-      (click)="copyToClipboard()"
+      [cdkCopyToClipboard]="code"
     >
       Copy
     </button>

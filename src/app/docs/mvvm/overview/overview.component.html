@@ -11,20 +11,21 @@
     <div>
       <p>
         MVVM is a well-known architectural pattern, mostly used in .NET or
-        Android application development, but can also be found in other
+        Angular application development, but can also be found in other
         frameworks and libraries.
       </p>
       <p>
         Angular itself already uses an MVVM-like approach where View can be
-        referred to component's template, and ViewModel to component's class.
-        However, including a presentational logic in code-behind code of the the
-        component is not always a good idea, because very often it is loosely
-        coupled with a component, and either duplicates a code or does not
-        provide a good separation of concerns.
+        referred to component's template, and ViewModel to component's
+        code-behind class. However, including a presentational logic in
+        code-behind code of the component is usually not a good idea, because
+        very often it is loosely coupled with a component, and either duplicates
+        a code or does not provide a good separation of concerns.
       </p>
-      <p>The goals of following architectural design are:</p>
-      <ul>
+      <p>Therefore, the goals of following architectural design are:</p>
+      <ul class="fw-bolder">
         <li>Writing as little and as native code as possible</li>
+        <li>Easy to learn</li>
         <li>Better separation of concerns and better testability</li>
         <li>Scalability</li>
         <li>Inheritance</li>
@@ -35,12 +36,6 @@
   <!-- mvvm-layers -->
   <section id="mvvm-layers" aria-label="MVVM Layers">
     <h2>Layers of MVVM</h2>
-    <p>
-      Please note, that the following description might not correspond to
-      "traditional" MVVM model that thinks about the Model layer more in terms
-      of a backend application, but tries to exclusively organize the frontend
-      application code.
-    </p>
     <div>
       <div class="d-flex flex-column align-items-center">
         <div class="h3 w-100">
@@ -54,13 +49,6 @@
           The Model is usually referred to data access layer, however, it can
           also contain a business logic of the application.
         </p>
-        <p class="align-self-start">For example:</p>
-        <ul class="align-self-start">
-          <li>A service used to create, read, update or delete data.</li>
-          <li>
-            A service containing or providing some kind of business-logic.
-          </li>
-        </ul>
         <ul
           class="list-unstyled d-flex flex-column justify-content-center mt-4 mb-5 p-3 text-center border rounded w-100"
         >
@@ -182,19 +170,132 @@
       <p>
         Once we are settled on folder structure, we can add our first ViewModel
         by creating a class suffixed with ViewModel and extending ViewModel
-        class from NgToolkit.
+        class from NgToolkit. Each ViewModel has to call the init() function in
+        order to emit changes of its Observables or FormControls.
       </p>
-      <app-code-highlighter> </app-code-highlighter>
+      <app-code-highlighter
+        code="
+import { Injectable } from '@angular/core';
+import { ViewModel } from 'ng-toolkit-lib';
+
+@Injectable()
+export class SamplesViewModel extends ViewModel {
+  constructor() {
+    super();
+    this.init();
+  }
+}"
+      ></app-code-highlighter>
       <p>
-        In order to emit ViewModel changes it is required to to call init
-        function inside the constructor.
+        You can also notice that a ViewModel is treated as injectable service.
+        This will help us to either mock it during testing or reuse the
+        functionality at multiple places without depending on a View.
       </p>
       <p>
         Once we have created our first ViewModel, let's add a ReactiveForm and
-        Observable, of which state we will update or use in ViewModel functions
-        or using bindings in a View.
+        Observable. Their state will be further used in a ViewModel methods or
+        using bindings in a View.
       </p>
-      <app-code-highlighter> </app-code-highlighter>
+      <app-code-highlighter
+        code="
+@Injectable()
+export class SamplesViewModel extends ViewModel {
+  form = new FormGroup({
+    text: new FormControl('FormControl Text'),
+    bool: new FormControl(true),
+    samples: new FormArray([new FormControl(), new FormControl()]),
+  });
+
+  text$ = new BehaviorSubject<string>('Observable Text');
+
+  ...
+}"
+      ></app-code-highlighter>
+      <p>
+        Last, but not least, let's add some methods to either add or remove an
+        item of form.samples array.
+      </p>
+      <app-code-highlighter
+        code="
+@Injectable()
+export class SamplesViewModel extends ViewModel {
+  get formSamples(): FormArray {
+    return this.form.get('samples') as FormArray;
+  }
+
+  ...
+
+  addSample(): void {
+    this.formSamples.push(new FormControl());
+  }
+
+  removeSample(index: number): void {
+    this.formSamples.removeAt(index);
+  }
+}"
+      ></app-code-highlighter>
+    </div>
+  </section>
+
+  <!-- creating-view -->
+  <section id="creating-view" aria-label="Creating View">
+    <h2>Creating View</h2>
+    <div>
+      <p>
+        After we have created a ViewModel, we also need a display component
+        called View. In component's code-behind file we will then define a
+        provider for a ViewModel, so each component has its own instance (if you
+        rather wish to share a ViewModel between multiple components, define a
+        provider in one of the parent Views or parent NgModule).
+      </p>
+      <app-code-highlighter
+        code="
+@Component({
+  selector: 'app-samples-view',
+  templateUrl: './samples-view.component.html',
+  styleUrls: ['./samples-view.component.scss'],
+  providers: [SamplesViewModel],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class SamplesViewComponent {
+  constructor(public vm: SamplesViewModel) { }
+}"
+      ></app-code-highlighter>
+      <p>
+        As you can notice, our ViewModel type will be then injected to public
+        property called vm upon component's creation.
+      </p>
+      <p>
+        In HTML template we then subscribe once using async pipe to all changes
+        on a ViewModel observables.
+      </p>
+      <app-code-highlighter
+        code="
+<ng-container *ngIf=''vm.changes$ | async''>
+  ...
+</ng-container>''"
+      ></app-code-highlighter>
+      <p>
+        and bind a Observable and FormControl instances, as well as their
+        values, or last but not least, the methods defined on the ViewModel.
+      </p>
+      <app-code-highlighter
+        code="
+<!-- FormControl binding -->
+<input type=''text'' [formControl]=''vm.form.get('text')'' />
+
+<!-- FormControl value binding -->
+[[ form.get('text').value ]]
+
+<!-- Observable value binding -->
+[[ text$.value ]]
+
+<!-- Observable value/change binding -->
+<input type=''text'' [value]=''vm.text$.value'' (change)=''vm.text$.next($event.target.value)'' />
+
+<!-- Method binding -->
+<button class=''btn btn-success'' (click)=''vm.addSample()''>+ Add Sample</button>"
+      ></app-code-highlighter>
     </div>
   </section>
 </app-contents-scrollspy>
