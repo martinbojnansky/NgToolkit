@@ -11,3 +11,15 @@
     }
   }
 }
+
+.nav-link {
+  > a {
+    text-decoration: none;
+  }
+
+  &.active {
+    > a {
+      color: white;
+    }
+  }
+}

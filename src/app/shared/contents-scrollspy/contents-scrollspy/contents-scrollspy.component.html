@@ -11,14 +11,20 @@
   >
     <h6 href="#">On this page</h6>
     <nav class="nav nav-pills flex-column">
-      <a
+      <div
         *ngFor="let contents of tableOfContents"
-        class="nav-link"
-        [attr.href]="getLinkToFragment(contents.id)"
-        routerLink="."
-        [attr.fragment]="contents.id"
-        >{{ contents.label }}</a
+        class="d-flex nav-link"
+        [attr.href]="'#' + contents.id"
       >
+        <a
+          class="flex-grow-1"
+          [attr.href]="getLinkToFragment(contents.id)"
+          routerLink="."
+          [attr.fragment]="contents.id"
+        >
+          {{ contents.label }}
+        </a>
+      </div>
     </nav>
   </section>
 </div>

@@ -17,6 +17,11 @@ export class DocsComponent implements OnInit {
           label: 'Introduction',
           routerLink: 'introduction',
         },
+        {
+          id: 'releaseNotes',
+          label: "What's new?",
+          routerLink: 'release-notes',
+        },
       ],
     },
     {

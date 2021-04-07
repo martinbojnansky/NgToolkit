@@ -22,20 +22,13 @@
         coupled with a component, and either duplicates a code or does not
         provide a good separation of concerns.
       </p>
-      <p>
-        Therefore, developers usually manage a state of the application using
-        services layer or 3rd party solutions like NgRx. NgRx provides great
-        separation of concerns, however, it is also connected with a slower
-        learning curve and requires a lot of boilerplate code.
-      </p>
-      <p>
-        For these reasons, NgToolkit proposes an architecture that corresponds
-        more with Angular native approach to the UI development and MVVM pattern
-        as known from .NET development. MVVM implementation of NgToolkit is
-        more-or-less an architectural proposal extended with ViewModel base
-        class implementation that notifies a View about the changes of ViewModel
-        observables or ReactiveForm instances.
-      </p>
+      <p>The goals of following architectural design are:</p>
+      <ul>
+        <li>Writing as little and as native code as possible</li>
+        <li>Better separation of concerns and better testability</li>
+        <li>Scalability</li>
+        <li>Inheritance</li>
+      </ul>
     </div>
   </section>
 
@@ -124,7 +117,7 @@
         <li><small>app</small></li>
         <ul>
           <li><small>sample</small></li>
-          <ul>
+          <ul class="bg-light">
             <li>
               <b>components</b>&nbsp;<i
                 >(...dumb components with only inputs and outputs goes here)</i
