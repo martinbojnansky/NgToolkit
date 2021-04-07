@@ -5,17 +5,19 @@ import { TranslationGuard } from 'dist/ng-toolkit-lib';
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: 'docs',
+  },
+  {
+    path: 'docs',
+    loadChildren: () => import('./docs/docs.module').then((m) => m.DocsModule),
+  },
+  {
+    path: 'translation-sample',
     canActivateChild: [TranslationGuard],
     children: [
       {
-        path: 'mvvm-sample',
-        loadChildren: () =>
-          import('./mvvm-sample/mvvm-sample.module').then(
-            (m) => m.MvvmSampleModule
-          ),
-      },
-      {
-        path: 'translation-sample',
+        path: '',
         loadChildren: () =>
           import('./translation-sample/translation-sample.module').then(
             (m) => m.TranslationSampleModule
@@ -24,19 +26,14 @@ const routes: Routes = [
           translationModules: ['translationSample'],
         },
       },
-      {
-        path: 'store-sample',
-        loadChildren: () =>
-          import('./store-sample/store-sample.module').then(
-            (m) => m.StoreSampleModule
-          ),
-      },
     ],
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' }),
+  ],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
-import { AppStore } from './app-store';
 import { AppComponent } from './app.component';
 import { BootstrapModule } from './shared/bootstrap/bootstrap.module';
 import { TranslationModule } from './translation.module';
@@ -18,7 +17,7 @@ import { TranslationModule } from './translation.module';
     AppRoutingModule,
     BootstrapModule,
   ],
-  providers: [AppStore],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

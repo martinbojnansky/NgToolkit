@@ -7,24 +7,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  readonly samples = [
+  readonly topNavItems = [
     {
-      link: '',
-      label: 'Home',
-    },
-    {
-      link: 'mvvm-sample',
-      label: 'MVVM sample',
-    },
-    {
-      link: 'translation-sample',
-      label: 'Translation sample',
-    },
-    {
-      link: 'store-sample',
-      label: 'Store sample',
+      routerLink: 'docs',
+      label: 'Docs',
     },
   ];
-
-  constructor() {}
 }

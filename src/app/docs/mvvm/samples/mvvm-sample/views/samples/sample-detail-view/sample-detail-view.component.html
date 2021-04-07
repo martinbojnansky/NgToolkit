@@ -1,0 +1,79 @@
+<ng-container *ngIf="vm.changes$ | async">
+  <h3 class="mb-4 mt-2">
+    Sample Detail View
+    <span class="badge bg-secondary">{{ vm.changes$.value }}</span>
+  </h3>
+
+  <app-form-control
+    [control]="vm.samples.form.get('text')"
+    label="vm.samples.Form.Text"
+    class="d-block mb-3"
+  >
+    <ng-template #contentTemplate let-control>
+      <input type="text" class="form-control" [formControl]="control" />
+    </ng-template>
+  </app-form-control>
+
+  <app-form-control
+    [control]="vm.samples.form.get('bool')"
+    label="vm.samples.Form.Bool"
+    class="d-block mb-3"
+  >
+    <ng-template #contentTemplate let-control>
+      <div class="input-group-text">
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [formControl]="control"
+            id="bool-switch"
+          />
+          <label class="form-check-label" for="bool-switch">
+            {{ control.value }}
+          </label>
+        </div>
+      </div>
+    </ng-template>
+  </app-form-control>
+
+  <app-form-control label="vm.samples.Text$" class="d-block mb-3">
+    <input
+      type="text"
+      class="form-control"
+      [value]="vm.samples.text$.value"
+      (change)="vm.samples.text$.next($event.target.value)"
+    />
+  </app-form-control>
+
+  <hr />
+
+  <app-form-control label="vm.detail$.id" class="d-block mb-3">
+    <span class="input-group-text">{{ vm.detail$.value.id || "..." }}</span>
+  </app-form-control>
+
+  <app-form-control label="vm.detail$.name" class="d-block mb-3">
+    <span class="input-group-text">{{ vm.detail$.value.name || "..." }}</span>
+  </app-form-control>
+
+  <app-form-control label="vm.detail$.description" class="d-block mb-3">
+    <span class="input-group-text">{{
+      vm.detail$.value.description || "..."
+    }}</span>
+  </app-form-control>
+
+  <div class="btn-group">
+    <button
+      class="btn btn-secondary"
+      (click)="vm.load(vm.detail$.value.id + 1)"
+      [disabled]="!vm.detail$.value.id"
+    >
+      Next
+    </button>
+    <button
+      class="btn btn-danger"
+      (click)="vm.samples.removeSample(vm.context.value.index)"
+    >
+      Remove
+    </button>
+  </div>
+</ng-container>
