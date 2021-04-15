@@ -6,6 +6,9 @@ import {
 export const translationSample: TranslationModules['translationSample'] = {
   welcomeMessage: 'Welcome to NgToolkit Demo',
   welcomeMessageParametrized: (name) => `Hello, ${name}!`,
+  welcomeMessageCombined(this: TranslationModules['translationSample'], name) {
+    return `${this.welcomeMessageParametrized(name)} ${this.welcomeMessage}`;
+  },
   translationLangLabel: (lang: TranslationLang) => {
     switch (lang) {
       case 'en':

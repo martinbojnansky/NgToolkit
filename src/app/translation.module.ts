@@ -3,7 +3,7 @@ import {
   TranslationGuard,
   TranslationPipeBase,
   TranslationServiceBase,
-  trySafe
+  trySafe,
 } from 'dist/ng-toolkit-lib';
 
 export enum TranslationLang {
@@ -15,28 +15,30 @@ export interface TranslationModules {
   translationSample: {
     welcomeMessage: string;
     welcomeMessageParametrized: (name: string) => string;
+    welcomeMessageCombined: (name: string) => string;
     translationLangLabel: (lang: TranslationLang) => string;
   };
 }
 
 @Injectable()
 export class TranslationService extends TranslationServiceBase<
-TranslationLang,
-TranslationModules
+  TranslationLang,
+  TranslationModules
 > {
   constructor() {
     super({
       getLang: () => {
         const getInitialLang = () => {
-          const intlLang = trySafe(() => Intl.NumberFormat().resolvedOptions().locale.substr(0, 2)) as any as TranslationLang;
-          const intlLangSupported = Object.keys(TranslationLang).map(k => TranslationLang[k]).includes(intlLang);
+          const intlLang = (trySafe(() =>
+            Intl.NumberFormat().resolvedOptions().locale.substr(0, 2)
+          ) as any) as TranslationLang;
+          const intlLangSupported = Object.keys(TranslationLang)
+            .map((k) => TranslationLang[k])
+            .includes(intlLang);
           return intlLangSupported ? intlLang : TranslationLang.en;
         };
 
-        return (
-          (localStorage.getItem('lang') as any)
-          || getInitialLang()
-        );
+        return (localStorage.getItem('lang') as any) || getInitialLang();
       },
       setLang: (lang) => {
         localStorage.setItem('lang', lang);
@@ -44,7 +46,7 @@ TranslationModules
       },
       importLang: (module, lang) => {
         return import(`src/translations/${module}/${lang}`);
-      }
+      },
     });
   }
 }
@@ -72,4 +74,4 @@ export class TranslationPipe
     },
   ],
 })
-export class TranslationModule { }
+export class TranslationModule {}
