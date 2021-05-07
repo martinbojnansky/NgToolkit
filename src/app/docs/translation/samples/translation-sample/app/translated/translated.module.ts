@@ -1,16 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslationPipe } from 'src/app/translation.module';
+import { SharedModule } from '../shared/shared.module';
 import { TranslationLangSwitchComponent } from './components/translation-lang-switch/translation-lang-switch.component';
 import { TranslationSampleComponent } from './components/translation-sample/translation-sample.component';
-import { TranslationSampleRoutingModule } from './translation-sample-routing.module';
+import { TranslatedRoutingModule } from './translated-routing.module';
 
 @NgModule({
   declarations: [
     TranslationSampleComponent,
-    TranslationPipe,
     TranslationLangSwitchComponent,
   ],
-  imports: [CommonModule, TranslationSampleRoutingModule],
+  imports: [SharedModule, TranslatedRoutingModule],
 })
-export class TranslationSampleModule {}
+export class TranslatedModule { }

@@ -1,12 +1,12 @@
 import {
   TranslationLang,
-  TranslationModules,
-} from 'src/app/translation.module';
+  TranslationModules
+} from './../config';
 
-export const translationSample: TranslationModules['translationSample'] = {
+export const translated: TranslationModules['translated'] = {
   welcomeMessage: 'Willkommen bei NgToolkit Demo',
   welcomeMessageParametrized: (name) => `Hallo, ${name}!`,
-  welcomeMessageCombined(this: TranslationModules['translationSample'], name) {
+  welcomeMessageCombined(this: TranslationModules['translated'], name) {
     return `${this.welcomeMessageParametrized(name)} ${this.welcomeMessage}`;
   },
   translationLangLabel: (lang: TranslationLang) => {

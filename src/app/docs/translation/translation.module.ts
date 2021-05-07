@@ -14,4 +14,4 @@ import { TranslationRoutingModule } from './translation-routing.module';
     HighlightingModule,
   ],
 })
-export class TranslationModule {}
+export class TranslationModule { }

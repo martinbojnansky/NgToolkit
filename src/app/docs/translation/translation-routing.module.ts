@@ -7,7 +7,13 @@ const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
   {
     path: 'samples',
-    children: [],
+    children: [{
+      path: 'translation-sample',
+      loadChildren: () =>
+        import('./samples/translation-sample/app/app.module').then(
+          (m) => m.AppModule
+        ),
+    }],
   },
 ];
 
@@ -15,4 +21,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TranslationRoutingModule {}
+export class TranslationRoutingModule { }

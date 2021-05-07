@@ -5,7 +5,7 @@ import {
   Component,
   ElementRef,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 
 @Component({
@@ -22,9 +22,9 @@ export class ContentsScrollspyComponent implements OnInit, AfterViewInit {
 
   urlAfterRedirects: string;
 
-  constructor(protected cd: ChangeDetectorRef) {}
+  constructor(protected cd: ChangeDetectorRef) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.updateTableOfContents();

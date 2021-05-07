@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  TranslationLang,
-  TranslationService
-} from 'src/app/translation.module';
+import { TranslationLang } from '../../../../translations/config';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-translation-lang-switch',

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslationLang, TranslationService } from 'src/app/translation.module';
+import { TranslationLang } from '../../../../translations/config';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-translation-sample',
@@ -8,7 +9,7 @@ import { TranslationLang, TranslationService } from 'src/app/translation.module'
 })
 export class TranslationSampleComponent implements OnInit {
   get welcomeMessage() {
-    return this.translationService.modules.translationSample.welcomeMessage;
+    return this.translationService.modules.translated.welcomeMessage;
   }
 
   readonly langs = TranslationLang;
