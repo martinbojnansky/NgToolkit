@@ -1,4 +1,4 @@
-import { TranslationLang, TranslationModules } from "./../config";
+import { TranslationLang, TranslationModules } from './../config';
 
 export const translated: TranslationModules['translated'] = {
   welcomeMessage: 'Welcome to NgToolkit Demo',
