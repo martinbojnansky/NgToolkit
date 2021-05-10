@@ -1,0 +1,17 @@
+<app-contents-scrollspy>
+  <h1>NameOf</h1>
+  <p class="lead">
+    In case you don't want to rely on string, use property key generation.
+  </p>
+
+  <!-- samples -->
+  <section id="samples" aria-label="Samples">
+    <h2>Samples</h2>
+    <p>
+      Especially useful in cases when you reference property names in code and
+      want to avoid issues while refactoring.
+    </p>
+    <app-code-highlighter [code]="snippets.samples"></app-code-highlighter>
+    <p>Please note that this will execute function at runtime.</p>
+  </section>
+</app-contents-scrollspy>

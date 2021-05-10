@@ -1,8 +1,0 @@
-<div class="input-group mb-3">
-  <span class="input-group-text">Selected Language</span>
-  <select class="form-select" (change)="changeLang($event.target.value)">
-    <option *ngFor="let lang of langs" [value]="lang" [selected]="lang === selectedLang">
-      {{ ("" | translate).translationSample.translationLangLabel(lang) }}
-    </option>
-  </select>
-</div>

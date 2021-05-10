@@ -25,6 +25,34 @@ export class DocsComponent implements OnInit {
       ],
     },
     {
+      id: 'helpers',
+      label: 'Helpers',
+      routerLink: 'helpers',
+      items: [
+        {
+          id: 'nameof',
+          label: 'NameOf',
+          routerLink: 'nameof',
+        },
+        {
+          id: 'trysafe',
+          label: 'TrySafe',
+          routerLink: 'trysafe',
+        },
+        {
+          id: 'uuid',
+          label: 'UUID',
+          routerLink: 'uuid',
+        },
+      ],
+    },
+    {
+      id: 'json',
+      label: 'JSON',
+      routerLink: 'json',
+      items: [],
+    },
+    {
       id: 'mvvmStarted',
       label: 'MVVM',
       routerLink: 'mvvm',
@@ -37,9 +65,9 @@ export class DocsComponent implements OnInit {
       ],
     },
     {
-      id: 'translation',
-      label: 'Translation',
-      routerLink: 'translation',
+      id: 'observableStore',
+      label: 'Observable Store',
+      routerLink: 'observable-store',
       items: [
         {
           id: 'overview',
@@ -49,9 +77,27 @@ export class DocsComponent implements OnInit {
       ],
     },
     {
-      id: 'observableStore',
-      label: 'Observable Store',
-      routerLink: 'observable-store',
+      id: 'rxjs',
+      label: 'RxJs',
+      routerLink: 'rxjs',
+      items: [],
+    },
+    {
+      id: 'storage',
+      label: 'Storage',
+      routerLink: 'storage',
+      items: [],
+    },
+    {
+      id: 'testing',
+      label: 'Testing',
+      routerLink: 'testing',
+      items: [],
+    },
+    {
+      id: 'translation',
+      label: 'Translation',
+      routerLink: 'translation',
       items: [
         {
           id: 'overview',

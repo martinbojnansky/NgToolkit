@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ObservableStoreQueries, query } from 'ng-toolkit-lib';
+import { ObservableStoreQueries, query } from 'dist/ng-toolkit-lib';
 import { Dataset } from './store-sample-models';
 import {
   StoreSampleAction,
   StoreSampleState,
-  StoreSampleStore,
+  StoreSampleStore
 } from './store-sample-store';
 
 @Injectable()
 export class StoreSampleQueries extends ObservableStoreQueries<
-  StoreSampleState,
-  StoreSampleAction
+StoreSampleState,
+StoreSampleAction
 > {
   constructor(protected store: StoreSampleStore) {
     super(store);

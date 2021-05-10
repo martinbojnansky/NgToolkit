@@ -5,14 +5,12 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BootstrapModule } from './shared/bootstrap/bootstrap.module';
-import { TranslationModule } from './translation.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     CommonModule,
-    TranslationModule,
     RouterModule,
     AppRoutingModule,
     BootstrapModule,
@@ -20,4 +18,4 @@ import { TranslationModule } from './translation.module';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
