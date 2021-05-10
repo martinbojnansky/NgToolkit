@@ -3,7 +3,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { JsonModule } from './json.module';
 
 interface TestObject {
@@ -54,14 +54,17 @@ describe('JsonDeserializerInterceptor', () => {
     expect(incorrectObject.b.getDate).toBeUndefined();
   });
 
-  it('should deserialize objects', async(() => {
-    http.get(`api/xxx`).subscribe({
-      next: (object: any) => {
-        expect(object).toEqual(correctObject);
-        expect(object.b.getDate).toBeDefined();
-        expect(object.b.getDate()).toBe(correctObject.b.getDate());
-      },
-    });
-    httpMock.expectOne(`api/xxx`).flush(incorrectObject);
-  }));
+  it(
+    'should deserialize objects',
+    waitForAsync(() => {
+      http.get(`api/xxx`).subscribe({
+        next: (object: any) => {
+          expect(object).toEqual(correctObject);
+          expect(object.b.getDate).toBeDefined();
+          expect(object.b.getDate()).toBe(correctObject.b.getDate());
+        },
+      });
+      httpMock.expectOne(`api/xxx`).flush(incorrectObject);
+    })
+  );
 });
