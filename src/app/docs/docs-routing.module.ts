@@ -20,16 +20,19 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'helpers',
+        loadChildren: () =>
+          import('./helpers/helpers.module').then((m) => m.HelpersModule),
+      },
+      {
+        path: 'json',
+        loadChildren: () =>
+          import('./json/json.module').then((m) => m.JsonModule),
+      },
+      {
         path: 'mvvm',
         loadChildren: () =>
           import('./mvvm/mvvm.module').then((m) => m.MvvmModule),
-      },
-      {
-        path: 'translation',
-        loadChildren: () =>
-          import('./translation/translation.module').then(
-            (m) => m.TranslationModule
-          ),
       },
       {
         path: 'observable-store',
@@ -39,9 +42,26 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'helpers',
+        path: 'rxjs',
         loadChildren: () =>
-          import('./helpers/helpers.module').then((m) => m.HelpersModule),
+          import('./rxjs/rxjs.module').then((m) => m.RxjsModule),
+      },
+      {
+        path: 'storage',
+        loadChildren: () =>
+          import('./storage/storage.module').then((m) => m.StorageModule),
+      },
+      {
+        path: 'testing',
+        loadChildren: () =>
+          import('./testing/testing.module').then((m) => m.TestingModule),
+      },
+      {
+        path: 'translation',
+        loadChildren: () =>
+          import('./translation/translation.module').then(
+            (m) => m.TranslationModule
+          ),
       },
     ],
   },

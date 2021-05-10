@@ -25,21 +25,37 @@ export class DocsComponent implements OnInit {
       ],
     },
     {
-      id: 'mvvmStarted',
-      label: 'MVVM',
-      routerLink: 'mvvm',
+      id: 'helpers',
+      label: 'Helpers',
+      routerLink: 'helpers',
       items: [
         {
-          id: 'overview',
-          label: 'Overview',
-          routerLink: 'overview',
+          id: 'nameof',
+          label: 'NameOf',
+          routerLink: 'nameof',
+        },
+        {
+          id: 'trysafe',
+          label: 'TrySafe',
+          routerLink: 'trysafe',
+        },
+        {
+          id: 'uuid',
+          label: 'UUID',
+          routerLink: 'uuid',
         },
       ],
     },
     {
-      id: 'translation',
-      label: 'Translation',
-      routerLink: 'translation',
+      id: 'json',
+      label: 'JSON',
+      routerLink: 'json',
+      items: [],
+    },
+    {
+      id: 'mvvmStarted',
+      label: 'MVVM',
+      routerLink: 'mvvm',
       items: [
         {
           id: 'overview',
@@ -61,24 +77,32 @@ export class DocsComponent implements OnInit {
       ],
     },
     {
-      id: 'helpers',
-      label: 'Helpers',
-      routerLink: 'helpers',
+      id: 'rxjs',
+      label: 'RxJs',
+      routerLink: 'rxjs',
+      items: [],
+    },
+    {
+      id: 'storage',
+      label: 'Storage',
+      routerLink: 'storage',
+      items: [],
+    },
+    {
+      id: 'testing',
+      label: 'Testing',
+      routerLink: 'testing',
+      items: [],
+    },
+    {
+      id: 'translation',
+      label: 'Translation',
+      routerLink: 'translation',
       items: [
         {
-          id: 'nameof',
-          label: 'NameOf',
-          routerLink: 'nameof',
-        },
-        {
-          id: 'trysafe',
-          label: 'TrySafe',
-          routerLink: 'trysafe',
-        },
-        {
-          id: 'uuid',
-          label: 'UUID',
-          routerLink: 'uuid',
+          id: 'overview',
+          label: 'Overview',
+          routerLink: 'overview',
         },
       ],
     },
