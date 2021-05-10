@@ -5,9 +5,10 @@ import { HighlightingModule } from 'src/app/shared/highlighting/highlighting.mod
 import { TrySafeComponent } from './components/try-safe/try-safe.component';
 import { HelpersRoutingModule } from './helpers-routing.module';
 import { UuidComponent } from './components/uuid/uuid.component';
+import { NameofComponent } from './components/nameof/nameof.component';
 
 @NgModule({
-  declarations: [TrySafeComponent, UuidComponent],
+  declarations: [TrySafeComponent, UuidComponent, NameofComponent],
   imports: [
     CommonModule,
     HelpersRoutingModule,

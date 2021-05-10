@@ -66,8 +66,13 @@ export class DocsComponent implements OnInit {
       routerLink: 'helpers',
       items: [
         {
+          id: 'nameof',
+          label: 'NameOf',
+          routerLink: 'nameof',
+        },
+        {
           id: 'trysafe',
-          label: 'Try-Safe',
+          label: 'TrySafe',
           routerLink: 'trysafe',
         },
         {
