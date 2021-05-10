@@ -60,6 +60,23 @@ export class DocsComponent implements OnInit {
         },
       ],
     },
+    {
+      id: 'helpers',
+      label: 'Helpers',
+      routerLink: 'helpers',
+      items: [
+        {
+          id: 'trysafe',
+          label: 'Try-Safe',
+          routerLink: 'trysafe',
+        },
+        {
+          id: 'uuid',
+          label: 'UUID',
+          routerLink: 'uuid',
+        },
+      ],
+    },
   ];
 
   @ViewChild('docsAccordion')

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { trySafe } from 'ng-toolkit-lib';
+import { trySafe } from '../helpers';
 import { LocalStorageService } from './storage.service';
 
 abstract class SettingsService {

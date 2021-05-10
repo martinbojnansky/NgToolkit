@@ -38,6 +38,11 @@ const routes: Routes = [
             (m) => m.ObservableStoreModule
           ),
       },
+      {
+        path: 'helpers',
+        loadChildren: () =>
+          import('./helpers/helpers.module').then((m) => m.HelpersModule),
+      },
     ],
   },
 ];

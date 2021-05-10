@@ -1,0 +1,23 @@
+<app-contents-scrollspy>
+  <h1>Try-Safe</h1>
+  <p class="lead">
+    In case you need to catch errors on your getter and provide defaults.
+  </p>
+
+  <!-- samples -->
+  <section id="samples" aria-label="Samples">
+    <h2>Samples</h2>
+    <p>
+      This helper was mainly used before Typescript's
+      <a
+        href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#optional-chaining"
+        target="_blank"
+        >optional chaining</a
+      >
+      has been introduced, however it still can be useful in cases you need to
+      have fail-safe access on array or the accessor or you also need to catch
+      error that could be thrown by functions.
+    </p>
+    <app-code-highlighter [code]="snippets.samples"></app-code-highlighter>
+  </section>
+</app-contents-scrollspy>
