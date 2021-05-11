@@ -5,8 +5,8 @@ import { ContentsScrollspyModule } from './components/contents-scrollspy/content
 import { HighlightingModule } from './components/highlighting/highlighting.module';
 
 @NgModule({
-	declarations: [],
-	imports: [CommonModule, BootstrapModule, ContentsScrollspyModule, HighlightingModule],
-	exports: [CommonModule, BootstrapModule, ContentsScrollspyModule, HighlightingModule]
+  declarations: [],
+  imports: [CommonModule, BootstrapModule, ContentsScrollspyModule, HighlightingModule],
+  exports: [CommonModule, BootstrapModule, ContentsScrollspyModule, HighlightingModule]
 })
 export class SharedModule { }

@@ -54,7 +54,8 @@ export class DocsComponent implements OnInit {
         id: 'overview',
         label: 'Overview',
         routerLink: 'overview',
-      },],
+      },
+      ],
     },
     {
       id: 'mvvmStarted',
@@ -102,7 +103,8 @@ export class DocsComponent implements OnInit {
         id: 'overview',
         label: 'Overview',
         routerLink: 'overview',
-      },],
+      },
+      ],
     },
     {
       id: 'testing',
@@ -112,7 +114,8 @@ export class DocsComponent implements OnInit {
         id: 'harness',
         label: 'Harness',
         routerLink: 'harness',
-      },],
+      },
+      ],
     },
     {
       id: 'translation',
