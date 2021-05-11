@@ -39,28 +39,21 @@
     <div>
       <div class="d-flex flex-column align-items-center">
         <div class="h3 w-100">
-          <span
-            class="badge bg-warning d-flex flex-column justify-content-center w-100"
-            style="height: 10rem"
-            >Model</span
-          >
+          <span class="badge bg-warning d-flex flex-column justify-content-center w-100"
+            style="height: 10rem">Model</span>
         </div>
         <p class="align-self-start">
           The Model is usually referred to data access layer, however, it can
           also contain a business logic of the application.
         </p>
         <ul
-          class="list-unstyled d-flex flex-column justify-content-center mt-4 mb-5 p-3 text-center border rounded w-100"
-        >
+          class="list-unstyled d-flex flex-column justify-content-center mt-4 mb-5 p-3 text-center border rounded w-100">
           <li>Send data</li>
           <li>Receive data</li>
         </ul>
         <div class="h3 w-100">
-          <span
-            class="badge bg-success d-flex flex-column justify-content-center w-100"
-            style="height: 10rem"
-            >ViewModel</span
-          >
+          <span class="badge bg-success d-flex flex-column justify-content-center w-100"
+            style="height: 10rem">ViewModel</span>
         </div>
         <p class="align-self-start">
           The ViewModel is a layer of presentational logic and keeps a state of
@@ -69,18 +62,14 @@
           validating user inputs or communication with the Model layer.
         </p>
         <ul
-          class="list-unstyled d-flex flex-column justify-content-center mt-4 mb-5 p-3 text-center border rounded w-100"
-        >
-          <li>2-Way Bindings</li>
+          class="list-unstyled d-flex flex-column justify-content-center mt-4 mb-5 p-3 text-center border rounded w-100">
+          <li>Bindings</li>
           <li>Commands</li>
           <li>Value Changes</li>
         </ul>
         <div class="h3 w-100">
-          <span
-            class="badge bg-primary d-flex flex-column justify-content-center w-100"
-            style="height: 10rem"
-            >View</span
-          >
+          <span class="badge bg-primary d-flex flex-column justify-content-center w-100"
+            style="height: 10rem">View</span>
         </div>
         <p class="align-self-start">
           The View can be referred to a display component, which consumes
@@ -107,14 +96,10 @@
           <li><small>sample</small></li>
           <ul class="bg-light">
             <li>
-              <b>components</b>&nbsp;<i
-                >(...dumb components with only inputs and outputs goes here)</i
-              >
+              <b>components</b>&nbsp;<i>(...dumb components with only inputs and outputs goes here)</i>
             </li>
             <li>
-              <b>models</b>&nbsp;<i
-                >(...interfaces, enums, or other types goes here)</i
-              >
+              <b>models</b>&nbsp;<i>(...interfaces, enums, or other types goes here)</i>
             </li>
             <li><b>services</b></li>
             <ul>
@@ -173,9 +158,7 @@
         class from NgToolkit. Each ViewModel has to call the init() function in
         order to emit changes of its Observables or FormControls.
       </p>
-      <app-code-highlighter
-        [code]="snippets.viewModelInit"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewModelInit"></app-code-highlighter>
       <p>
         You can also notice that a ViewModel is treated as injectable service.
         This will help us to either mock it during testing or reuse the
@@ -186,16 +169,12 @@
         Observable. Their state will be further used in a ViewModel methods or
         using bindings in a View.
       </p>
-      <app-code-highlighter
-        [code]="snippets.viewModelObservables"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewModelObservables"></app-code-highlighter>
       <p>
         Last, but not least, let's add some methods to either add or remove an
         item of form.samples array.
       </p>
-      <app-code-highlighter
-        [code]="snippets.viewModelMethods"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewModelMethods"></app-code-highlighter>
     </div>
   </section>
 
@@ -219,16 +198,12 @@
         In HTML template we then subscribe to all changes of the ViewModel
         observables only once using async pipe.
       </p>
-      <app-code-highlighter
-        [code]="snippets.viewSubscription"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewSubscription"></app-code-highlighter>
       <p>
         And we can bind Observable and FormControl instances (as well as their
         values), or the methods defined on the ViewModel.
       </p>
-      <app-code-highlighter
-        [code]="snippets.viewBindings"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewBindings"></app-code-highlighter>
     </div>
   </section>
 
@@ -247,18 +222,14 @@
         Please note, that any parent ViewModel which properties will be bound in
         the View has to be passed to init(...parentViewModels) function.
       </p>
-      <app-code-highlighter
-        [code]="snippets.parentViewModelInit"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.parentViewModelInit"></app-code-highlighter>
       <p>
         Afterwards, we can access all its public properties or methods within a
         ViewModel or a View. Bindings of such a properties will be always in
         sync, and View will be marked for change detection whenever there is a
         change to parent ViewModel observables.
       </p>
-      <app-code-highlighter
-        [code]="snippets.parentViewBinding"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.parentViewBinding"></app-code-highlighter>
     </div>
   </section>
 
@@ -273,27 +244,19 @@
         ViewModel.
       </p>
       <p>First you will have to import MvvmModule module.</p>
-      <app-code-highlighter
-        [code]="snippets.mvvmModuleImport"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.mvvmModuleImport"></app-code-highlighter>
       <p>
         Then define a provider with additional properties within a loop
         rendering.
       </p>
-      <app-code-highlighter
-        [code]="snippets.viewModelContextDirectiveProvider"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewModelContextDirectiveProvider"></app-code-highlighter>
       <p>And inject a directive in child ViewModel.</p>
-      <app-code-highlighter
-        [code]="snippets.viewModelContextDirectiveInjector"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewModelContextDirectiveInjector"></app-code-highlighter>
       <p>
         Last but not least, we can use the context to call a method on a parent
         ViewModel and define an index at which item should be deleted.
       </p>
-      <app-code-highlighter
-        [code]="snippets.viewModelContextDirectiveBinding"
-      ></app-code-highlighter>
+      <app-code-highlighter [code]="snippets.viewModelContextDirectiveBinding"></app-code-highlighter>
     </div>
   </section>
 
@@ -301,6 +264,7 @@
   <section id="inheritance" aria-label="Inheritance">
     <h2>Inheritance</h2>
     <div>
+      <!-- TODO: Add docs -->
       <p>...</p>
     </div>
   </section>
@@ -312,9 +276,7 @@
       <p>
         Checkout the <a routerLink="../samples/mvvm-sample">sample</a> or the
         <a
-          href="https://github.com/martinbojnansky/NgToolkit/tree/master/src/app/docs/mvvm/samples/mvvm-sample"
-          >code</a
-        >.
+          href="https://github.com/martinbojnansky/NgToolkit/tree/master/src/app/docs/mvvm/samples/mvvm-sample">code</a>.
       </p>
     </div>
   </section>

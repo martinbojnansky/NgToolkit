@@ -7,4 +7,4 @@ import { ContentsScrollspyComponent } from './contents-scrollspy/contents-scroll
   imports: [CommonModule],
   exports: [ContentsScrollspyComponent],
 })
-export class ContentsScrollspyModule {}
+export class ContentsScrollspyModule { }

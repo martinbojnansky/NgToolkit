@@ -1,0 +1,94 @@
+<app-contents-scrollspy>
+	<h1>Json</h1>
+	<p class="lead">
+		Revives string dates and enables to deep clone items.
+	</p>
+
+	<!-- json-module -->
+	<section id="json-module" aria-label="JsonModule">
+		<h2>JsonModule</h2>
+		<p>
+			The most convenient way is to import a module:
+		</p>
+		<app-code-highlighter [code]="snippets.import"></app-code-highlighter>
+		<p>and configure it according to your needs by providing a <a
+				[attr.href]="getLinkToFragment('json-config')">JsonConfig</a>.</p>
+		<app-code-highlighter [code]="snippets.importConfigured"></app-code-highlighter>
+	</section>
+
+	<!-- json-config -->
+	<section id="json-config" aria-label="JsonConfig">
+		<h2>JsonConfig</h2>
+		<p>Used to define module behaviour.</p>
+		<h4>Properties</h4>
+		<table class="table w-100">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Type</th>
+					<th scope="col">Default</th>
+					<th scope="col">Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">dateFormat</th>
+					<td>RegExp</td>
+					<td>{{ snippets.defaultDateFormat}}</td>
+					<td>Regex used to recognize string date that should be revived.</td>
+				</tr>
+				<tr>
+					<th scope="row">interceptor</th>
+					<td>boolean</td>
+					<td>false</td>
+					<td>If set to true, all HTTP call will be intercepted and string dates revived.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p></p>
+		<app-code-highlighter [code]="snippets.jsonConfig"></app-code-highlighter>
+	</section>
+
+	<!-- json-service -->
+	<section id="json-service" aria-label="JsonService">
+		<h2>JsonService</h2>
+		<p>Used to stringify, parse or clone objects with date reviving.</p>
+		<h4>Methods</h4>
+		<table class="table w-100">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Parameters</th>
+					<th scope="col">Return Type</th>
+					<th scope="col">Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">serialize</th>
+					<td>obj: T</td>
+					<td>T</td>
+					<td>Serializes object into JSON.</td>
+				</tr>
+				<tr>
+					<th scope="row">deserialize</th>
+					<td>json: string</td>
+					<td>T</td>
+					<td>Deserialized JSON into object and revives dates.</td>
+				</tr>
+				<tr>
+					<th scope="row">deepClone</th>
+					<td>obj: T</td>
+					<td>T</td>
+					<td>Provides a deep clone by serializing and deserializing the object.</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<!-- json-deserializer-interceptor -->
+	<section id="json-deserializer-interceptor" aria-label="JsonDeserializeInterceptor">
+		<h2>JsonDeserializeInterceptor</h2>
+		<p>Used to stringify, parse or clone objects with date reviving.</p>
+	</section>
+</app-contents-scrollspy>

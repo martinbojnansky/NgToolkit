@@ -1,9 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { TestingRoutingModule } from './testing-routing.module';
+import { HarnessComponent } from './harness/harness.component';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, TestingRoutingModule],
+  declarations: [
+    HarnessComponent
+  ],
+  imports: [TestingRoutingModule, SharedModule],
 })
-export class TestingModule {}
+export class TestingModule { }

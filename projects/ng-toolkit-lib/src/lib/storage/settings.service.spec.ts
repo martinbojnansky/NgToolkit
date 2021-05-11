@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import {
   LocalSettingsService,
-  SessionSettingsService,
+  SessionSettingsService
 } from './settings.service';
 import { StorageTestingModule } from './storage-testing.module';
 
@@ -19,7 +19,7 @@ describe('LocalSettingsService', () => {
     expect(service).toBeTruthy();
   });
 
-  // TODO: Test with string, number and custom object
+  // TODO: Add tests
 });
 
 describe('SessionSettingsService', () => {
@@ -36,5 +36,5 @@ describe('SessionSettingsService', () => {
     expect(service).toBeTruthy();
   });
 
-  // TODO: Test with string, number and custom object
+  // TODO: Add tests
 });

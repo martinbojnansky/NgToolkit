@@ -7,6 +7,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
+import { getLinkToFragment } from 'src/app/shared/helpers/fragment';
 
 @Component({
   selector: 'app-contents-scrollspy',
@@ -31,7 +32,7 @@ export class ContentsScrollspyComponent implements OnInit, AfterViewInit {
   }
 
   getLinkToFragment(fragment: string): string {
-    return `${window.location.pathname}#${fragment}`;
+    return getLinkToFragment(fragment);
   }
 
   protected updateTableOfContents() {
