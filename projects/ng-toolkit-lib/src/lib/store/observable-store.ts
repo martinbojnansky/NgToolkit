@@ -222,7 +222,7 @@ export function query<TState, TAction>(): (
 
     return {
       get: getter,
-      configurable: false,
+      configurable: true,
       enumerable: false,
     } as PropertyDescriptor;
   };

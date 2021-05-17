@@ -3,12 +3,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { nameof, trySafe } from '../helpers';
-import { ObservableUnsubscriber } from '../rxjs';
+import { ObservableUnsubscriber, ReadonlyBehaviorSubject } from '../rxjs';
 import { ViewModelContextDirective } from './view-model-context.directive';
 
 @Injectable()
 export class ViewModel implements OnDestroy {
-  readonly changes$ = new BehaviorSubject(0);
+  readonly changes$: ReadonlyBehaviorSubject<number> = new BehaviorSubject(0);
   readonly unsubscriber = new ObservableUnsubscriber();
 
   constructor() {}
@@ -53,14 +53,35 @@ export class ViewModel implements OnDestroy {
       }
     }
 
+    if (!propertyObservers.length) {
+      // Emit at least one change when no observable is present on VM.
+      // This way will be the template loaded even if the
+      // <ng-container *ngIf="changes$ | async">...</ng-container>
+      // is used.
+      this.emitChange();
+      return;
+    }
+
     merge(...propertyObservers)
       .pipe(this.unsubscriber.onDestroy())
       .subscribe(() => {
-        this.changes$.next(this.changes$.value + 1);
+        this.emitChange();
       });
   }
 
   ngOnDestroy(): void {
     this.unsubscriber.destroy();
+  }
+
+  emitChange(): void {
+    (this.changes$ as BehaviorSubject<number>).next(this.changes$.value + 1);
+  }
+
+  computed<T>(observable: Observable<T>): ReadonlyBehaviorSubject<T> {
+    const subject = new BehaviorSubject<T>(undefined);
+    observable
+      .pipe(this.unsubscriber.onDestroy())
+      .subscribe((v) => subject.next(v));
+    return subject;
   }
 }
