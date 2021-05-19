@@ -1,6 +1,6 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
-import { Effects, effects } from '../rxjs';
+import { Effects, effects, ObservableUnsubscriber } from '../rxjs';
 
 export type ObservableStoreSnapshot<TState, TAction> = {
   action: TAction;
@@ -168,56 +168,105 @@ export class ObservableStore<TState, TAction> {
   }
 }
 
-export class ObservableStoreQueries<TState, TAction> {
-  get state(): TState {
-    return this.store.snapshot.state;
-  }
+// tslint:disable:variable-name only-arrow-functions space-before-function-paren ban-types
+export function View(): ClassDecorator {
+  return (target: Function) => {
+    target.prototype._unsubscriber = new ObservableUnsubscriber();
 
-  get changes$(): Observable<ObservableStoreChange<TState, TAction>> {
-    return this.store.changes$;
-  }
+    const ngOnInit: Function = target.prototype.ngOnInit;
+    target.prototype.ngOnInit = function (...args: any[]) {
+      const changes$Arr: Observable<any>[] = [];
+      Object.keys(this).forEach((key) => {
+        const property = this[key];
+        if (property instanceof ObservableStore) {
+          changes$Arr.push(property.changes$);
+        }
+      });
 
-  constructor(protected store: ObservableStore<TState, TAction>) {
-    store.changes$.subscribe(() => {
-      this._queryResults = {};
-    });
-  }
+      if (!changes$Arr.length) {
+        console.error(
+          'At least one ObservableStore has to be injected into the View.'
+        );
+      }
 
-  setState(action: TAction, state: Partial<TState>): void {
-    this.store.setState(action, state);
-  }
+      merge(...changes$Arr)
+        .pipe(target.prototype._unsubscriber.onDestroy())
+        .subscribe(() => {
+          if (this.cd) {
+            this.cd.markForCheck();
+          } else {
+            console.error(
+              `ChangeDetectorRef as 'cd' has to be injected into the View.`
+            );
+          }
+        });
 
-  patchState(action: TAction, patch: Partial<TState>): void {
-    this.store.patchState(action, patch);
-  }
+      ngOnInit?.apply(this, args);
+    };
 
-  patchStateAsync<T>(
-    observable$: Observable<T>,
-    storeEffects: ObservableStoreEffects<T, TState, TAction>
-  ): Observable<void> {
-    return this.store.patchStateAsync(observable$, storeEffects);
-  }
-
-  protected _queryResults: { [key: string]: { value: any } } = {};
+    const ngOnDestroy: Function = target.prototype.ngOnDestroy;
+    target.prototype.ngOnDestroy = function (...args: any[]) {
+      target.prototype._unsubscriber.destroy();
+      ngOnDestroy?.apply(this, args);
+    };
+  };
 }
 
-export function query<TState, TAction>(): (
-  target: ObservableStoreQueries<TState, TAction>,
+export function Service(): ClassDecorator {
+  return (target: Function) => {
+    target.prototype._unsubscriber = new ObservableUnsubscriber();
+    target.prototype._queryResults = {} as { [key: string]: { value: any } };
+    target.prototype._subscribed = false as boolean;
+    target.prototype._subscribe = (obj: any) => {
+      const changes$Arr: Observable<any>[] = [];
+      Object.keys(obj).forEach((key) => {
+        const prop = obj[key];
+        if (prop instanceof ObservableStore) {
+          changes$Arr.push(prop.changes$);
+        }
+      });
+
+      merge(...changes$Arr)
+        .pipe(
+          target.prototype._unsubscriber.onDestroyOrResubscribe('_subscribe')
+        )
+        .subscribe(() => {
+          target.prototype._queryResults = {};
+        });
+
+      target.prototype._subscribed = true;
+    };
+
+    const ngOnDestroy: Function = target.prototype.ngOnDestroy;
+    target.prototype.ngOnDestroy = function (...args: any[]) {
+      target.prototype._unsubscriber.destroy();
+      ngOnDestroy?.apply(this, args);
+    };
+  };
+}
+
+export function Query(): (
+  target: any,
   prop: string,
   descriptor: PropertyDescriptor
 ) => PropertyDescriptor {
-  return (
-    target: ObservableStoreQueries<TState, TAction>,
+  return function (
+    target: any,
     key: string,
     descriptor: PropertyDescriptor
-  ): PropertyDescriptor => {
-    const getter = function get(
-      this: ObservableStoreQueries<TState, TAction>
-    ): any {
-      if (!this._queryResults[key]) {
-        this._queryResults[key] = { value: descriptor.get.apply(this) };
+  ): PropertyDescriptor {
+    const getter = function get(this: any): any {
+      // Hack: Following function makes sure that _queryResults object is cleared
+      // on state change, because extending service constructor was not successful.
+      if (!target._subscribed) {
+        target._subscribe(this);
       }
-      return this._queryResults[key].value;
+
+      if (!target._queryResults[key]) {
+        target._queryResults[key] = { value: descriptor.get.apply(this) };
+      }
+
+      return target._queryResults[key].value;
     };
 
     return {
@@ -227,3 +276,5 @@ export function query<TState, TAction>(): (
     } as PropertyDescriptor;
   };
 }
+
+// tslint:disable:only-arrow-functions space-before-function-paren ban-types

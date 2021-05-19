@@ -1,27 +1,35 @@
-import { Injectable } from '@angular/core';
-import { uuid } from 'dist/ng-toolkit-lib';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Query, Service, uuid } from 'dist/ng-toolkit-lib';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { StoreSampleSummary } from '../store-sample-models';
-import { StoreSampleQueries } from '../store-sample-queries';
+import { StoreSampleStore } from '../store-sample-store';
 
 export abstract class StoreSampleService {
+  abstract get storeSamplesNotEmpty(): boolean;
+
   abstract readItems(): Observable<void>;
 }
 
 @Injectable()
-export class StoreSampleServiceImpl extends StoreSampleService {
-  constructor(protected storeSampleQueries: StoreSampleQueries) {
-    super();
+@Service()
+export class StoreSampleServiceImpl implements OnDestroy {
+  @Query()
+  get storeSamplesNotEmpty(): boolean {
+    return !!this.store.snapshot.state?.storeSamples?.items?.length;
   }
 
+  constructor(public store: StoreSampleStore) {}
+
+  ngOnDestroy(): void {}
+
   readItems() {
-    return this.storeSampleQueries.patchStateAsync(getFakeStoreSamples(), {
+    return this.store.patchStateAsync(getFakeStoreSamples(), {
       started: () => [
         'readStoreSamplesStarted',
         {
           storeSamples: {
-            ...this.storeSampleQueries.state.storeSamples,
+            ...this.store.snapshot.state.storeSamples,
             busy: true,
             error: null,
           },
@@ -31,7 +39,7 @@ export class StoreSampleServiceImpl extends StoreSampleService {
         'readStoreSamplesCompleted',
         {
           storeSamples: {
-            ...this.storeSampleQueries.state.storeSamples,
+            ...this.store.snapshot.state.storeSamples,
             busy: false,
             error: null,
             items: v,
@@ -42,7 +50,7 @@ export class StoreSampleServiceImpl extends StoreSampleService {
         'readStoreSamplesFailed',
         {
           storeSamples: {
-            ...this.storeSampleQueries.state.storeSamples,
+            ...this.store.snapshot.state.storeSamples,
             busy: false,
             error: {
               ...e,

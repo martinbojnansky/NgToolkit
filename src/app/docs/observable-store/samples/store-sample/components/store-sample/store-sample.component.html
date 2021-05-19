@@ -1,38 +1,36 @@
-<ng-container *ngIf="queries.changes$ | async">
-  <!-- toolbar -->
-  <div class="btn-group" role="group">
-    <button
-      type="button"
-      class="btn btn-secondary"
-      (click)="updateList()"
-      title="Refresh"
-    >
-      Refresh
-    </button>
-  </div>
-  <!-- list -->
-  <ul
-    *ngIf="queries.storeSamplesNotEmpty; else emptyTemplate"
-    class="list-group mt-3"
+<!-- toolbar -->
+<div class="btn-group" role="group">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="updateList()"
+    title="Refresh"
   >
-    <li
-      *ngFor="let item of queries.state.storeSamples?.items"
-      class="list-group-item"
-    >
-      {{ item.title }}
-    </li>
-  </ul>
-  <ng-template #emptyTemplate>
-    <p class="mt-3">No items.</p>
-  </ng-template>
+    Refresh
+  </button>
+</div>
+<!-- list -->
+<ul
+  *ngIf="storeSampleService.storeSamplesNotEmpty; else emptyTemplate"
+  class="list-group mt-3"
+>
+  <li
+    *ngFor="let item of store.snapshot.state.storeSamples?.items"
+    class="list-group-item"
+  >
+    {{ item.title }}
+  </li>
+</ul>
+<ng-template #emptyTemplate>
+  <p class="mt-3">No items.</p>
+</ng-template>
 
-  <!-- loading overlay -->
-  <div
-    *ngIf="queries.state.storeSamples?.busy"
-    class="position-fixed top-50 start-50 translate-middle"
-  >
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+<!-- loading overlay -->
+<div
+  *ngIf="store.snapshot.state.storeSamples?.busy"
+  class="position-fixed top-50 start-50 translate-middle"
+>
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
   </div>
-</ng-container>
+</div>

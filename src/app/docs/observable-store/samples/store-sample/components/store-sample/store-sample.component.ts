@@ -1,13 +1,14 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ObservableUnsubscriber } from 'dist/ng-toolkit-lib';
+import { ObservableUnsubscriber, View } from 'dist/ng-toolkit-lib';
 import { filter, tap } from 'rxjs/operators';
 import { StoreSampleService } from '../../services/store-sample.service';
-import { StoreSampleQueries } from '../../store-sample-queries';
+import { StoreSampleStore } from '../../store-sample-store';
 
 @Component({
   selector: 'app-store-sample',
@@ -15,10 +16,12 @@ import { StoreSampleQueries } from '../../store-sample-queries';
   styleUrls: ['./store-sample.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@View()
 export class StoreSampleComponent implements OnInit, OnDestroy {
   constructor(
-    public queries: StoreSampleQueries,
-    protected storeSampleService: StoreSampleService
+    public store: StoreSampleStore,
+    public cd: ChangeDetectorRef,
+    public storeSampleService: StoreSampleService
   ) {}
 
   ngOnInit(): void {
@@ -26,9 +29,7 @@ export class StoreSampleComponent implements OnInit, OnDestroy {
     this.subscribeErrors();
   }
 
-  ngOnDestroy(): void {
-    this.unsubscriber.destroy();
-  }
+  ngOnDestroy(): void {}
 
   updateList(): void {
     this.storeSampleService
@@ -38,14 +39,14 @@ export class StoreSampleComponent implements OnInit, OnDestroy {
   }
 
   subscribeErrors(): void {
-    this.queries.changes$.pipe(
+    this.store.changes$.pipe(
       filter((c) => c.action === 'readStoreSamplesFailed'),
       tap((c) => alert(`Loading failed.`)),
       this.unsubscriber.onDestroyOrResubscribe('subscribeErrors')
     );
   }
 
-  protected unsubscriber = new ObservableUnsubscriber<
+  protected readonly unsubscriber = new ObservableUnsubscriber<
     'updateList' | 'subscribeErrors'
   >();
 }

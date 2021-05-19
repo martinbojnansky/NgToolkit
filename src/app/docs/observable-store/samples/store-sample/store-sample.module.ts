@@ -5,7 +5,6 @@ import {
   StoreSampleService,
   StoreSampleServiceImpl,
 } from './services/store-sample.service';
-import { StoreSampleQueries } from './store-sample-queries';
 import { StoreSampleRoutingModule } from './store-sample-routing.module';
 import { StoreSampleStore } from './store-sample-store';
 
@@ -14,7 +13,6 @@ import { StoreSampleStore } from './store-sample-store';
   imports: [CommonModule, StoreSampleRoutingModule],
   providers: [
     StoreSampleStore,
-    StoreSampleQueries,
     {
       provide: StoreSampleService,
       useClass: StoreSampleServiceImpl,
