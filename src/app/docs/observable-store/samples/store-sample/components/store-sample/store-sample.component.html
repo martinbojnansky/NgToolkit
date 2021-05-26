@@ -1,23 +1,12 @@
 <!-- toolbar -->
 <div class="btn-group" role="group">
-  <button
-    type="button"
-    class="btn btn-secondary"
-    (click)="updateList()"
-    title="Refresh"
-  >
+  <button type="button" class="btn btn-secondary" (click)="updateList()" title="Refresh">
     Refresh
   </button>
 </div>
 <!-- list -->
-<ul
-  *ngIf="storeSampleService.storeSamplesNotEmpty; else emptyTemplate"
-  class="list-group mt-3"
->
-  <li
-    *ngFor="let item of store.snapshot.state.storeSamples?.items"
-    class="list-group-item"
-  >
+<ul *ngIf="storeSampleService.storeSamplesNotEmpty; else emptyTemplate" class="list-group mt-3">
+  <li *ngFor="let item of storeSampleService.storeSamples?.items" class="list-group-item">
     {{ item.title }}
   </li>
 </ul>
@@ -26,10 +15,7 @@
 </ng-template>
 
 <!-- loading overlay -->
-<div
-  *ngIf="store.snapshot.state.storeSamples?.busy"
-  class="position-fixed top-50 start-50 translate-middle"
->
+<div *ngIf="storeSampleService.storeSamples?.busy" class="position-fixed top-50 start-50 translate-middle">
   <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>

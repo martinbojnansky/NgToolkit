@@ -2,10 +2,11 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Query, Service, uuid } from 'dist/ng-toolkit-lib';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { StoreSampleSummary } from '../store-sample-models';
+import { Dataset, StoreSampleSummary } from '../store-sample-models';
 import { StoreSampleStore } from '../store-sample-store';
 
 export abstract class StoreSampleService {
+  abstract get storeSamples(): Dataset<StoreSampleSummary>;
   abstract get storeSamplesNotEmpty(): boolean;
 
   abstract readItems(): Observable<void>;
@@ -15,11 +16,16 @@ export abstract class StoreSampleService {
 @Service()
 export class StoreSampleServiceImpl implements OnDestroy {
   @Query()
+  get storeSamples(): Dataset<StoreSampleSummary> {
+    return this.store.snapshot.state.storeSamples;
+  }
+
+  @Query()
   get storeSamplesNotEmpty(): boolean {
     return !!this.store.snapshot.state?.storeSamples?.items?.length;
   }
 
-  constructor(public store: StoreSampleStore) {}
+  constructor(protected store: StoreSampleStore) {}
 
   ngOnDestroy(): void {}
 

@@ -19,8 +19,8 @@ import { StoreSampleStore } from '../../store-sample-store';
 @View()
 export class StoreSampleComponent implements OnInit, OnDestroy {
   constructor(
-    public store: StoreSampleStore,
-    public cd: ChangeDetectorRef,
+    protected store: StoreSampleStore,
+    protected cd: ChangeDetectorRef,
     public storeSampleService: StoreSampleService
   ) {}
 
