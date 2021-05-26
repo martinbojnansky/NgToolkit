@@ -1,4 +1,3 @@
-import { ChangeDetectorRef } from '@angular/core';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { Effects, effects, ObservableUnsubscriber } from '../rxjs';
@@ -181,14 +180,14 @@ export function View(): ClassDecorator {
         const property = this[key];
         if (property instanceof ObservableStore) {
           changes$Arr.push(property.changes$);
-        } else if (property instanceof ChangeDetectorRef) {
+        } else if (property?.markForCheck) {
           target.prototype._cd = property;
         }
       });
 
       if (!changes$Arr.length) {
         console.error(
-          'At least one ObservableStore has to be injected into the View.'
+          'At least one ObservableStore has to be injected into the view  ${this.constructor.name}.'
         );
       }
 
@@ -199,7 +198,7 @@ export function View(): ClassDecorator {
             target.prototype._cd.markForCheck();
           } else {
             console.error(
-              `ChangeDetectorRef has to be injected into the View.`
+              `ChangeDetectorRef has to be injected into the view ${this.constructor.name}.`
             );
           }
         });
