@@ -1,5 +1,5 @@
 import { of, OperatorFunction } from 'rxjs';
-import { finalize, map, switchMap, tap } from 'rxjs/operators';
+import { finalize, switchMap, tap } from 'rxjs/operators';
 
 export type Effects<T, R> = {
   started?: () => R;
@@ -8,7 +8,7 @@ export type Effects<T, R> = {
   cancelled?: () => R;
 };
 
-export function effects<T>(ef: Effects<T, void>): OperatorFunction<T, void> {
+export function effects<T>(ef: Effects<T, void>): OperatorFunction<T, T> {
   let isCompleted: boolean;
   return (observable$) =>
     of(1).pipe(
@@ -33,7 +33,6 @@ export function effects<T>(ef: Effects<T, void>): OperatorFunction<T, void> {
           isCompleted = true;
         }
       ),
-      map(() => {}),
       finalize(() => {
         if (!isCompleted) {
           if (ef.completed) {
