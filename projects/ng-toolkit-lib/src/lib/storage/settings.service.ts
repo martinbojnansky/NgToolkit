@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { trySafe } from '../helpers';
 import { LocalStorageService } from './storage.service';
 
 abstract class SettingsService {
   constructor(protected storageService: Storage) {}
 
-  get<T>(key: string, defaultValue?: T): T {
+  get<T>(key: string, defaultValue: T = null): T | null {
     const value = this.storageService.getItem(key);
-    return trySafe(() => JSON.parse(value), value) || defaultValue;
+    return value !== null ? JSON.parse(value) : defaultValue;
   }
 
   set<T>(key: string, value: T): void {
