@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import {
   LocalSettingsService,
-  SessionSettingsService
+  SessionSettingsService,
 } from './settings.service';
 import { StorageTestingModule } from './storage-testing.module';
 
@@ -19,7 +19,24 @@ describe('LocalSettingsService', () => {
     expect(service).toBeTruthy();
   });
 
-  // TODO: Add tests
+  it('should not fail for the first time', () => {
+    expect(service.get('xxx')).toBeNull();
+  });
+
+  it('should return default', () => {
+    expect(service.get('xxx', true)).toEqual(true);
+  });
+
+  it('should set value', () => {
+    expect(service.set('xxx', true));
+    expect(service.get('xxx')).toEqual(true);
+
+    expect(service.set('xxx', false));
+    expect(service.get('xxx')).toEqual(false);
+
+    expect(service.set('xxx', null));
+    expect(service.get('xxx')).toEqual(null);
+  });
 });
 
 describe('SessionSettingsService', () => {
@@ -36,5 +53,22 @@ describe('SessionSettingsService', () => {
     expect(service).toBeTruthy();
   });
 
-  // TODO: Add tests
+  it('should not fail for the first time', () => {
+    expect(service.get('xxx')).toBeNull();
+  });
+
+  it('should return default', () => {
+    expect(service.get('xxx', true)).toEqual(true);
+  });
+
+  it('should set value', () => {
+    expect(service.set('xxx', true));
+    expect(service.get('xxx')).toEqual(true);
+
+    expect(service.set('xxx', false));
+    expect(service.get('xxx')).toEqual(false);
+
+    expect(service.set('xxx', null));
+    expect(service.get('xxx')).toEqual(null);
+  });
 });

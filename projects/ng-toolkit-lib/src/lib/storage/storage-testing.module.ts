@@ -5,7 +5,7 @@ import { LocalStorageService, SessionStorageService } from './storage.service';
 export const createStorageMock = <T extends Storage>(
   type: Type<T>
 ): jasmine.Spy => {
-  const storage: any = {};
+  let storage: any = {};
   const spy = jasmine.createSpyObj(type.name, [
     'clear',
     'getItem',
@@ -13,6 +13,10 @@ export const createStorageMock = <T extends Storage>(
     'removeItem',
     'setItem',
   ]);
+
+  spy.clear.and.callFake(() => {
+    storage = {};
+  });
 
   spy.getItem.and.callFake((key: string) => {
     return key in storage ? storage[key] : null;
