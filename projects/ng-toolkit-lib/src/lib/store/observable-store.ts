@@ -1,5 +1,5 @@
 import { BehaviorSubject, merge, Observable } from 'rxjs';
-import { map } from 'rxjs/internal/operators/map';
+import { map } from 'rxjs/operators';
 import { Effects, effects, ObservableUnsubscriber } from '../rxjs';
 
 export type ObservableStoreSnapshot<TState, TAction> = {
