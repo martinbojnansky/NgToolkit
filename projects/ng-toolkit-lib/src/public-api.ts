@@ -2,6 +2,7 @@
  * Public API Surface of ng-toolkit-lib
  */
 
+export * from './lib/accessibility';
 export * from './lib/forms';
 export * from './lib/helpers';
 export * from './lib/json';
