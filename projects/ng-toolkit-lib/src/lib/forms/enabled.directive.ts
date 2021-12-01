@@ -11,7 +11,7 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { nameof } from '../helpers';
+import { nameof, Nullable } from '../helpers';
 
 @Directive({
   selector: '[ntlEnabled]',
@@ -27,7 +27,7 @@ export class EnabledDirective implements OnInit, OnChanges {
   formArray: FormArray;
 
   @Input()
-  ntlEnabled: boolean;
+  ntlEnabled: Nullable<boolean>;
 
   protected get control(): AbstractControl {
     return this.formControl || this.formGroup || this.formArray;
