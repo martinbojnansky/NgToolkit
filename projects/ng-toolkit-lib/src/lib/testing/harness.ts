@@ -1,10 +1,8 @@
 import { ComponentFixture } from '@angular/core/testing';
 
-export type HarnessProps<T> = Partial<
-  {
-    [TKey in keyof T]: T[TKey];
-  }
->;
+export type HarnessProps<T> = Partial<{
+  [TKey in keyof T]: T[TKey];
+}>;
 
 export class Harness<T> {
   get fixture(): ComponentFixture<T> {
