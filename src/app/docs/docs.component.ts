@@ -50,29 +50,6 @@ export class DocsComponent implements OnInit {
       id: 'json',
       label: 'Json',
       routerLink: 'json',
-      items: [{
-        id: 'overview',
-        label: 'Overview',
-        routerLink: 'overview',
-      },
-      ],
-    },
-    {
-      id: 'mvvmStarted',
-      label: 'MVVM',
-      routerLink: 'mvvm',
-      items: [
-        {
-          id: 'overview',
-          label: 'Overview',
-          routerLink: 'overview',
-        },
-      ],
-    },
-    {
-      id: 'observableStore',
-      label: 'Observable Store',
-      routerLink: 'observable-store',
       items: [
         {
           id: 'overview',
@@ -85,36 +62,41 @@ export class DocsComponent implements OnInit {
       id: 'rxjs',
       label: 'RxJs',
       routerLink: 'rxjs',
-      items: [{
-        id: 'observable-unsubscriber',
-        label: 'ObservableUnsubscriber',
-        routerLink: 'observable-unsubscriber',
-      }, {
-        id: 'effects',
-        label: 'Effects',
-        routerLink: 'effects',
-      }],
+      items: [
+        {
+          id: 'observable-unsubscriber',
+          label: 'ObservableUnsubscriber',
+          routerLink: 'observable-unsubscriber',
+        },
+        {
+          id: 'effects',
+          label: 'Effects',
+          routerLink: 'effects',
+        },
+      ],
     },
     {
       id: 'storage',
       label: 'Storage',
       routerLink: 'storage',
-      items: [{
-        id: 'overview',
-        label: 'Overview',
-        routerLink: 'overview',
-      },
+      items: [
+        {
+          id: 'overview',
+          label: 'Overview',
+          routerLink: 'overview',
+        },
       ],
     },
     {
       id: 'testing',
       label: 'Testing',
       routerLink: 'testing',
-      items: [{
-        id: 'harness',
-        label: 'Harness',
-        routerLink: 'harness',
-      },
+      items: [
+        {
+          id: 'harness',
+          label: 'Harness',
+          routerLink: 'harness',
+        },
       ],
     },
     {
@@ -134,7 +116,7 @@ export class DocsComponent implements OnInit {
   @ViewChild('docsAccordion')
   docsAccordion: ElementRef<HTMLDivElement>;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

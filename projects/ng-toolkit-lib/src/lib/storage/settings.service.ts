@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from './storage.service';
+import { LocalStorageService, SessionStorageService } from './storage.service';
 
 abstract class SettingsService {
   constructor(protected storageService: Storage) {}
@@ -23,7 +23,7 @@ export class LocalSettingsService extends SettingsService {
 
 @Injectable()
 export class SessionSettingsService extends SettingsService {
-  constructor(protected localStorageService: LocalStorageService) {
-    super(localStorageService);
+  constructor(protected sessionStorageService: SessionStorageService) {
+    super(sessionStorageService);
   }
 }
