@@ -1,7 +1,7 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { effects } from 'ng-toolkit-lib';
 import { of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
+import { effects } from './effects';
 
 describe('Effects', () => {
   let startedSpy: jasmine.Spy<() => void>;
