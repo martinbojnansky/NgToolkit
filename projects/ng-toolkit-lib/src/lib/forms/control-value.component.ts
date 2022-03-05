@@ -40,6 +40,6 @@ export class ControlValueComponent<T> implements ControlValueAccessor {
 
   protected constructor(protected changeDetectorRef: ChangeDetectorRef) {}
 
-  protected onChange: (value: T) => void = () => {};
-  protected onTouched: () => void = () => {};
+  onChange: (value: T) => void = () => {};
+  onTouched: () => void = () => {};
 }

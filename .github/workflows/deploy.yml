@@ -2,7 +2,7 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy
-"on":
+'on':
   push:
     branches:
       - master
@@ -15,13 +15,13 @@ jobs:
       - run: npm run test-lib:prod
       - run: npm run lint-lib
       - run: npm run build-lib:prod
-      - run: npm run test-sample:prod
-      - run: npm run lint-sample
-      - run: npm run build-sample:prod
+      - run: npm run test-samples:prod
+      - run: npm run lint-samples
+      - run: npm run build-samples:prod
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_NGTOOLKIT }}"
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NGTOOLKIT }}'
           channelId: live
           projectId: ngtoolkit
         env:

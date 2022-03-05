@@ -50,13 +50,7 @@ export class DocsComponent implements OnInit {
       id: 'json',
       label: 'Json',
       routerLink: 'json',
-      items: [
-        {
-          id: 'overview',
-          label: 'Overview',
-          routerLink: 'overview',
-        },
-      ],
+      items: [],
     },
     {
       id: 'rxjs',
@@ -103,13 +97,7 @@ export class DocsComponent implements OnInit {
       id: 'translation',
       label: 'Translation',
       routerLink: 'translation',
-      items: [
-        {
-          id: 'overview',
-          label: 'Overview',
-          routerLink: 'overview',
-        },
-      ],
+      items: [],
     },
   ];
 

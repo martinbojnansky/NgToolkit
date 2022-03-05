@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { OverviewComponent } from './overview/overview.component';
 
-const routes: Routes = [{ path: 'overview', component: OverviewComponent }];
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class StorageRoutingModule { }
+export class StorageRoutingModule {}
