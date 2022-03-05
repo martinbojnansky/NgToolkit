@@ -13,8 +13,10 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm ci
       - run: npm run test-lib:prod
+      - run: npm run lint-lib
       - run: npm run build-lib:prod
       - run: npm run test-samples:prod
+      - run: npm run lint-samples
       - run: npm run build-samples:prod
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

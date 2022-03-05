@@ -26,9 +26,7 @@ TranslationModules
         localStorage.setItem('lang', lang);
         window.location.reload();
       },
-      importLang: (module, lang) => {
-        return import(`src/app/docs/translation/samples/translation-sample/translations/${module}/${lang}`);
-      },
+      importLang: (module, lang) => import(`src/app/docs/translation/samples/translation-sample/translations/${module}/${lang}`),
     });
   }
 }

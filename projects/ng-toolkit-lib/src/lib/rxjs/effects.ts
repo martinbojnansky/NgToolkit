@@ -8,7 +8,7 @@ export type Effects<T, R> = {
   cancelled?: () => R;
 };
 
-export function effects<T>(ef: Effects<T, void>): OperatorFunction<T, T> {
+export const effects = <T>(ef: Effects<T, void>): OperatorFunction<T, T> => {
   let isCompleted: boolean;
   return (observable$) =>
     of(1).pipe(
@@ -39,4 +39,4 @@ export function effects<T>(ef: Effects<T, void>): OperatorFunction<T, T> {
         }
       })
     );
-}
+};

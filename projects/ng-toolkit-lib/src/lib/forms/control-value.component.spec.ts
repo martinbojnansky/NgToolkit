@@ -63,17 +63,17 @@ describe('ControlValueComponent', () => {
     input = compiled.query((e) => e.name === 'input');
   });
 
-  function registerEvents(): void {
+  const registerEvents = () => {
     onChangeSpy = jasmine.createSpy();
     component.registerOnChange(onChangeSpy);
     onTouchedSpy = jasmine.createSpy();
     component.registerOnTouched(onTouchedSpy);
-  }
+  };
 
-  function writeValue(): void {
+  const writeValue = () => {
     component.writeValue(value);
     fixture.detectChanges();
-  }
+  };
 
   it('should create', () => {
     expect(component).toBeTruthy();

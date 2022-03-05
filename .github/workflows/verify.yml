@@ -22,5 +22,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run test-lib:prod
+      - run: npm run lint-lib
       - run: npm run build-lib:prod
+      - run: npm run lint-samples
       - run: npm run test-samples:prod

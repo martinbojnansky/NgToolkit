@@ -2,6 +2,9 @@ import { of, OperatorFunction, Subject } from 'rxjs';
 import { filter, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 export class ObservableUnsubscriber<T> {
+  private subscribed$ = new Subject();
+  private destroyed$ = new Subject();
+
   onDestroy<R>(): OperatorFunction<R, R> {
     return (observable$) => observable$.pipe(takeUntil(this.destroyed$));
   }
@@ -32,7 +35,4 @@ export class ObservableUnsubscriber<T> {
     this.destroyed$.complete();
     this.subscribed$.complete();
   }
-
-  private subscribed$ = new Subject();
-  private destroyed$ = new Subject();
 }

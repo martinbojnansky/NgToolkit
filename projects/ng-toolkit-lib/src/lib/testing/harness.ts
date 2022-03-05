@@ -5,6 +5,12 @@ export type HarnessProps<T> = Partial<{
 }>;
 
 export class Harness<T> {
+  protected _fixture: ComponentFixture<T>;
+  protected _component: T;
+  protected _el: HTMLElement;
+
+  constructor(protected componentFactory: () => ComponentFixture<T>) {}
+
   get fixture(): ComponentFixture<T> {
     return this._fixture;
   }
@@ -16,8 +22,6 @@ export class Harness<T> {
   get el(): HTMLElement {
     return this._el;
   }
-
-  constructor(protected componentFactory: () => ComponentFixture<T>) {}
 
   async create(props?: HarnessProps<T>): Promise<void> {
     this._fixture = this.componentFactory();
@@ -42,8 +46,4 @@ export class Harness<T> {
   whenStable(): Promise<void> {
     return this._fixture.whenStable();
   }
-
-  protected _fixture: ComponentFixture<T>;
-  protected _component: T;
-  protected _el: HTMLElement;
 }

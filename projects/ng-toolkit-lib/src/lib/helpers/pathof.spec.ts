@@ -5,7 +5,7 @@ interface TestType {
     a1: {
       a1x: {
         a1x1: {
-          a1x1i: () => {};
+          a1x1i: () => void;
         };
         a1x2: string[];
       };
@@ -24,6 +24,8 @@ describe('pathof', () => {
     expect(pathof(obj, 'a', 'a1')).toBe('a.a1');
     expect(pathof(obj, 'a', 'a1', 'a1x')).toBe('a.a1.a1x');
     expect(pathof(obj, 'a', 'a1', 'a1x', 'a1x1')).toBe('a.a1.a1x.a1x1');
-    expect(pathof(obj, 'a', 'a1', 'a1x', 'a1x1', 'a1x1i')).toBe('a.a1.a1x.a1x1.a1x1i');
+    expect(pathof(obj, 'a', 'a1', 'a1x', 'a1x1', 'a1x1i')).toBe(
+      'a.a1.a1x.a1x1.a1x1i'
+    );
   });
 });

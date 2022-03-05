@@ -2,6 +2,11 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
 export class ControlValueComponent<T> implements ControlValueAccessor {
+  protected _value: T;
+  protected _disabled: boolean;
+
+  protected constructor(protected changeDetectorRef: ChangeDetectorRef) {}
+
   get value(): T {
     return this._value;
   }
@@ -34,11 +39,6 @@ export class ControlValueComponent<T> implements ControlValueAccessor {
 
     this.changeDetectorRef.markForCheck();
   }
-
-  protected _value: T;
-  protected _disabled: boolean;
-
-  protected constructor(protected changeDetectorRef: ChangeDetectorRef) {}
 
   onChange: (value: T) => void = () => {};
   onTouched: () => void = () => {};

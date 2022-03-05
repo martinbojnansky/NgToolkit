@@ -6,6 +6,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./docs.component.scss'],
 })
 export class DocsComponent implements OnInit {
+  @ViewChild('docsAccordion')
+  docsAccordion: ElementRef<HTMLDivElement>;
+
   readonly docsNavGroups = [
     {
       id: 'gettingStarted',
@@ -100,9 +103,6 @@ export class DocsComponent implements OnInit {
       items: [],
     },
   ];
-
-  @ViewChild('docsAccordion')
-  docsAccordion: ElementRef<HTMLDivElement>;
 
   constructor() {}
 
