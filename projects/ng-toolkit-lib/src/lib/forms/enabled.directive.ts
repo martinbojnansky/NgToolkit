@@ -34,7 +34,7 @@ export class EnabledDirective implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.enable(this.ntlEnabled);
+    this.enable(this.ntlEnabled || false);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

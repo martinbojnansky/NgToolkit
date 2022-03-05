@@ -34,10 +34,8 @@ export function effects<T>(ef: Effects<T, void>): OperatorFunction<T, T> {
         }
       ),
       finalize(() => {
-        if (!isCompleted) {
-          if (ef.completed) {
-            ef.cancelled();
-          }
+        if (!isCompleted && ef.cancelled) {
+          ef.cancelled();
         }
       })
     );

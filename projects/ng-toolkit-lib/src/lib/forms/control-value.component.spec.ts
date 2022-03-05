@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -46,7 +47,7 @@ describe('ControlValueComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule],
+        imports: [CommonModule, FormsModule],
         declarations: [ControlValueTestComponent],
       }).compileComponents();
     })
