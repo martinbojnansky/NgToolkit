@@ -8,13 +8,13 @@ import { TranslationService } from '../../../core/services/translation.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TranslationSampleComponent implements OnInit {
+  readonly langs = TranslationLang;
+
+  constructor(protected translationService: TranslationService) {}
+
   get welcomeMessage() {
     return this.translationService.modules.translated.welcomeMessage;
   }
 
-  readonly langs = TranslationLang;
-
-  constructor(protected translationService: TranslationService) { }
-
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

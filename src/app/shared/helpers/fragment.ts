@@ -1,3 +1,1 @@
-export const getLinkToFragment = (fragment: string): string => {
-  return `${window.location.pathname}#${fragment}`;
-};
+export const getLinkToFragment = (fragment: string): string => `${window.location.pathname}#${fragment}`;

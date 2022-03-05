@@ -3,7 +3,7 @@ import { nameof } from './nameof';
 interface TestType {
   a: string;
   b: number;
-  c: () => {};
+  c: () => void;
 }
 
 describe('nameof', () => {

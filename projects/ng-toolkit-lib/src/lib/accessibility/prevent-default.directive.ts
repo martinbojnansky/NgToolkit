@@ -1,15 +1,15 @@
 import { Directive, HostListener, Input } from '@angular/core';
 
 @Directive({
-  selector: '[ntlPreventDefault]',
+  selector: '[ngtlPreventDefault]',
 })
 export class PreventDefaultDirective {
   @Input()
-  ntlPreventDefault: string[];
+  ngtlPreventDefault: string[];
 
   @HostListener('keydown', ['$event'])
   onKeydown(e: KeyboardEvent) {
-    if (this.ntlPreventDefault.includes(e?.code)) {
+    if (this.ngtlPreventDefault.includes(e?.code)) {
       e.preventDefault();
     }
   }

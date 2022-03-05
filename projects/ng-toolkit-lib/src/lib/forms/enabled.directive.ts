@@ -14,7 +14,7 @@ import {
 import { nameof, Nullable } from '../helpers';
 
 @Directive({
-  selector: '[ntlEnabled]',
+  selector: '[ngtlEnabled]',
 })
 export class EnabledDirective implements OnInit, OnChanges {
   @Input()
@@ -27,18 +27,18 @@ export class EnabledDirective implements OnInit, OnChanges {
   formArray: FormArray;
 
   @Input()
-  ntlEnabled: Nullable<boolean>;
+  ngtlEnabled: Nullable<boolean>;
 
   protected get control(): AbstractControl {
     return this.formControl || this.formGroup || this.formArray;
   }
 
   ngOnInit(): void {
-    this.enable(this.ntlEnabled || false);
+    this.enable(this.ngtlEnabled || false);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const enabledChange = changes[nameof<EnabledDirective>('ntlEnabled')];
+    const enabledChange = changes[nameof<EnabledDirective>('ngtlEnabled')];
     if (enabledChange) {
       this.enable(enabledChange.currentValue);
     }
@@ -49,6 +49,10 @@ export class EnabledDirective implements OnInit, OnChanges {
       return;
     }
 
-    enable ? this.control.enable() : this.control.disable();
+    if (enable) {
+      this.control.enable();
+    } else {
+      this.control.disable();
+    }
   }
 }

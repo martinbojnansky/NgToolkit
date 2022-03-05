@@ -16,7 +16,7 @@ describe('EnabledDirective', () => {
   it('should change enabled of FormControl on init', () => {
     directive.formControl = new FormControl();
     expect(directive.formControl.enabled).toBeTruthy();
-    directive.ntlEnabled = false;
+    directive.ngtlEnabled = false;
     directive.ngOnInit();
     expect(directive.formControl.enabled).toBeFalsy();
   });
@@ -24,9 +24,9 @@ describe('EnabledDirective', () => {
   it('should change enabled of FormControl on change', () => {
     directive.formControl = new FormControl();
     expect(directive.formControl.enabled).toBeTruthy();
-    directive.ntlEnabled = false;
+    directive.ngtlEnabled = false;
     directive.ngOnChanges({
-      ntlEnabled: { currentValue: false } as SimpleChange,
+      ngtlEnabled: { currentValue: false } as SimpleChange,
     });
     expect(directive.formControl.enabled).toBeFalsy();
   });
@@ -34,7 +34,7 @@ describe('EnabledDirective', () => {
   it('should change enabled of FormGroup on init', () => {
     directive.formGroup = new FormGroup({});
     expect(directive.formGroup.enabled).toBeTruthy();
-    directive.ntlEnabled = false;
+    directive.ngtlEnabled = false;
     directive.ngOnInit();
     expect(directive.formGroup.enabled).toBeFalsy();
   });
@@ -42,9 +42,9 @@ describe('EnabledDirective', () => {
   it('should change enabled of FormGroup on change', () => {
     directive.formGroup = new FormGroup({});
     expect(directive.formGroup.enabled).toBeTruthy();
-    directive.ntlEnabled = false;
+    directive.ngtlEnabled = false;
     directive.ngOnChanges({
-      ntlEnabled: { currentValue: false } as SimpleChange,
+      ngtlEnabled: { currentValue: false } as SimpleChange,
     });
     expect(directive.formGroup.enabled).toBeFalsy();
   });
@@ -52,7 +52,7 @@ describe('EnabledDirective', () => {
   it('should change enabled of FormArray on init', () => {
     directive.formArray = new FormArray([]);
     expect(directive.formArray.enabled).toBeTruthy();
-    directive.ntlEnabled = false;
+    directive.ngtlEnabled = false;
     directive.ngOnInit();
     expect(directive.formArray.enabled).toBeFalsy();
   });
@@ -60,9 +60,9 @@ describe('EnabledDirective', () => {
   it('should change enabled of FormArray on change', () => {
     directive.formArray = new FormArray([]);
     expect(directive.formArray.enabled).toBeTruthy();
-    directive.ntlEnabled = false;
+    directive.ngtlEnabled = false;
     directive.ngOnChanges({
-      ntlEnabled: { currentValue: false } as SimpleChange,
+      ngtlEnabled: { currentValue: false } as SimpleChange,
     });
     expect(directive.formArray.enabled).toBeFalsy();
   });

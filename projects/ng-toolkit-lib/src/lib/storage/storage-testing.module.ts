@@ -18,21 +18,19 @@ export const createStorageMock = <T extends Storage>(
     storage = {};
   });
 
-  spy.getItem.and.callFake((key: string) => {
-    return key in storage ? storage[key] : null;
-  });
+  spy.getItem.and.callFake((key: string) =>
+    key in storage ? storage[key] : null
+  );
 
-  spy.setItem.and.callFake((key: string, value: string) => {
-    storage[key] = value || '';
-  });
+  spy.setItem.and.callFake(
+    (key: string, value: string) => (storage[key] = value || '')
+  );
 
   spy.removeItem.and.callFake((key: string) => {
     delete storage[key];
   });
 
-  spy.key.and.callFake((index: number) => {
-    return Object.keys(storage)[index] || null;
-  });
+  spy.key.and.callFake((index: number) => Object.keys(storage)[index] || null);
 
   return spy;
 };

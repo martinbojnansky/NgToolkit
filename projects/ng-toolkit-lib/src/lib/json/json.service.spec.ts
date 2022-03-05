@@ -4,7 +4,7 @@ import { JsonService } from './json.service';
 
 interface SerializableObject {
   text: string;
-  number: number;
+  num: number;
   array: number[];
   date: Date;
   dates: Date[];
@@ -16,7 +16,7 @@ interface SerializableObject {
 
 const defaultObject: SerializableObject = {
   text: 'text',
-  number: 123,
+  num: 123,
   array: [1, 2, 3],
   date: new Date('1994-01-01 12:00'),
   dates: [new Date('1994-01-02 12:00'), new Date('1994-01-03 12:00')],

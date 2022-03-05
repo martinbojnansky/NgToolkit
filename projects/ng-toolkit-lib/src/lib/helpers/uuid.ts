@@ -1,4 +1,4 @@
-/* tslint:disable */
+/* eslint-disable */
 export function uuid(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
@@ -6,4 +6,4 @@ export function uuid(): string {
     return v.toString(16);
   });
 }
-/* tslint:enable */
+/* eslint-enable */

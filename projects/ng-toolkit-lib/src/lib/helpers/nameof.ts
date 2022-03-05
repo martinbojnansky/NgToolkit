@@ -1,3 +1,1 @@
-export function nameof<T>(key: keyof T, instance?: T): keyof T {
-  return key;
-}
+export const nameof = <T>(key: keyof T, instance?: T): keyof T => key;
