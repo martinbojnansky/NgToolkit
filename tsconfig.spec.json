@@ -13,6 +13,7 @@
   ],
   "include": [
     "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",   
+    "src/app/docs/translation/samples/translation-sample/translations/**/*.ts"
   ]
 }

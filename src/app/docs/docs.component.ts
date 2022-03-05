@@ -97,13 +97,7 @@ export class DocsComponent implements OnInit {
       id: 'translation',
       label: 'Translation',
       routerLink: 'translation',
-      items: [
-        {
-          id: 'overview',
-          label: 'Overview',
-          routerLink: 'overview',
-        },
-      ],
+      items: [],
     },
   ];
 
