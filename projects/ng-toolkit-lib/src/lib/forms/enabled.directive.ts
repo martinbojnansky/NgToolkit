@@ -7,9 +7,9 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { nameof, Nullable } from '../helpers';
 
@@ -18,13 +18,13 @@ import { nameof, Nullable } from '../helpers';
 })
 export class EnabledDirective implements OnInit, OnChanges {
   @Input()
-  formControl: FormControl;
+  formControl: UntypedFormControl;
 
   @Input()
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
   @Input()
-  formArray: FormArray;
+  formArray: UntypedFormArray;
 
   @Input()
   ngtlEnabled: Nullable<boolean>;
