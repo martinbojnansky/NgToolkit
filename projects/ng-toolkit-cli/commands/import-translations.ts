@@ -17,8 +17,10 @@ export const importTranslations = async (params: ImportTranslationsParams) => {
         outFileText
       )[0];
       const newModuleJson = moduleJson
-        .replace(/\"\(\(/g, '(')
-        .replace(/\)\"/g, '');
+        .replace(/\"\<{/g, '')
+        .replace(/\}>\"/g, '')
+        .replace(/\\n/g, '\n')
+        .replace(/\\r/g, '\r');
       const newOutFileText =
         outFileText.substring(
           0,

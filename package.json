@@ -20,7 +20,7 @@
     "publish-lib": "npm run test-lib:prod && npm run build-lib:prod && cd dist/ng-toolkit-lib/ && npm publish",
     "publish-cli": "npm run build-cli:prod && cd dist/ng-toolkit-cli && npm publish",
     "export-translations": "node dist/ng-toolkit-cli export-translations --input=src/app/docs/translation/samples/translation-sample/translations --langs=en,de --modules=translated --output=src/app/docs/translation/samples/translation-sample/translations",
-    "import-translations": "node dist/ng-toolkit-cli import-translations --input=src/app/docs/translation/samples/translation-sample/translations --langs=en,de --modules=translated --output=src/app/docs/translation/samples/translation-sample/translations"
+    "import-translations": "node dist/ng-toolkit-cli import-translations --input=src/app/docs/translation/samples/translation-sample/translations --langs=en,de --modules=translated --output=src/app/docs/translation/samples/translation-sample/translations && prettier --write src/app/docs/translation/samples/translation-sample/translations/*/*.ts"
   },
   "private": true,
   "dependencies": {
@@ -64,6 +64,7 @@
     "karma-jasmine": "^4.0.2",
     "karma-jasmine-html-reporter": "^1.7.0",
     "ng-packagr": "^14.1.0",
+    "prettier": "^2.8.3",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "typescript": "~4.7.4"

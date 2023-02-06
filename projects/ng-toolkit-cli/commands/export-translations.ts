@@ -24,7 +24,7 @@ export const exportTranslations = async (params: ExportTranslationsParams) => {
         compilerOptions: {
           module: tsc.ModuleKind.CommonJS,
           moduleResolution: tsc.ModuleResolutionKind.NodeJs,
-          target: tsc.ScriptTarget.ES2018,
+          target: tsc.ScriptTarget.ESNext,
           noImplicitReturns: true,
           noFallthroughCasesInSwitch: true,
         },
@@ -41,7 +41,7 @@ export const exportTranslations = async (params: ExportTranslationsParams) => {
       (key: any, value: any): any => {
         switch (typeof value) {
           case 'function':
-            return `(${(value as Function).toString()})`;
+            return `<{${(value as Function).toString()}}>`;
           default:
             return value;
         }
