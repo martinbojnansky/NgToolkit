@@ -1,4 +1,5 @@
 import { exportTranslations } from './commands/export-translations';
+import { importTranslations } from './commands/import-translations';
 import { Log } from './helpers/log';
 import { parseParams } from './helpers/params';
 
@@ -20,7 +21,7 @@ const run = async () => {
       await exportTranslations(params);
       break;
     case 'import-translations':
-      // TODO: Implement import back.
+      await importTranslations(params);
       break;
     case 'help':
       help();
@@ -41,7 +42,13 @@ const help = () => {
       [--input=src/translations] 
       [--langs=en,de,it] 
       [--modules=module1,module2] 
-      [--output=dist/translations]
+      [--output=src/translations]
+
+    - import-translations ** Imports translated JSONs and applies them.
+      [--input=src/translations] 
+      [--langs=en,de,it] 
+      [--modules=module1,module2] 
+      [--output=src/translations]
   `);
 };
 

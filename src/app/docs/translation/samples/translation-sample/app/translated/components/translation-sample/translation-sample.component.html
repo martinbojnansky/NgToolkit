@@ -3,8 +3,8 @@
 <div class="input-group mb-3">
   <span class="input-group-text">Pipe Binding</span>
   <span class="input-group-text flex-grow-1">{{
-    ("" | translate).translated.welcomeMessage
-    }}</span>
+    ('' | translate).translated.welcomeMessage
+  }}</span>
 </div>
 
 <div class="input-group mb-3">
@@ -15,21 +15,14 @@
 <div class="input-group mb-3">
   <span class="input-group-text">Parametrized</span>
   <span class="input-group-text flex-grow-1">{{
-    ("" | translate).translated.welcomeMessageParametrized("Johny")
-    }}</span>
-</div>
-
-<div class="input-group mb-3">
-  <span class="input-group-text">Combined</span>
-  <span class="input-group-text flex-grow-1">{{
-    ("" | translate).translated.welcomeMessageCombined("Johny")
-    }}</span>
+    ('' | translate).translated.welcomeMessageParametrized('Johny')
+  }}</span>
 </div>
 
 <div class="input-group mb-3">
   <span class="input-group-text">Type-Safe</span>
-  <span class="input-group-text flex-grow-1">{{ ("" | translate).translated.translationLangLabel(langs.en) }},
-    {{
-    ("" | translate).translated.translationLangLabel(langs.de)
-    }}</span>
+  <span class="input-group-text flex-grow-1"
+    >{{ ('' | translate).translated.translationLangLabel[langs.en] }},
+    {{ ('' | translate).translated.translationLangLabel[langs.de] }}</span
+  >
 </div>

@@ -13,10 +13,10 @@ export const exportTranslations = async (params: ExportTranslationsParams) => {
     Log.info('');
   });
 
-  const langs = params.langs.split(',');
+  const langs = params.langs?.split(',') || [];
   for (let lang of langs) {
     let allModules = {};
-    for (let module of params.modules?.split(',')) {
+    for (let module of params.modules?.split(',') || []) {
       const moduleTs = fs
         .readFileSync(`${params.input}/${module}/${lang}.ts`)
         .toString();
