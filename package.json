@@ -18,7 +18,7 @@
     "test-samples:prod": "ng test ng-toolkit --browsers=ChromeHeadless --watch=false",
     "e2e": "npm run build-lib:prod && ng e2e",
     "publish-lib": "npm run test-lib:prod && npm run build-lib:prod && cd dist/ng-toolkit-lib/ && npm publish",
-    "publish-cli": "npm run build-cli:prod && cd dist/ng-toolkit-cli && npm publish",
+    "publish-cli": "npm run build-cli:prod && cd projects/ng-toolkit-cli && npm publish",
     "translate": "node dist/ng-toolkit-cli export-translations --input=src/app/docs/translation/samples/translation-sample/translations --langs=en,de --modules=translated --output=dist/translations"
   },
   "private": true,
