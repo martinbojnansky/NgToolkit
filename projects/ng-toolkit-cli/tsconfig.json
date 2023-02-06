@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/ng-toolkit-cli",
+    "module": "commonjs",
+    "target": "es2018",
+    "types": ["node"],
+    "declaration": true,
+  },
+  "include": ["*.ts"]
+}

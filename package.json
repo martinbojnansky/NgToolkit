@@ -6,6 +6,8 @@
     "start-samples": "npm run build-lib && ng serve -- --port 4400",
     "build-lib": "ng build ng-toolkit-lib",
     "build-lib:prod": "ng build ng-toolkit-lib --configuration production",
+    "build-cli": "cd projects/ng-toolkit-cli && npm run build",
+    "build-cli:prod": "cd projects/ng-toolkit-cli && npm run build:prod",
     "build-samples": "ng build ng-toolkit",
     "build-samples:prod": "ng build ng-toolkit --configuration production",
     "lint-samples": "ng lint ng-toolkit",
@@ -15,7 +17,9 @@
     "test-samples": "ng test ng-toolkit",
     "test-samples:prod": "ng test ng-toolkit --browsers=ChromeHeadless --watch=false",
     "e2e": "npm run build-lib:prod && ng e2e",
-    "publish-lib": "npm run test-lib:prod && npm run build-lib:prod && cd dist/ng-toolkit-lib/ && npm publish"
+    "publish-lib": "npm run test-lib:prod && npm run build-lib:prod && cd dist/ng-toolkit-lib/ && npm publish",
+    "publish-cli": "npm run build-cli:prod && cd dist/ng-toolkit-cli && npm publish",
+    "translate": "node dist/ng-toolkit-cli export-translations --input=src/app/docs/translation/samples/translation-sample/translations --langs=en,de --modules=translated --output=dist/translations"
   },
   "private": true,
   "dependencies": {
