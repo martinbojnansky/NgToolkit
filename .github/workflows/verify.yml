@@ -24,5 +24,6 @@ jobs:
       - run: npm run test-lib:prod
       - run: npm run lint-lib
       - run: npm run build-lib:prod
+      - run: npm run build-cli:prod
       - run: npm run lint-samples
       - run: npm run test-samples:prod

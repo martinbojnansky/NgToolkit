@@ -9,12 +9,18 @@ name: Deploy
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
       - run: npm run test-lib:prod
       - run: npm run lint-lib
       - run: npm run build-lib:prod
+      - run: npm run build-cli:prod
       - run: npm run test-samples:prod
       - run: npm run lint-samples
       - run: npm run build-samples:prod
