@@ -20,7 +20,7 @@ jobs:
       - run: npm run test-lib:prod
       - run: npm run lint-lib
       - run: npm run build-lib:prod
-      - run: npm run build-cli:prod
+      - run: cd projects/ng-toolkit-cli && npm ci && npm run build:prod
       - run: npm run test-samples:prod
       - run: npm run lint-samples
       - run: npm run build-samples:prod
