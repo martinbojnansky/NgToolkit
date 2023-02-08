@@ -8,5 +8,7 @@ export interface TranslationModules {
     welcomeMessage: string;
     welcomeMessageParametrized: (name: string) => string;
     translationLangLabel: { [lang in TranslationLang]: string };
+    multiline: string;
+    bool: boolean;
   };
 }

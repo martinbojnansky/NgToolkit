@@ -7,4 +7,8 @@ export const translated: TranslationModules['translated'] = {
     en: 'English',
     de: 'German',
   },
+  multiline: `1
+	2
+	3`,
+  bool: true,
 };

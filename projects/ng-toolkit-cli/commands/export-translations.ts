@@ -41,7 +41,9 @@ export const exportTranslations = async (params: ExportTranslationsParams) => {
       (key: any, value: any): any => {
         switch (typeof value) {
           case 'function':
-            return `<{${(value as Function).toString()}}>`;
+          case 'boolean':
+          case 'number':
+            return `<{${value.toString()}}>`;
           default:
             return value;
         }
