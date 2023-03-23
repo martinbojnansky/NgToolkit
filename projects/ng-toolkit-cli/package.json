@@ -1,6 +1,6 @@
 {
   "name": "ng-toolkit-cli",
-  "version": "0.0.7",
+  "version": "0.15.0",
   "private": false,
   "scripts": {
     "build": "npx tsc --project tsconfig.json --watch",
