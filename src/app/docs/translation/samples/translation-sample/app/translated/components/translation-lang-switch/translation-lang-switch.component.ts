@@ -9,11 +9,13 @@ import { TranslationService } from '../../../core/services/translation.service';
 })
 export class TranslationLangSwitchComponent implements OnInit {
   readonly langs = Object.keys(TranslationLang);
-  readonly selectedLang = this.translateService.lang;
+  readonly selectedLang: TranslationLang;
 
-  constructor(protected translateService: TranslationService) { }
+  constructor(protected translateService: TranslationService) {
+    this.selectedLang = this.translateService.lang;
+  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   changeLang(lang: TranslationLang): void {
     this.translateService.changeLang(lang);
