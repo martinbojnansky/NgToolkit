@@ -1,54 +1,24 @@
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
+import { InjectionToken, inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { trySafe } from '../helpers';
 import { TranslationServiceBase } from './translation.service';
 
-@Injectable()
-export class TranslationGuard implements CanActivate, CanActivateChild {
-  constructor(protected translationService: TranslationServiceBase<any, any>) {}
+export const TRANSLATION_SERVICE = new InjectionToken<
+  TranslationServiceBase<any, any>
+>('TranslationService');
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    return this.translationLoaded(route);
-  }
-
-  canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
-    | boolean
-    | UrlTree
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree> {
-    return this.translationLoaded(childRoute);
-  }
-
-  private translationLoaded(
-    route: ActivatedRouteSnapshot
-  ): Observable<boolean> | true {
-    const translationModules = trySafe(
-      () => route.data.translationModules as string[]
-    );
-    if (translationModules) {
+export function translationGuard<
+  TService extends TranslationServiceBase<any, any>
+>(requiredModules: (keyof TService['modules'])[]): CanActivateFn {
+  return () => {
+    const translationService = inject(TRANSLATION_SERVICE);
+    if (requiredModules) {
       return forkJoin(
-        translationModules.map((module) => this.translationService.load(module))
+        requiredModules.map((module) => translationService.load(module))
       ).pipe(map(() => true));
     } else {
       return true;
     }
-  }
+  };
 }

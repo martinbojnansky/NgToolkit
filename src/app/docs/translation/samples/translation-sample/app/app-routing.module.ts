@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TranslationGuard } from 'dist/ng-toolkit-lib';
+import { translationGuard } from 'dist/ng-toolkit-lib';
+import { TranslationService } from './core/services/translation.service';
 
 const routes: Routes = [
   {
     path: '',
-    canActivateChild: [TranslationGuard],
+    canActivateChild: [translationGuard<TranslationService>(['translated'])],
     children: [
       {
         path: '',
@@ -13,9 +14,6 @@ const routes: Routes = [
           import('./translated/translated.module').then(
             (m) => m.TranslatedModule
           ),
-        data: {
-          translationModules: ['translated'],
-        },
       },
     ],
   },
@@ -25,4 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,4 +1,3 @@
-/* eslint-disable prefer-arrow/prefer-arrow-functions */
 export function pathof<T, P1 extends keyof T>(obj: T, prop1: P1): string;
 
 export function pathof<T, P1 extends keyof T, P2 extends keyof T[P1]>(
@@ -34,4 +33,3 @@ export function pathof<
 export function pathof<T>(obj: T, ...props: string[]): string {
   return props.join('.');
 }
-/* eslint-enable prefer-arrow/prefer-arrow-functions */
